@@ -40,10 +40,6 @@ module.exports = {
           resolve: {
             alias: {
               common: path.resolve('./src/components/common'),
-              utils: path.resolve('./src/utils'),
-              graphql: path.resolve('./src/graphql'),
-              hooks: path.resolve('./src/hooks'),
-              contexts: path.resolve('./src/contexts'),
             },
           },
         },

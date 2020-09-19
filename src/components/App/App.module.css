@@ -1,5 +1,5 @@
-@import '../common/reset.module.css';
-@import '../common/global.module.css';
+@import 'common/reset.module.css';
+@import 'common/global.module.css';
 
 @value primary-font, white-light, border-gray, NAV_HEIGHT, NAV_MOBILE_HEIGHT from "common/variables.module.css";
 

@@ -7,10 +7,9 @@
     "start-production": "NODE_ENV=production node build/server.js",
     "lint": "eslint src/ razzle.config.js",
     "lint-staged": "lint-staged",
-    "flow": "flow",
     "stylelint": "stylelint \"src/**/*.css\"",
     "testonly": "razzle test --env=jsdom",
-    "test": "npm run flow && npm run lint && npm run stylelint && npm run testonly",
+    "test": "npm run lint && npm run stylelint && npm run testonly",
     "build": "razzle build"
   },
   "husky": {
