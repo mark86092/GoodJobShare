@@ -21,7 +21,7 @@ import CampaignTimeAndSalaryForm from './containers/ShareExperience/CampaignTime
 import WorkExperiencesForm from './containers/ShareExperience/WorkExperiencesFormContainer';
 import Me from './components/Me';
 import About from './pages/About';
-import Faq from './components/Faq';
+import Faq from './pages/Faq';
 import Guidelines from './components/Guidelines';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
