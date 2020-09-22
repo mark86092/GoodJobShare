@@ -20,7 +20,7 @@ import TimeSalaryForm from './containers/ShareExperience/TimeSalaryFormContainer
 import CampaignTimeAndSalaryForm from './containers/ShareExperience/CampaignTimeAndSalaryFormContainer';
 import WorkExperiencesForm from './containers/ShareExperience/WorkExperiencesFormContainer';
 import Me from './components/Me';
-import About from './components/About';
+import About from './pages/About';
 import Faq from './components/Faq';
 import Guidelines from './components/Guidelines';
 import Privacy from './components/Privacy';
