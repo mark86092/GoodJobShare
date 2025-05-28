@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "main": "lib/index.js",
   "scripts": {
-    "start": "razzle start",
+    "start:tsc": "tsc -b -w --preserveWatchOutput",
+    "start": "npm run start:tsc & razzle start",
     "start-production": "NODE_ENV=production node build/server.js",
     "lint": "eslint src/ razzle.config.js",
     "lint-staged": "lint-staged",
@@ -34,6 +35,8 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5",
     "autoprefixer": "7.1.1",
     "babel-eslint": "^10.1.0",
     "eslint": "6.8.0",
