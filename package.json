@@ -18,6 +18,9 @@
     "*.js": [
       "eslint --fix"
     ],
+    "*.ts": [
+      "eslint --fix"
+    ],
     "*.css": [
       "stylelint --fix"
     ]
