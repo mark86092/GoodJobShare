@@ -1,3 +1,3 @@
 module.exports = {
-  plugins: ['typescript', require('./src/razzle-plugins/postcss')],
+  plugins: [require('./src/razzle-plugins/postcss')],
 };
