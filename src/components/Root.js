@@ -7,6 +7,7 @@ import useGoogleAnalytics from 'hooks/useGoogleAnalytics';
 import useGoogleTagManager from 'hooks/useGoogleTagManager';
 import useSyncAuth from 'hooks/useSyncAuth';
 import App from './App';
+import tool from './tool';
 
 const compose = (providers, node) =>
   providers.reduce(
