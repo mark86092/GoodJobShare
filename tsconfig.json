@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-        "baseUrl": "src",
-        "paths": {
-            "common/*": ["components/common/*"],
-            "images/*": ["components/images/*"]
-        },
+    "baseUrl": "src",
+    "paths": {
+      "common/*": ["components/common/*"],
+      "images/*": ["components/images/*"]
+    },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
