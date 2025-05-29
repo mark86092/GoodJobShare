@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import auth from './auth';
+import auth, { User } from './auth';
 import me from './me';
 import experience from './experience';
 import experiences from './experiences';
@@ -46,3 +46,4 @@ const rootReducer = combineReducers({
 export default persistReducer(persistConfig, rootReducer);
 
 export type RootState = ReturnType<typeof rootReducer>;
+export { User };

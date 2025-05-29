@@ -1,14 +1,16 @@
 import { useSelector } from 'react-redux';
 import {
-  isLoggedInSelector,
+  statusSelector,
   userSelector,
   tokenSelector,
-  getUserName,
   getUserEmailStatus,
 } from 'selectors/authSelector';
+import AUTH_STATUS from 'constants/authStatus';
 
-export const useIsLoggedIn = () => useSelector(isLoggedInSelector);
+export const useIsLoggedIn = (): boolean => {
+  const status = useSelector(statusSelector);
+  return status === AUTH_STATUS.CONNECTED;
+};
 export const useAuthUser = () => useSelector(userSelector);
-export const useAuthUserName = () => useSelector(getUserName);
 export const useAuthUserEmailStatus = () => useSelector(getUserEmailStatus);
 export const useToken = () => useSelector(tokenSelector);

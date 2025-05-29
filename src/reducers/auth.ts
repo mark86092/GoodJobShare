@@ -3,7 +3,7 @@ import { SET_LOGIN, SET_USER } from 'actions/auth';
 
 import AuthStatus from 'constants/authStatus';
 
-type User = {
+export type User = {
   _id: string;
   name: string;
   email_status: unknown;
