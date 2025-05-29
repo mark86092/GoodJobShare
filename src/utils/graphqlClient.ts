@@ -1,6 +1,7 @@
 import 'isomorphic-fetch';
 import { HttpError } from 'utils/errors';
 import { GraphqlError } from 'utils/errors';
+import { API_HOST } from 'config';
 
 type GraphqlClientArgs = {
   query: string;
@@ -19,7 +20,7 @@ const graphqlClient = async <T>({
     headers.append('Authorization', `Bearer ${token}`);
   }
 
-  const response = await fetch('/graphql', {
+  const response = await fetch(`${API_HOST}/graphql`, {
     method: 'POST',
     headers: headers,
     body: JSON.stringify({ query, variables }),
