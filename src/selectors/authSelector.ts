@@ -1,5 +1,6 @@
 import { path } from 'ramda';
-import { RootState, User } from 'reducers';
+import { RootState } from 'reducers';
+import { User } from 'reducers/auth';
 
 import AUTH_STATUS from 'constants/authStatus';
 
