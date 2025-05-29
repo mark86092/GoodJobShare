@@ -1,3 +1,14 @@
+export const queryMeGql = /* GraphQL */ `
+  {
+    me {
+      _id
+      name
+      email
+      email_status
+    }
+  }
+`;
+
 export const facebookLogin = /* GraphQL */ `
   mutation($input: FacebookLoginInput!) {
     facebookLogin(input: $input) {
