@@ -1,6 +1,5 @@
 import 'isomorphic-fetch';
-import { HttpError } from 'utils/errors';
-import { GraphqlError } from 'utils/errors';
+import { HttpError, GraphqlError } from 'utils/errors';
 import { API_HOST } from 'config';
 
 type GraphqlClientArgs = {
