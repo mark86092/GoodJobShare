@@ -4,7 +4,7 @@ import PageBanner from 'common/PageBanner';
 import editorStyles from 'common/Editor.module.css';
 import StaticHelmet from 'common/StaticHelmet';
 
-const Terms = () => (
+const Terms: React.FC<void> = () => (
   <main>
     <StaticHelmet.UserTerms />
     <PageBanner heading="使用者條款" />

@@ -21,7 +21,7 @@ module.exports = {
     'react/jsx-filename-extension': [
       'error',
       {
-        extensions: ['.js'],
+        extensions: ['.js', '.tsx'],
       },
     ],
     'jsx-a11y/no-static-element-interactions': 'off',
