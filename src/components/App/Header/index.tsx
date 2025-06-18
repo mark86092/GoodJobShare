@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import cn from 'classnames';
 import ReactGA from 'react-ga4';
@@ -20,46 +19,37 @@ import Searchbar from './Searchbar';
 import { GA_CATEGORY, GA_ACTION } from 'constants/gaConstants';
 import emailStatusMap from 'constants/emailStatus';
 
-const onClickShareData = () => {
-  ReactGA.event({
-    category: GA_CATEGORY.HEADER,
-    action: GA_ACTION.CLICK_SHARE_DATA,
-  });
-};
-
-const HeaderTop = () => {
+const HeaderTop: React.FC = () => {
   const location = useLocation();
   const emailStatus = useAuthUserEmailStatus();
   const isEmailVerified = emailStatus === emailStatusMap.VERIFIED;
   const isLoggedIn = useIsLoggedIn();
   const shareLink = useShareLink();
 
-  return useMemo(() => {
-    if (!isLoggedIn && location.pathname === '/') {
-      return null;
-    }
+  if (!isLoggedIn && location.pathname === '/') {
+    return null;
+  }
 
-    if (isLoggedIn && !isEmailVerified) {
-      return (
-        <Top>
-          <EmailVerificationTop
-            isSentVerificationEmail={
-              emailStatus === emailStatusMap.SENT_VERIFICATION_LINK
-            }
-          />
-        </Top>
-      );
-    }
-
+  if (isLoggedIn && !isEmailVerified) {
     return (
-      <Top to={shareLink}>
-        <ProgressTop />
+      <Top>
+        <EmailVerificationTop
+          isSentVerificationEmail={
+            emailStatus === emailStatusMap.SENT_VERIFICATION_LINK
+          }
+        />
       </Top>
     );
-  }, [emailStatus, isEmailVerified, isLoggedIn, location.pathname, shareLink]);
+  }
+
+  return (
+    <Top to={shareLink}>
+      <ProgressTop />
+    </Top>
+  );
 };
 
-const Header = () => {
+const Header: React.FC = () => {
   const history = useHistory();
   const [isNavOpen, setNavOpen] = useState(false);
   const [isLoggedIn, login] = useLogin();
@@ -123,13 +113,23 @@ const Header = () => {
               <Link
                 to="/share"
                 className={styles.leaveDataBtn}
-                onClick={onClickShareData}
+                onClick={(): void => {
+                  ReactGA.event({
+                    category: GA_CATEGORY.HEADER,
+                    action: GA_ACTION.CLICK_SHARE_DATA,
+                  });
+                }}
               >
                 分享經驗
               </Link>
               <div style={{ position: 'relative' }}>
                 {!isLoggedIn && (
-                  <button className={styles.loginBtn} onClick={login}>
+                  <button
+                    className={styles.loginBtn}
+                    onClick={(): void => {
+                      login();
+                    }}
+                  >
                     登入
                   </button>
                 )}

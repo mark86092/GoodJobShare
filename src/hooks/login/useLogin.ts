@@ -2,7 +2,7 @@ import { useCallback, useContext } from 'react';
 import { useIsLoggedIn } from 'hooks/auth';
 import LoginModalContext from 'contexts/LoginModalContext';
 
-const useLogin = () => {
+const useLogin = (): [boolean, () => void] => {
   const isLoggedIn = useIsLoggedIn();
   const { setLoginModalDisplayed } = useContext(LoginModalContext);
   const login = useCallback(() => setLoginModalDisplayed(true), [
