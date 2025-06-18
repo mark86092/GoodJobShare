@@ -18,6 +18,7 @@ import ProgressTop from './Top/ProgressTop';
 import Searchbar from './Searchbar';
 import { GA_CATEGORY, GA_ACTION } from 'constants/gaConstants';
 import emailStatusMap from 'constants/emailStatus';
+import HeaderButton from './HeaderButton';
 
 const HeaderTop: React.FC = () => {
   const location = useLocation();
@@ -162,19 +163,6 @@ const Header: React.FC = () => {
       </header>
     </div>
   );
-};
-
-const HeaderButton = ({ isNavOpen, toggle }) => (
-  <div
-    className={cn(styles.mHeaderButton, { [styles.isNavOpen]: isNavOpen })}
-    onClick={toggle}
-  >
-    <span />
-  </div>
-);
-HeaderButton.propTypes = {
-  isNavOpen: PropTypes.bool.isRequired,
-  toggle: PropTypes.func.isRequired,
 };
 
 export default Header;
