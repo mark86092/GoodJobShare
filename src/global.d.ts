@@ -1,4 +1,4 @@
-import * as H from 'history';
+import 'react-router-dom';
 
 declare module '*.module.css' {
   const classes: { [key: string]: string };
@@ -6,11 +6,13 @@ declare module '*.module.css' {
 }
 
 declare module '*.svg' {
-  const content: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  const content: string;
   export default content;
 }
 
 declare module 'react-router-dom' {
+  import * as H from 'history';
+
   export function Link<S = H.LocationState>(
     ...params: Parameters<Link<S>>
   ): JSX.Element;
