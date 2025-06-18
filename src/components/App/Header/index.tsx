@@ -164,7 +164,12 @@ const Header = () => {
   );
 };
 
-const HeaderButton = ({ isNavOpen, toggle }) => (
+type HeaderButtonProps = {
+  isNavOpen: boolean;
+  toggle: () => void;
+};
+
+const HeaderButton: React.FC<HeaderButtonProps> = ({ isNavOpen, toggle }) => (
   <div
     className={cn(styles.mHeaderButton, { [styles.isNavOpen]: isNavOpen })}
     onClick={toggle}
@@ -172,9 +177,5 @@ const HeaderButton = ({ isNavOpen, toggle }) => (
     <span />
   </div>
 );
-HeaderButton.propTypes = {
-  isNavOpen: PropTypes.bool.isRequired,
-  toggle: PropTypes.func.isRequired,
-};
 
 export default Header;
