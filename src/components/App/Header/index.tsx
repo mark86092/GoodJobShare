@@ -50,10 +50,18 @@ const HeaderTop: React.FC = () => {
   );
 };
 
-const Link: React.FC<{to: string, title: string, children: JSX.IntrinsicAttributes}> = ({ to, title, children }) => {
-  // @ts-ignore
-  return <RouterLink to={to} title={title}>{children}</RouterLink>
-}
+
+const Link: React.FC<{
+  to: string;
+  title?: string;
+  className?: string;
+  children: JSX.Element | string;
+}> = ({ ...props }) => {
+  return (
+    // @ts-ignore
+    <RouterLink {...props}></RouterLink>
+  );
+};
 
 const Header: React.FC = () => {
   const history = useHistory();
