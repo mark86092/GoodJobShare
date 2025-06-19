@@ -21,6 +21,9 @@
     "*.ts": [
       "eslint --fix"
     ],
+    "*.tsx": [
+      "eslint --fix"
+    ],
     "*.css": [
       "stylelint --fix"
     ]
