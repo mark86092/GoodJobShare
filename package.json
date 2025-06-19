@@ -96,7 +96,7 @@
     "react-loading-skeleton": "^3.5.0",
     "react-redux": "^7.2.3",
     "react-router": "5.3.4",
-    "react-router-dom": "5.3.4",
+    "react-router-dom": "^5.1.2",
     "react-router-scroll-4": "^1.0.0-beta.1",
     "react-scroll": "^1.5.4",
     "react-sticky": "^6.0.1",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import cn from 'classnames';
 import ReactGA from 'react-ga4';
 import { Wrapper } from 'common/base';
@@ -49,6 +49,11 @@ const HeaderTop: React.FC = () => {
     </Top>
   );
 };
+
+const Link: React.FC<{to: string, title: string, children: JSX.IntrinsicAttributes}> = ({ to, title, children }) => {
+  // @ts-ignore
+  return <RouterLink to={to} title={title}>{children}</RouterLink>
+}
 
 const Header: React.FC = () => {
   const history = useHistory();
