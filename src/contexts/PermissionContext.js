@@ -4,6 +4,6 @@ export default React.createContext({
   canView: true,
   permissionFetched: false,
   setPermissionState: () => {
-    // empty function
+    // do nothing.
   },
 });
