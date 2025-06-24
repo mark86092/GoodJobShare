@@ -50,7 +50,6 @@ const HeaderTop: React.FC = () => {
   );
 };
 
-
 const Link: React.FC<{
   to: string;
   title?: string;
