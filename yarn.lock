@@ -10932,7 +10932,7 @@ react-router-scroll-4@^1.0.0-beta.1:
     scroll-behavior "^0.9.1"
     warning "^3.0.0"
 
-react-router@5.3.4:
+react-router@5.3.4, react-router@^5.1.2:
   version "5.3.4"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-5.3.4.tgz#8ca252d70fcc37841e31473c7a151cf777887bb5"
   integrity sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==
