@@ -40,5 +40,6 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'warn',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/ban-ts-ignore': 'warn',
+    '@typescript-eslint/no-explicit-any': 'warn',
   },
 };
