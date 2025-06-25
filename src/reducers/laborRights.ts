@@ -24,9 +24,8 @@ export type LaborRightEntry = {
 
 const preloadedState: {
   entryById: Record<string, FetchBox<LaborRightEntry>>;
-  menu: FetchBox<LaborRightMenuEntry>;
+  menu: FetchBox<LaborRightMenuEntry[]>;
 } = {
-  // entryId --> box
   entryById: {},
   menu: getUnfetched(),
 };
@@ -34,7 +33,10 @@ const preloadedState: {
 export default createReducer(
   preloadedState,
   {
-    [SET_MENU]: (state, { menu }: { menu: FetchBox<LaborRightMenuEntry> }) => ({
+    [SET_MENU]: (
+      state,
+      { menu }: { menu: FetchBox<LaborRightMenuEntry[]> },
+    ) => ({
       ...state,
       menu,
     }),

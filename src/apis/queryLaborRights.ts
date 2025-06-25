@@ -23,9 +23,9 @@ const queryLaborRights = ({
   entryId,
 }: {
   entryId: string;
-}): Promise<LaborRightEntry[]> =>
+}): Promise<LaborRightEntry> =>
   graphqlClient<{
-    labor_right: LaborRightEntry[];
+    labor_right: LaborRightEntry;
   }>({
     query,
     variables: {

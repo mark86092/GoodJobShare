@@ -1,6 +1,13 @@
+import { AppDispatch, AppGetState } from 'reducers';
+import { LaborRightEntry, LaborRightMenuEntry } from 'reducers/laborRights';
 import queryMenuApi from 'apis/queryLaborRightsMenu';
 import queryEntryApi from 'apis/queryLaborRights';
-import { getError, getFetched, toFetching, isUnfetched } from 'utils/fetchBox';
+import FetchBox, {
+  getError,
+  getFetched,
+  toFetching,
+  isUnfetched,
+} from 'utils/fetchBox';
 import {
   menuBoxSelector,
   entryBoxSelectorById,
@@ -10,18 +17,18 @@ import { isGraphqlError, UiNotFoundError } from 'utils/errors';
 export const SET_MENU = '@@LABOR_RIGHTS/SET_MENU';
 export const SET_ENTRY = '@@LABOR_RIGHTS/SET_ENTRY';
 
-const setMenu = box => ({
+const setMenu = (box: FetchBox<LaborRightMenuEntry[]>) => ({
   type: SET_MENU,
   menu: box,
 });
 
-const setEntry = (entryId, box) => ({
+const setEntry = (entryId: string, box: FetchBox<LaborRightEntry>) => ({
   type: SET_ENTRY,
   entry: box,
   entryId,
 });
 
-const queryMenu = () => async (dispatch, getState) => {
+const queryMenu = () => async (dispatch: AppDispatch) => {
   dispatch(setMenu(toFetching()));
 
   try {
@@ -33,14 +40,17 @@ const queryMenu = () => async (dispatch, getState) => {
   }
 };
 
-export const queryMenuIfUnfetched = () => async (dispatch, getState) => {
+export const queryMenuIfUnfetched = () => async (
+  dispatch: AppDispatch,
+  getState: AppGetState,
+) => {
   const box = menuBoxSelector(getState());
   if (isUnfetched(box)) {
     return dispatch(queryMenu());
   }
 };
 
-const queryEntry = entryId => async (dispatch, getState) => {
+const queryEntry = (entryId: string) => async (dispatch: AppDispatch) => {
   dispatch(setEntry(entryId, toFetching()));
 
   try {
@@ -56,7 +66,10 @@ const queryEntry = entryId => async (dispatch, getState) => {
   }
 };
 
-export const queryEntryIfUnfetched = entryId => async (dispatch, getState) => {
+export const queryEntryIfUnfetched = (entryId: string) => async (
+  dispatch: AppDispatch,
+  getState: AppGetState,
+) => {
   const box = entryBoxSelectorById(entryId)(getState());
   if (isUnfetched(box)) {
     return dispatch(queryEntry(entryId));

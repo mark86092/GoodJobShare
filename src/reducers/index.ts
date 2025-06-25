@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers, AnyAction } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -46,3 +46,9 @@ const rootReducer = combineReducers({
 export default persistReducer(persistConfig, rootReducer);
 
 export type RootState = ReturnType<typeof rootReducer>;
+export interface AppDispatch<A extends AnyAction | Promise<AnyAction> = any> {
+  <T extends A>(action: T): T;
+}
+export interface AppGetState {
+  (): RootState;
+}
