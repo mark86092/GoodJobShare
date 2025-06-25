@@ -1,7 +1,5 @@
-import {
-  queryLaborRightsMenu as queryMenuApi,
-  queryLaborRights as queryEntryApi,
-} from 'apis/laborRightsApi';
+import queryMenuApi from 'apis/queryLaborRightsMenu';
+import queryEntryApi from 'apis/queryLaborRights';
 import { getError, getFetched, toFetching, isUnfetched } from 'utils/fetchBox';
 import {
   menuBoxSelector,
