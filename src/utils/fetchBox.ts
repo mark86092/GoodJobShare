@@ -63,7 +63,7 @@ export const getFetched = <T>(data: T): FetchBoxWithData<T> => {
 };
 
 export const toFetching = <T>(
-  fetchBox: FetchBox<T> | undefined,
+  fetchBox: FetchBox<T> | undefined = undefined,
 ): FetchBox<T> => {
   const { data } = fetchBox || {};
 
