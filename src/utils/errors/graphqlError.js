@@ -23,4 +23,5 @@ class GraphqlError extends Error {
 }
 
 export default GraphqlError;
+
 export const isGraphqlError = R.propEq('name', 'GraphqlError');

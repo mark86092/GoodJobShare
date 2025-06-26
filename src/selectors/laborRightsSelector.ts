@@ -4,7 +4,7 @@ import FetchBox, { getUnfetched } from 'utils/fetchBox';
 
 export const menuBoxSelector = (
   state: RootState,
-): FetchBox<LaborRightMenuEntry> => state.laborRights.menu;
+): FetchBox<LaborRightMenuEntry[]> => state.laborRights.menu;
 
 export const entryBoxSelectorById = (entryId: string) => (
   state: RootState,

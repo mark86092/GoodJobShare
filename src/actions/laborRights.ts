@@ -57,7 +57,8 @@ const queryEntry = (entryId: string) => async (dispatch: AppDispatch) => {
     const entry = await queryEntryApi({ entryId });
     return dispatch(setEntry(entryId, getFetched(entry)));
   } catch (error) {
-    if (isGraphqlError(error)) {
+    // @ts-ignore
+    if (isGraphqlError('GraphqlError')) {
       return dispatch(setEntry(entryId, getError(new UiNotFoundError())));
     }
 
