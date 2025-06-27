@@ -22,6 +22,7 @@ export type SalaryWorkTimeOverview = {
   company: {
     name: string;
   };
+  originalCompanyName: string;
   data_time: {
     month: number;
     year: number;
@@ -108,7 +109,7 @@ type QueryCompanyOverviewData = {
   };
 } | null;
 
-export const queryCompanyOverview = ({
+const queryCompanyOverview = ({
   companyName,
   interviewExperiencesLimit,
   workExperiencesLimit,
@@ -128,3 +129,5 @@ export const queryCompanyOverview = ({
       salaryWorkTimesLimit,
     },
   }).then(R.prop('company'));
+
+export default queryCompanyOverview;
