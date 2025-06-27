@@ -1,10 +1,10 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
-import { queryCompanyOverviewGql } from 'graphql/company';
+import { queryJobTitleOverviewGql } from 'graphql/jobTitle';
 import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 import { InterviewExperience, WorkExperience } from 'graphql/overview';
 
-type QueryCompanyOverviewData = {
+type QueryJobTitleOverviewData = {
   name: string;
   salaryWorkTimesResult: {
     count: number;
@@ -20,25 +20,25 @@ type QueryCompanyOverviewData = {
   };
 } | null;
 
-const queryCompanyOverview = ({
-  companyName,
+const queryJobTitleOverview = ({
+  jobTitle,
   interviewExperiencesLimit,
   workExperiencesLimit,
   salaryWorkTimesLimit,
 }: {
-  companyName: string;
+  jobTitle: string;
   interviewExperiencesLimit: number;
   workExperiencesLimit: number;
   salaryWorkTimesLimit: number;
-}): Promise<QueryCompanyOverviewData> =>
-  graphqlClient<{ company: QueryCompanyOverviewData }>({
-    query: queryCompanyOverviewGql,
+}): Promise<QueryJobTitleOverviewData> =>
+  graphqlClient<{ job_title: QueryJobTitleOverviewData }>({
+    query: queryJobTitleOverviewGql,
     variables: {
-      companyName,
+      jobTitle,
       interviewExperiencesLimit,
       workExperiencesLimit,
       salaryWorkTimesLimit,
     },
-  }).then(R.prop('company'));
+  }).then(R.prop('job_title'));
 
-export default queryCompanyOverview;
+export default queryJobTitleOverview;

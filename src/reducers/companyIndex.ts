@@ -14,35 +14,32 @@ import {
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
-import {
-  SalaryWorkTimeOverview,
-  InterviewExperienceOverview,
-  WorkExperienceOverview,
-} from 'apis/queryCompanyOverview';
+import { InterviewExperience, WorkExperience } from 'graphql/overview';
+import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
 export type CompanyOverview = {
   name: string;
-  salaryWorkTimes: SalaryWorkTimeOverview[];
+  salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
-  interviewExperiences: InterviewExperienceOverview[];
+  interviewExperiences: InterviewExperience[];
   interviewExperiencesCount: number;
-  workExperiences: WorkExperienceOverview[];
+  workExperiences: WorkExperience[];
   workExperiencesCount: number;
 } | null;
 
 const preloadedState: {
-  indexesByPage: any;
-  indexCountBox: any;
-  ratingStatisticsByName: any;
+  indexesByPage: Record<number, FetchBox<any>>;
+  indexCountBox: FetchBox<number>;
+  ratingStatisticsByName: Record<string, FetchBox<any>>;
   overviewByName: Record<string, FetchBox<CompanyOverview>>;
-  overviewStatisticsByName: any;
-  timeAndSalaryByName: any;
-  timeAndSalaryStatisticsByName: any;
-  interviewExperiencesByName: any;
-  workExperiencesByName: any;
-  isSubscribedByName: any;
-  topNJobTitlesByName: any;
-  esgSalaryData: any;
+  overviewStatisticsByName: Record<string, FetchBox<any>>;
+  timeAndSalaryByName: Record<string, FetchBox<any>>;
+  timeAndSalaryStatisticsByName: Record<string, FetchBox<any>>;
+  interviewExperiencesByName: Record<string, FetchBox<any>>;
+  workExperiencesByName: Record<string, FetchBox<any>>;
+  isSubscribedByName: Record<string, FetchBox<any>>;
+  topNJobTitlesByName: Record<string, FetchBox<any>>;
+  esgSalaryData: Record<string, FetchBox<any>>;
 } = {
   // page --> indexBox
   indexesByPage: {},

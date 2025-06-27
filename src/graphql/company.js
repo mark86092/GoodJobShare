@@ -3,6 +3,10 @@ import {
   interviewExperiencePartialGql,
   workExperiencesPartialGql,
 } from './experience';
+import {
+  fragmentInterviewExperienceFields,
+  fragmentWorkExperienceFields,
+} from './overview';
 import { fragmentSalaryWorkTimeFields } from './salaryWorkTime';
 
 export const queryCompanyRatingStatisticsGql = /* GraphQL */ `
@@ -33,62 +37,13 @@ export const queryCompanyOverviewGql = /* GraphQL */ `
       interviewExperiencesResult(start: 0, limit: $interviewExperiencesLimit) {
         count
         interviewExperiences {
-          id
-          type
-          originalCompanyName
-          company {
-            name
-          }
-          job_title {
-            name
-          }
-          region
-          experience_in_year
-          education
-          salary {
-            amount
-            type
-          }
-          title
-          sections {
-            subtitle
-            content
-          }
-          created_at
-          reply_count
-          like_count
-          averageSectionRating
+          ...interviewExperienceFields
         }
       }
       workExperiencesResult(start: 0, limit: $workExperiencesLimit) {
         count
         workExperiences {
-          id
-          type
-          originalCompanyName
-          company {
-            name
-          }
-          job_title {
-            name
-          }
-          region
-          experience_in_year
-          education
-          salary {
-            amount
-            type
-          }
-          title
-          sections {
-            subtitle
-            content
-          }
-          created_at
-          reply_count
-          like_count
-          recommend_to_others
-          averageSectionRating
+          ...workExperienceFields
         }
       }
       salaryWorkTimesResult(start: 0, limit: $salaryWorkTimesLimit) {
@@ -99,6 +54,8 @@ export const queryCompanyOverviewGql = /* GraphQL */ `
       }
     }
   }
+  ${fragmentInterviewExperienceFields}
+  ${fragmentWorkExperienceFields}
   ${fragmentSalaryWorkTimeFields}
 `;
 
