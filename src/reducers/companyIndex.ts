@@ -1,5 +1,5 @@
 import createReducer from 'utils/createReducer';
-import { getUnfetched } from 'utils/fetchBox';
+import FetchBox, { getUnfetched } from 'utils/fetchBox';
 import {
   SET_INDEX_COUNT,
   SET_INDEX,
@@ -14,8 +14,36 @@ import {
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
+import {
+  SalaryWorkTimeOverview,
+  InterviewExperienceOverview,
+  WorkExperienceOverview,
+} from 'apis/queryCompanyOverview';
 
-const preloadedState = {
+export type CompanyOverview = {
+  name: string;
+  salaryWorkTimes: SalaryWorkTimeOverview[];
+  salaryWorkTimesCount: number;
+  interviewExperiences: InterviewExperienceOverview[];
+  interviewExperiencesCount: number;
+  workExperiences: WorkExperienceOverview[];
+  workExperiencesCount: number;
+} | null;
+
+const preloadedState: {
+  indexesByPage: any;
+  indexCountBox: any;
+  ratingStatisticsByName: any;
+  overviewByName: Record<string, FetchBox<CompanyOverview>>;
+  overviewStatisticsByName: any;
+  timeAndSalaryByName: any;
+  timeAndSalaryStatisticsByName: any;
+  interviewExperiencesByName: any;
+  workExperiencesByName: any;
+  isSubscribedByName: any;
+  topNJobTitlesByName: any;
+  esgSalaryData: any;
+} = {
   // page --> indexBox
   indexesByPage: {},
   indexCountBox: getUnfetched(),
@@ -57,7 +85,13 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_OVERVIEW]: (state, { companyName, box }) => {
+  [SET_OVERVIEW]: (
+    state,
+    {
+      companyName,
+      box,
+    }: { companyName: string; box: FetchBox<CompanyOverview> },
+  ) => {
     return {
       ...state,
       overviewByName: {
