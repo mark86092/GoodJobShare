@@ -1,7 +1,10 @@
-import { AppDispatch, AppGetState } from 'reducers';
+import { AnyAction } from 'redux';
+import { Thunk } from 'reducers';
 import { LaborRightEntry, LaborRightMenuEntry } from 'reducers/laborRights';
-import queryMenuApi from 'apis/queryLaborRightsMenu';
-import queryEntryApi from 'apis/queryLaborRights';
+import {
+  queryLaborRightsMenu as queryMenuApi,
+  queryLaborRights as queryEntryApi,
+} from 'apis/laborRightsApi';
 import FetchBox, {
   getError,
   getFetched,
@@ -17,18 +20,21 @@ import { isGraphqlError, UiNotFoundError } from 'utils/errors';
 export const SET_MENU = '@@LABOR_RIGHTS/SET_MENU';
 export const SET_ENTRY = '@@LABOR_RIGHTS/SET_ENTRY';
 
-const setMenu = (box: FetchBox<LaborRightMenuEntry[]>) => ({
+const setMenu = (box: FetchBox<LaborRightMenuEntry[]>): AnyAction => ({
   type: SET_MENU,
   menu: box,
 });
 
-const setEntry = (entryId: string, box: FetchBox<LaborRightEntry>) => ({
+const setEntry = (
+  entryId: string,
+  box: FetchBox<LaborRightEntry>,
+): AnyAction => ({
   type: SET_ENTRY,
   entry: box,
   entryId,
 });
 
-const queryMenu = () => async (dispatch: AppDispatch) => {
+const queryMenu = (): Thunk => async (dispatch): Promise<AnyAction> => {
   dispatch(setMenu(toFetching()));
 
   try {
@@ -40,17 +46,19 @@ const queryMenu = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const queryMenuIfUnfetched = () => async (
-  dispatch: AppDispatch,
-  getState: AppGetState,
-) => {
+export const queryMenuIfUnfetched = (): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
   const box = menuBoxSelector(getState());
   if (isUnfetched(box)) {
     return dispatch(queryMenu());
   }
 };
 
-const queryEntry = (entryId: string) => async (dispatch: AppDispatch) => {
+const queryEntry = (entryId: string): Thunk => async (
+  dispatch,
+): Promise<unknown> => {
   dispatch(setEntry(entryId, toFetching()));
 
   try {
@@ -67,10 +75,10 @@ const queryEntry = (entryId: string) => async (dispatch: AppDispatch) => {
   }
 };
 
-export const queryEntryIfUnfetched = (entryId: string) => async (
-  dispatch: AppDispatch,
-  getState: AppGetState,
-) => {
+export const queryEntryIfUnfetched = (entryId: string): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
   const box = entryBoxSelectorById(entryId)(getState());
   if (isUnfetched(box)) {
     return dispatch(queryEntry(entryId));
