@@ -1,5 +1,5 @@
-import { AnyAction } from 'redux';
-import { Thunk } from 'reducers';
+import { AnyAction, Action } from 'redux';
+import { RootState, Thunk } from 'reducers';
 import { LaborRightMenuEntry, LaborRightEntry } from 'graphql/laborRight';
 import {
   queryLaborRightsMenu as queryMenuApi,
@@ -20,6 +20,35 @@ import { isGraphqlError, UiNotFoundError } from 'utils/errors';
 export const SET_MENU = '@@LABOR_RIGHTS/SET_MENU';
 export const SET_ENTRY = '@@LABOR_RIGHTS/SET_ENTRY';
 
+interface Reducer<T> {
+  (params: T): Action<string> & T;
+  reducer: { [key: string]: (state: RootState, action: T) => RootState };
+  actionType: string;
+}
+
+const buildReducer = <T>(
+  actionType: string,
+  reducer: (state: RootState, action: T) => RootState,
+): Reducer<T> => {
+  const func = (params: T): Action<string> & T => ({
+    type: actionType,
+    ...params,
+  });
+  func.reducer = {
+    [actionType]: reducer,
+  };
+  func.actionType = actionType;
+  return func;
+};
+
+const setMenu2 = buildReducer<{ menu: FetchBox<LaborRightMenuEntry[]> }>(
+  '@@LABOR_RIGHTS/SET_MENU',
+  (state, { menu }) => ({
+    ...state,
+    menu,
+  }),
+);
+
 const setMenu = (box: FetchBox<LaborRightMenuEntry[]>): AnyAction => ({
   type: SET_MENU,
   menu: box,
@@ -35,7 +64,7 @@ const setEntry = (
 });
 
 const queryMenu = (): Thunk => async (dispatch): Promise<AnyAction> => {
-  dispatch(setMenu(toFetching()));
+  dispatch(setMenu2({ menu: toFetching() }));
 
   try {
     const entries = await queryMenuApi();
