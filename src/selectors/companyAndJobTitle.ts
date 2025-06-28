@@ -1,12 +1,27 @@
 import R from 'ramda';
 import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
 import { RootState } from 'reducers';
-import { CompanyOverview } from 'reducers/companyIndex';
-import { JobTitleOverview } from 'reducers/jobTitleIndex';
+import {
+  CompanyOverview,
+  CompanySalaryWorkTimeStatistics,
+} from 'reducers/companyIndex';
+import {
+  JobTitleOverview,
+  JobTitleSalaryWorkTimeStatistics,
+} from 'reducers/jobTitleIndex';
+import { SalaryWorkTimeStatistics } from 'graphql/salaryWorkTime';
 
-const data = state => state.data;
+const data = <
+  T extends CompanySalaryWorkTimeStatistics | JobTitleSalaryWorkTimeStatistics
+>(
+  state: FetchBox<T>,
+): T | undefined => state.data;
 
-export const salaryWorkTimeStatistics = R.pipe(
+export const salaryWorkTimeStatistics: (
+  arg0:
+    | FetchBox<CompanySalaryWorkTimeStatistics>
+    | FetchBox<JobTitleSalaryWorkTimeStatistics>,
+) => SalaryWorkTimeStatistics | {} = R.pipe(
   data,
   R.when(R.is(Object), R.prop('salary_work_time_statistics')),
   R.defaultTo({}),

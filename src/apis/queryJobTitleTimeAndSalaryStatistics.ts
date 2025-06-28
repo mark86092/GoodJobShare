@@ -5,7 +5,7 @@ import { SalaryWorkTimeStatistics } from 'graphql/salaryWorkTime';
 
 type QueryJobTitleTimeAndSalaryStatisticsData = {
   name: string;
-  salary_work_time_statistics: SalaryWorkTimeStatistics | null;
+  salary_work_time_statistics: SalaryWorkTimeStatistics;
 } | null;
 
 const getJobTitleTimeAndSalaryStatistics = ({
