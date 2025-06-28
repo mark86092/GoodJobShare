@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
-import { Dispatch } from 'redux';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { RootState } from 'reducers';
 import Loader from 'common/Loader';
 import { Section } from 'common/base';
 import { isUiNotFoundError } from 'utils/errors';
@@ -14,30 +12,12 @@ import {
   queryMenuIfUnfetched,
   queryEntryIfUnfetched,
 } from 'actions/laborRights';
+import { ServerSideRender } from 'types/serverSideRender';
 import useEntry, { useNeighborEntry } from './useEntry';
 import Body from './Body';
 import Footer from './Footer';
 import Helmet from './Helmet';
 import styles from './LaborRightsSingle.module.css';
-
-interface Store {
-  dispatch: Dispatch<any>;
-  getState(): RootState;
-}
-
-interface Match<Params> {
-  params: Params;
-}
-
-interface ServerSideRender<Params> {
-  fetchData: ({
-    store,
-    match,
-  }: {
-    store: Store;
-    match: Match<Params>;
-  }) => Promise<unknown>;
-}
 
 type Params = { id: string };
 
@@ -60,6 +40,7 @@ const LaborRightsSingle: React.FC & ServerSideRender<Params> = () => {
   return (
     <Section>
       {(isFetching(entryBox) || isUnfetched(entryBox)) && <Loader />}
+      {/* @ts-ignore */}
       {isError(entryBox) && isUiNotFoundError(entryBox.error) && <NotFound />}
       {isFetched(entryBox) && (
         <Fragment>

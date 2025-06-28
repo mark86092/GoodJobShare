@@ -17,7 +17,7 @@ const EntryHelmet = ({ entryId, seoTitle, seoDescription, coverUrl }) => {
       <meta name="description" content={seoDescription} />
       <meta property="og:title" content={formatTitle(seoTitle, SITE_NAME)} />
       <meta property="og:description" content={seoDescription} />
-      <meta property="og:image" content={formatUrl(coverUrl)} />
+      {coverUrl && <meta property="og:image" content={formatUrl(coverUrl)} />}
       <meta
         property="og:url"
         content={formatCanonicalPath(`/labor-rights/${entryId}`)}
@@ -31,7 +31,7 @@ const EntryHelmet = ({ entryId, seoTitle, seoDescription, coverUrl }) => {
 };
 
 EntryHelmet.propTypes = {
-  coverUrl: PropTypes.string.isRequired,
+  coverUrl: PropTypes.string,
   entryId: PropTypes.string.isRequired,
   seoDescription: PropTypes.string.isRequired,
   seoTitle: PropTypes.string.isRequired,
