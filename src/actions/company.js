@@ -24,7 +24,6 @@ import {
   getCompanyInterviewExperiences,
   getCompanyWorkExperiences,
   queryCompaniesApi,
-  getCompanyTimeAndSalaryStatistics,
   queryCompanyRatingStatisticsApi,
   getCompanyTopNJobTitles,
   getCompanyEsgSalaryData,
@@ -34,6 +33,7 @@ import {
   queryCompanyIsSubscribedApi,
 } from 'apis/company';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
+import queryCompanyTimeAndSalaryStatisticsApi from 'apis/queryCompanyTimeAndSalaryStatistics';
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 
@@ -319,7 +319,7 @@ export const queryCompanyTimeAndSalaryStatistics = ({ companyName }) => async (
   dispatch(setTimeAndSalaryStatistics(companyName, toFetching()));
 
   try {
-    const data = await getCompanyTimeAndSalaryStatistics({
+    const data = await queryCompanyTimeAndSalaryStatisticsApi({
       companyName,
     });
 

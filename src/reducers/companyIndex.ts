@@ -15,7 +15,10 @@ import {
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
 import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
+import {
+  SalaryWorkTime,
+  SalaryWorkTimeStatistics,
+} from 'graphql/salaryWorkTime';
 
 export type CompanyOverview = {
   name: string;
@@ -27,6 +30,11 @@ export type CompanyOverview = {
   workExperiencesCount: number;
 } | null;
 
+export type CompanySalaryWorkTimeStatistics = {
+  name: string;
+  salary_work_time_statistics: SalaryWorkTimeStatistics | null;
+} | null;
+
 const preloadedState: {
   indexesByPage: Record<number, FetchBox<any>>;
   indexCountBox: FetchBox<number>;
@@ -34,7 +42,10 @@ const preloadedState: {
   overviewByName: Record<string, FetchBox<CompanyOverview>>;
   overviewStatisticsByName: Record<string, FetchBox<any>>;
   timeAndSalaryByName: Record<string, FetchBox<any>>;
-  timeAndSalaryStatisticsByName: Record<string, FetchBox<any>>;
+  timeAndSalaryStatisticsByName: Record<
+    string,
+    FetchBox<CompanySalaryWorkTimeStatistics>
+  >;
   interviewExperiencesByName: Record<string, FetchBox<any>>;
   workExperiencesByName: Record<string, FetchBox<any>>;
   isSubscribedByName: Record<string, FetchBox<any>>;

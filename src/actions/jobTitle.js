@@ -18,12 +18,12 @@ import {
 import {
   queryJobTitleOverviewStatistics as queryJobTitleOverviewStatisticsApi,
   getJobTitleTimeAndSalary,
-  getJobTitleTimeAndSalaryStatistics,
   getJobTitleInterviewExperiences,
   getJobTitleWorkExperiences,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
 import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
+import getJobTitleTimeAndSalaryStatistics from 'apis/queryJobTitleTimeAndSalaryStatistics';
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';

@@ -11,7 +11,10 @@ import {
   SET_OVERVIEW_STATISTICS,
 } from 'actions/jobTitle';
 import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
+import {
+  SalaryWorkTime,
+  SalaryWorkTimeStatistics,
+} from 'graphql/salaryWorkTime';
 
 export type JobTitleOverview = {
   name: string;
@@ -23,13 +26,21 @@ export type JobTitleOverview = {
   workExperiencesCount: number;
 } | null;
 
+export type JobTitleSalaryWorkTimeStatistics = {
+  name: string;
+  salary_work_time_statistics: SalaryWorkTimeStatistics | null;
+} | null;
+
 const preloadedState: {
   indexesByPage: Record<number, FetchBox<any>>;
   indexCountBox: FetchBox<number>;
   overviewByName: Record<string, FetchBox<JobTitleOverview>>;
   overviewStatisticsByName: Record<string, FetchBox<any>>;
   timeAndSalaryByName: Record<string, FetchBox<any>>;
-  timeAndSalaryStatisticsByName: Record<string, FetchBox<any>>;
+  timeAndSalaryStatisticsByName: Record<
+    string,
+    FetchBox<JobTitleSalaryWorkTimeStatistics>
+  >;
   interviewExperiencesByName: Record<string, FetchBox<any>>;
   workExperiencesByName: Record<string, FetchBox<any>>;
 } = {
@@ -89,7 +100,13 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY_STATISTICS]: (state, { jobTitle, box }) => {
+  [SET_TIME_AND_SALARY_STATISTICS]: (
+    state,
+    {
+      jobTitle,
+      box,
+    }: { jobTitle: string; box: FetchBox<JobTitleSalaryWorkTimeStatistics> },
+  ) => {
     return {
       ...state,
       timeAndSalaryStatisticsByName: {

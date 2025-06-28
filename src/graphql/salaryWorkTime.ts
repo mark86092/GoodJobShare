@@ -68,3 +68,16 @@ export type SalaryWorkTime = {
     createdAt: string;
   }[];
 };
+
+type YesNoOrUnknownCount = {
+  yes: number;
+  no: number;
+  unknown: number;
+};
+
+export type SalaryWorkTimeStatistics = {
+  count: number;
+  is_overtime_salary_legal_count: YesNoOrUnknownCount | null;
+  has_compensatory_dayoff_count: YesNoOrUnknownCount | null;
+  has_overtime_salary_count: YesNoOrUnknownCount | null;
+};
