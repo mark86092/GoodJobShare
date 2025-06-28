@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import FetchBox from 'utils/fetchBox';
+import { RootState } from 'reducers';
+import { JobTitleOverview } from 'reducers/jobTitleIndex';
 import Overview from 'components/CompanyAndJobTitle/Overview';
 import usePermission from 'hooks/usePermission';
-import {
-  tabType as TAB_TYPE,
-  pageType as PAGE_TYPE,
-} from 'constants/companyJobTitle';
+import { PageType, TabType } from 'constants/companyJobTitle';
 import {
   queryJobTitleOverview,
   queryJobTitleOverviewStatistics,
@@ -14,20 +14,16 @@ import {
   jobTitleOverviewBoxSelectorByName as overviewBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-import { paramsSelector } from 'common/routing/selectors';
 import useJobTitle, { jobTitleSelector } from './useJobTitle';
+import { ServerSideRender } from 'types/serverSideRender';
 
-const useOverviewBoxSelector = pageName => {
-  return useCallback(
-    state => {
-      const box = overviewBoxSelectorByName(pageName)(state);
-      return box;
-    },
-    [pageName],
-  );
+const useOverviewBoxSelector = (
+  pageName: string,
+): ((state: RootState) => FetchBox<JobTitleOverview>) => {
+  return useMemo(() => overviewBoxSelectorByName(pageName), [pageName]);
 };
 
-const useOverviewStatisticsBox = pageName => {
+const useOverviewStatisticsBox = (pageName: string) => {
   const selector = useMemo(
     () => overviewStatisticsBoxSelectorByName(pageName),
     [pageName],
@@ -35,9 +31,11 @@ const useOverviewStatisticsBox = pageName => {
   return useSelector(selector);
 };
 
-const JobTitleOverviewProvider = () => {
+type Params = { jobTitle: string };
+
+const JobTitleOverviewProvider: React.FC & ServerSideRender<Params> = () => {
   const dispatch = useDispatch();
-  const pageType = PAGE_TYPE.JOB_TITLE;
+  const pageType = PageType.JOB_TITLE;
   const jobTitle = useJobTitle();
 
   const handleQueryJobTitleOverview = useCallback(
@@ -57,6 +55,7 @@ const JobTitleOverviewProvider = () => {
 
   const [, fetchPermission] = usePermission();
   useEffect(() => {
+    // @ts-ignore
     fetchPermission();
   }, [pageType, jobTitle, fetchPermission]);
 
@@ -67,7 +66,7 @@ const JobTitleOverviewProvider = () => {
     <Overview
       pageType={pageType}
       pageName={jobTitle}
-      tabType={TAB_TYPE.OVERVIEW}
+      tabType={TabType.OVERVIEW}
       boxSelector={boxSelector}
       statisticsBox={statisticsBox}
       onCloseReport={() => handleQueryJobTitleOverview({ force: true })}
@@ -75,8 +74,10 @@ const JobTitleOverviewProvider = () => {
   );
 };
 
-JobTitleOverviewProvider.fetchData = ({ store: { dispatch }, ...props }) => {
-  const params = paramsSelector(props);
+JobTitleOverviewProvider.fetchData = ({
+  store: { dispatch },
+  match: { params },
+}): Promise<unknown> => {
   const jobTitle = jobTitleSelector(params);
   return Promise.all([
     dispatch(queryJobTitleOverview(jobTitle)),

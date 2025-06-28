@@ -17,7 +17,7 @@ type OverviewProps = {
     state: RootState,
   ) => FetchBox<CompanyOverview> | FetchBox<JobTitleOverview>;
   statisticsBox: any;
-  topNJobTitles: any;
+  topNJobTitles?: any;
   onCloseReport: any;
 };
 

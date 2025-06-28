@@ -5,10 +5,7 @@ import { RootState } from 'reducers';
 import { CompanyOverview } from 'reducers/companyIndex';
 import Overview from 'components/CompanyAndJobTitle/Overview';
 import usePermission from 'hooks/usePermission';
-import {
-  tabType as TAB_TYPE,
-  pageType as PAGE_TYPE,
-} from 'constants/companyJobTitle';
+import { PageType, TabType } from 'constants/companyJobTitle';
 import {
   queryCompanyOverview,
   queryCompanyOverviewStatistics,
@@ -20,7 +17,7 @@ import {
   companyOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import { ServerSideRender } from 'types/serverSideRender';
-import useCompanyName, { companyNameSelector } from './useCompanyName';
+import useCompanyName, { Params, companyNameSelector } from './useCompanyName';
 import { useTopNJobTitles } from './useTopNJobTitles';
 
 const useOverviewBoxSelector = (
@@ -37,11 +34,9 @@ const useOverviewStatisticsBox = (pageName: string) => {
   return useSelector(selector);
 };
 
-type Params = { companyName: string };
-
 const CompanyOverviewProvider: React.FC & ServerSideRender<Params> = () => {
   const dispatch = useDispatch();
-  const pageType = PAGE_TYPE.COMPANY;
+  const pageType = PageType.COMPANY;
   const companyName = useCompanyName();
 
   const handleQueryCompanyOverview = useCallback(
@@ -86,7 +81,7 @@ const CompanyOverviewProvider: React.FC & ServerSideRender<Params> = () => {
     <Overview
       pageType={pageType}
       pageName={companyName}
-      tabType={TAB_TYPE.OVERVIEW}
+      tabType={TabType.OVERVIEW}
       topNJobTitles={topNJobTitles.all}
       boxSelector={boxSelector}
       statisticsBox={statisticsBox}
