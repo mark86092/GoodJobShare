@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Status from './Status';
 
 // Add http status code 301 when SSR
-const Redirect = ({ status, ...props }) => (
+const Redirect = ({ status = 301, ...props }) => (
   <Status status={status}>
     <RouterRedirect {...props} />
   </Status>
@@ -12,10 +12,6 @@ const Redirect = ({ status, ...props }) => (
 
 Redirect.propTypes = {
   status: PropTypes.number,
-};
-
-Redirect.defaultProps = {
-  status: 301,
 };
 
 export default Redirect;

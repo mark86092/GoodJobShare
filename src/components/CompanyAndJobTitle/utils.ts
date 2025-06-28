@@ -5,24 +5,49 @@ import {
   tabType as TAG_TYPE,
   generatePageURL,
   generateTabURL,
+  PageType,
+  TabType,
 } from 'constants/companyJobTitle';
 
-const generateRootLayer = () => ({
+type Layer = {
+  label: string;
+  to: string;
+};
+
+const generateRootLayer = (): Layer => ({
   label: 'GoodJob',
   to: '/',
 });
 
-const generatePageTypeLayer = ({ pageType }) => ({
+const generatePageTypeLayer = ({
+  pageType,
+}: {
+  pageType: PageType;
+}): Layer => ({
   label: pageTypeTranslation[pageType],
   to: pageType === PAGE_TYPE.COMPANY ? '/companies' : '/job-titles',
 });
 
-const generatePageNameLayer = ({ pageType, pageName }) => ({
+const generatePageNameLayer = ({
+  pageType,
+  pageName,
+}: {
+  pageType: PageType;
+  pageName: string;
+}): Layer => ({
   label: pageName,
   to: generatePageURL({ pageType, pageName }),
 });
 
-const generateTabTypeLayer = ({ pageType, pageName, tabType }) => ({
+const generateTabTypeLayer = ({
+  pageType,
+  pageName,
+  tabType,
+}: {
+  pageType: PageType;
+  pageName: string;
+  tabType: TabType;
+}): Layer => ({
   label: tabTypeTranslation[tabType],
   to: generateTabURL({
     pageType,
@@ -35,8 +60,11 @@ export const generateBreadCrumbData = ({
   pageType,
   pageName,
   tabType,
-  experience,
-}) => {
+}: {
+  pageType: PageType;
+  pageName: string;
+  tabType: TabType;
+}): Layer[] => {
   const data = [
     generateRootLayer(),
     generatePageTypeLayer({ pageType }),

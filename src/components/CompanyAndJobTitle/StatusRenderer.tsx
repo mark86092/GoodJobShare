@@ -1,44 +1,51 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import PropTypes from 'prop-types';
 import Redirect from 'common/routing/Redirect';
 import Loader from 'common/Loader';
 import NotFoundStatus from 'common/routing/NotFound';
-import { generateTabURL } from 'constants/companyJobTitle';
-import { isUnfetched, isFetching, isError } from 'utils/fetchBox';
+import { generateTabURL, PageType, TabType } from 'constants/companyJobTitle';
+import FetchBox, { isFetching, isFetched } from 'utils/fetchBox';
 import EmptyView from './EmptyView';
 
-const BoxRenderer = ({ box, render }) => {
-  if (isUnfetched(box)) {
-    return null;
-  }
+type BoxRendererProps<T> = {
+  box: FetchBox<T>;
+  render: (data: T) => ReturnType<React.FC>;
+};
+
+function BoxRenderer<T>({
+  box,
+  render,
+}: BoxRendererProps<T>): ReturnType<React.FC> {
   if (isFetching(box)) {
     return <Loader size="s" />;
   }
-  if (isError(box)) {
-    return null;
+  if (isFetched(box)) {
+    return render(box.data);
   }
-  return render(box.data);
-};
-
-BoxRenderer.propTypes = {
-  box: PropTypes.shape({
-    data: PropTypes.any,
-    error: PropTypes.any,
-    status: PropTypes.string.isRequired,
-  }).isRequired,
-  render: PropTypes.func.isRequired,
-};
+  return null;
+}
 
 export default BoxRenderer;
 
-export const PageBoxRenderer = ({
+interface DataWithName {
+  name: string;
+}
+
+function PageBoxRenderer<T extends DataWithName | null>({
   pageName,
   pageType,
   tabType,
   boxSelector,
   render,
-}) => {
+}: {
+  pageName: string;
+  pageType: PageType;
+  tabType: TabType;
+  boxSelector: (state: RootState) => FetchBox<T>;
+  render: (data: NonNullable<T>) => ReturnType<React.FC>;
+}): ReturnType<React.FC> {
   /* 處理
    * 1. 當 fetching                   --> 應顯示 Loading (目前由 BoxRenderer 處理)
    * 2. 當 box.data === null          --> 應顯示 NotFoundStatus (後端無公司)
@@ -50,7 +57,7 @@ export const PageBoxRenderer = ({
   return (
     <BoxRenderer
       box={box}
-      render={data => {
+      render={(data): ReturnType<React.FC> => {
         if (!data) {
           return (
             <NotFoundStatus status={404}>
@@ -70,7 +77,7 @@ export const PageBoxRenderer = ({
       }}
     />
   );
-};
+}
 
 PageBoxRenderer.propTypes = {
   boxSelector: PropTypes.func.isRequired,
@@ -79,3 +86,5 @@ PageBoxRenderer.propTypes = {
   render: PropTypes.func.isRequired,
   tabType: PropTypes.string.isRequired,
 };
+
+export { PageBoxRenderer };

@@ -1,12 +1,27 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
 import { PageBoxRenderer } from '../StatusRenderer';
 import OverviewSection from './Overview';
 import Helmet from './Helmet';
-import { fetchBoxPropType } from 'utils/fetchBox';
+import FetchBox from 'utils/fetchBox';
+import { CompanyOverview } from 'reducers/companyIndex';
+import { JobTitleOverview } from 'reducers/jobTitleIndex';
+import { PageType, TabType } from 'constants/companyJobTitle';
+import { RootState } from 'reducers';
 
-const Overview = ({
+type OverviewProps = {
+  pageType: PageType;
+  pageName: string;
+  tabType: TabType;
+  boxSelector: (
+    state: RootState,
+  ) => FetchBox<CompanyOverview> | FetchBox<JobTitleOverview>;
+  statisticsBox: any;
+  topNJobTitles: any;
+  onCloseReport: any;
+};
+
+const Overview: React.FC<OverviewProps> = ({
   pageType,
   pageName,
   tabType,
@@ -54,19 +69,5 @@ const Overview = ({
     />
   </CompanyAndJobTitleWrapper>
 );
-
-Overview.propTypes = {
-  boxSelector: PropTypes.func.isRequired,
-  onCloseReport: PropTypes.func.isRequired,
-  pageName: PropTypes.string.isRequired,
-  pageType: PropTypes.string.isRequired,
-  statisticsBox: fetchBoxPropType.isRequired,
-  tabType: PropTypes.string.isRequired,
-  topNJobTitles: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  ),
-};
 
 export default Overview;

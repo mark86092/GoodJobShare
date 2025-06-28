@@ -16,11 +16,11 @@ import {
   companyOverviewBoxSelectorByName as overviewBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-import { paramsSelector } from 'common/routing/selectors';
+import { ServerSideRender } from 'types/serverSideRender';
 import useCompanyName, { companyNameSelector } from './useCompanyName';
 import { useTopNJobTitles } from './useTopNJobTitles';
 
-const useOverviewBoxSelector = pageName => {
+const useOverviewBoxSelector = (pageName: string) => {
   return useCallback(
     state => {
       const box = overviewBoxSelectorByName(pageName)(state);
@@ -30,7 +30,7 @@ const useOverviewBoxSelector = pageName => {
   );
 };
 
-const useOverviewStatisticsBox = pageName => {
+const useOverviewStatisticsBox = (pageName: string) => {
   const selector = useMemo(
     () => companyOverviewStatisticsBoxSelectorByName(pageName),
     [pageName],
@@ -38,7 +38,9 @@ const useOverviewStatisticsBox = pageName => {
   return useSelector(selector);
 };
 
-const CompanyOverviewProvider = () => {
+type Params = { companyName: string };
+
+const CompanyOverviewProvider: React.FC & ServerSideRender<Params> = () => {
   const dispatch = useDispatch();
   const pageType = PAGE_TYPE.COMPANY;
   const companyName = useCompanyName();
@@ -72,6 +74,7 @@ const CompanyOverviewProvider = () => {
 
   const [, fetchPermission] = usePermission();
   useEffect(() => {
+    // @ts-ignore
     fetchPermission();
   }, [pageType, companyName, fetchPermission]);
 
@@ -93,8 +96,10 @@ const CompanyOverviewProvider = () => {
   );
 };
 
-CompanyOverviewProvider.fetchData = ({ store: { dispatch }, ...props }) => {
-  const params = paramsSelector(props);
+CompanyOverviewProvider.fetchData = ({
+  store: { dispatch },
+  match: { params },
+}): Promise<unknown> => {
   const companyName = companyNameSelector(params);
   return Promise.all([
     dispatch(queryCompanyOverview(companyName)),
