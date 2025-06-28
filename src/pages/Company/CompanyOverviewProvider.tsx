@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import FetchBox from 'utils/fetchBox';
+import { RootState } from 'reducers';
+import { CompanyOverview } from 'reducers/companyIndex';
 import Overview from 'components/CompanyAndJobTitle/Overview';
 import usePermission from 'hooks/usePermission';
 import {
@@ -20,14 +23,10 @@ import { ServerSideRender } from 'types/serverSideRender';
 import useCompanyName, { companyNameSelector } from './useCompanyName';
 import { useTopNJobTitles } from './useTopNJobTitles';
 
-const useOverviewBoxSelector = (pageName: string) => {
-  return useCallback(
-    state => {
-      const box = overviewBoxSelectorByName(pageName)(state);
-      return box;
-    },
-    [pageName],
-  );
+const useOverviewBoxSelector = (
+  pageName: string,
+): ((state: RootState) => FetchBox<CompanyOverview>) => {
+  return useMemo(() => overviewBoxSelectorByName(pageName), [pageName]);
 };
 
 const useOverviewStatisticsBox = (pageName: string) => {

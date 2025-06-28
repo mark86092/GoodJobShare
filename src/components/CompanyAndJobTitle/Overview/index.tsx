@@ -40,7 +40,7 @@ const Overview: React.FC<OverviewProps> = ({
       pageName={pageName}
       tabType={tabType}
       boxSelector={boxSelector}
-      render={data => {
+      render={(data): ReturnType<React.FC> => {
         return (
           <Fragment>
             <Helmet
