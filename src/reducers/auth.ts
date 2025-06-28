@@ -10,13 +10,11 @@ export type User = {
   email_status: unknown;
 };
 
-type AuthState = {
+const preloadedState: {
   status: AuthStatus;
   token?: string;
   user?: User;
-};
-
-const preloadedState: AuthState = {
+} = {
   status: AuthStatus.UNKNOWN,
   token: undefined,
   user: undefined,

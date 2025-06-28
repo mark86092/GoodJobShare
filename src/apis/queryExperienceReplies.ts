@@ -16,12 +16,6 @@ const query = /* GraphQL */ `
   }
 `;
 
-type Data = {
-  experience: {
-    replies: Reply[];
-  };
-};
-
 const queryExperienceReplies = async ({
   id,
   token,
@@ -29,7 +23,11 @@ const queryExperienceReplies = async ({
   id: string;
   token?: string;
 }): Promise<Reply[]> =>
-  graphqlClient<Data>({
+  graphqlClient<{
+    experience: {
+      replies: Reply[];
+    };
+  }>({
     query,
     variables: { id },
     token,

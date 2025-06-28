@@ -8,7 +8,7 @@ import FetchStatus, {
 interface FetchBox<T> {
   data?: T;
   status: FetchStatus;
-  error?: Error;
+  error?: unknown;
 }
 
 export default FetchBox;
@@ -23,7 +23,7 @@ export const fetchBoxPropType = PropTypes.shape({
 const getStatus = prop('status');
 
 interface FetchBoxWithError<T> extends FetchBox<T> {
-  error: Error;
+  error: unknown;
   status: FetchStatus.ERROR;
 }
 
@@ -54,7 +54,7 @@ export const getUnfetched = <T>(): FetchBox<T> => {
   return { status: FetchStatus.UNFETCHED };
 };
 
-export const getError = <T>(error: Error): FetchBoxWithError<T> => {
+export const getError = <T>(error: unknown): FetchBoxWithError<T> => {
   return { status: FetchStatus.ERROR, error };
 };
 

@@ -2,12 +2,10 @@ import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
   queryCompanyRatingStatisticsGql,
-  queryCompanyOverviewGql,
   getCompanyTimeAndSalaryQuery,
   getCompanyInterviewExperiencesQuery,
   getCompanyWorkExperiencesQuery,
   queryCompaniesHavingDataGql,
-  getCompanyTimeAndSalaryStatisticsQuery,
   getCompanyTopNJobTitlesQuery,
   getCompanyEsgSalaryDataQuery,
   queryCompanyOverviewStatisticsQuery,
@@ -21,22 +19,6 @@ export const queryCompanyRatingStatisticsApi = ({ companyName }) =>
     query: queryCompanyRatingStatisticsGql,
     variables: { companyName },
   }).then(R.path(['company', 'companyRatingStatistics']));
-
-export const queryCompanyOverview = ({
-  companyName,
-  interviewExperiencesLimit,
-  workExperiencesLimit,
-  salaryWorkTimesLimit,
-}) =>
-  graphqlClient({
-    query: queryCompanyOverviewGql,
-    variables: {
-      companyName,
-      interviewExperiencesLimit,
-      workExperiencesLimit,
-      salaryWorkTimesLimit,
-    },
-  }).then(R.prop('company'));
 
 export const queryCompanyOverviewStatistics = ({ companyName }) =>
   graphqlClient({
@@ -55,12 +37,6 @@ export const getCompanyTimeAndSalary = ({
   graphqlClient({
     query: getCompanyTimeAndSalaryQuery,
     variables: { companyName, jobTitle, start, limit },
-  }).then(R.prop('company'));
-
-export const getCompanyTimeAndSalaryStatistics = ({ companyName }) =>
-  graphqlClient({
-    query: getCompanyTimeAndSalaryStatisticsQuery,
-    variables: { companyName },
   }).then(R.prop('company'));
 
 export const getCompanyTopNJobTitles = ({ companyName }) =>

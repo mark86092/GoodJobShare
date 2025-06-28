@@ -1,5 +1,5 @@
 import createReducer from 'utils/createReducer';
-import { getUnfetched } from 'utils/fetchBox';
+import FetchBox, { getUnfetched } from 'utils/fetchBox';
 import {
   SET_INDEX_COUNT,
   SET_INDEX,
@@ -14,8 +14,44 @@ import {
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
+import { InterviewExperience, WorkExperience } from 'graphql/overview';
+import {
+  SalaryWorkTime,
+  SalaryWorkTimeStatistics,
+} from 'graphql/salaryWorkTime';
 
-const preloadedState = {
+export type CompanyOverview = {
+  name: string;
+  salaryWorkTimes: SalaryWorkTime[];
+  salaryWorkTimesCount: number;
+  interviewExperiences: InterviewExperience[];
+  interviewExperiencesCount: number;
+  workExperiences: WorkExperience[];
+  workExperiencesCount: number;
+} | null;
+
+export type CompanySalaryWorkTimeStatistics = {
+  name: string;
+  salary_work_time_statistics: SalaryWorkTimeStatistics;
+} | null;
+
+const preloadedState: {
+  indexesByPage: Record<number, FetchBox<any>>;
+  indexCountBox: FetchBox<number>;
+  ratingStatisticsByName: Record<string, FetchBox<any>>;
+  overviewByName: Record<string, FetchBox<CompanyOverview>>;
+  overviewStatisticsByName: Record<string, FetchBox<any>>;
+  timeAndSalaryByName: Record<string, FetchBox<any>>;
+  timeAndSalaryStatisticsByName: Record<
+    string,
+    FetchBox<CompanySalaryWorkTimeStatistics>
+  >;
+  interviewExperiencesByName: Record<string, FetchBox<any>>;
+  workExperiencesByName: Record<string, FetchBox<any>>;
+  isSubscribedByName: Record<string, FetchBox<any>>;
+  topNJobTitlesByName: Record<string, FetchBox<any>>;
+  esgSalaryData: Record<string, FetchBox<any>>;
+} = {
   // page --> indexBox
   indexesByPage: {},
   indexCountBox: getUnfetched(),
@@ -57,7 +93,13 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_OVERVIEW]: (state, { companyName, box }) => {
+  [SET_OVERVIEW]: (
+    state,
+    {
+      companyName,
+      box,
+    }: { companyName: string; box: FetchBox<CompanyOverview> },
+  ) => {
     return {
       ...state,
       overviewByName: {

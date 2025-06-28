@@ -3,6 +3,11 @@ import {
   interviewExperiencePartialGql,
   workExperiencesPartialGql,
 } from './experience';
+import {
+  fragmentInterviewExperienceFields,
+  fragmentWorkExperienceFields,
+} from './overview';
+import { fragmentSalaryWorkTimeFields } from './salaryWorkTime';
 
 export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
@@ -24,102 +29,26 @@ export const queryJobTitleOverviewGql = /* GraphQL */ `
       interviewExperiencesResult(start: 0, limit: $interviewExperiencesLimit) {
         count
         interviewExperiences {
-          id
-          type
-          originalCompanyName
-          company {
-            name
-          }
-          job_title {
-            name
-          }
-          region
-          experience_in_year
-          education
-          salary {
-            amount
-            type
-          }
-          title
-          sections {
-            subtitle
-            content
-          }
-          created_at
-          reply_count
-          like_count
-          averageSectionRating
+          ...interviewExperienceFields
         }
       }
       workExperiencesResult(start: 0, limit: $workExperiencesLimit) {
         count
         workExperiences {
-          id
-          type
-          originalCompanyName
-          company {
-            name
-          }
-          job_title {
-            name
-          }
-          region
-          experience_in_year
-          education
-          salary {
-            amount
-            type
-          }
-          title
-          sections {
-            subtitle
-            content
-          }
-          created_at
-          reply_count
-          like_count
-          recommend_to_others
-          averageSectionRating
+          ...workExperienceFields
         }
       }
       salaryWorkTimesResult(start: 0, limit: $salaryWorkTimesLimit) {
         count
         salaryWorkTimes {
-          id
-          week_work_time
-          salary {
-            type
-            amount
-          }
-          sector
-          day_real_work_time
-          day_promised_work_time
-          experience_in_year
-          estimated_hourly_wage
-          overtime_frequency
-          employment_type
-          job_title {
-            name
-          }
-          company {
-            name
-          }
-          originalCompanyName
-          data_time {
-            month
-            year
-          }
-          reportCount
-          reports {
-            id
-            reasonCategory
-            reason
-            createdAt
-          }
+          ...salaryWorkTimeFields
         }
       }
     }
   }
+  ${fragmentInterviewExperienceFields}
+  ${fragmentWorkExperienceFields}
+  ${fragmentSalaryWorkTimeFields}
 `;
 
 export const queryJobTitleOverviewStatisticsGql = /* GraphQL */ `
