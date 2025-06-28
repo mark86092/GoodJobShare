@@ -68,7 +68,7 @@ export const companyTimeAndSalaryBoxSelectorByName = (companyName: string) => (
 
 export const companyTimeAndSalaryStatisticsBoxSelectorByName = (
   companyName: string,
-) => (state: RootState) => {
+) => (state: RootState): FetchBox<CompanySalaryWorkTimeStatistics> => {
   return (
     state.companyIndex.timeAndSalaryStatisticsByName[companyName] ||
     getUnfetched()
@@ -139,7 +139,7 @@ export const jobTitleTimeAndSalaryBoxSelectorByName = (jobTitle: string) => (
 
 export const jobTitleTimeAndSalaryStatisticsBoxSelectorByName = (
   jobTitle: string,
-) => (state: RootState) => {
+) => (state: RootState): FetchBox<JobTitleSalaryWorkTimeStatistics> => {
   return (
     state.jobTitleIndex.timeAndSalaryStatisticsByName[jobTitle] ||
     getUnfetched()
