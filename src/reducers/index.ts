@@ -19,7 +19,6 @@ import salaryWorkTime from './salaryWorkTime';
 import search from './search';
 import toastNotification from './toastNotification';
 
-
 const persistConfig = {
   key: PERSIST_KEY,
   storage,
@@ -27,7 +26,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  // sort by sa-z
+  // sort by a-z
   auth,
   companyIndex,
   experience,
