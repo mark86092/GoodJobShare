@@ -2,9 +2,9 @@ import graphqlClient from 'utils/graphqlClient';
 import {
   queryLaborRightsMenuGql,
   QueryLaborRightsMenuData,
+  LaborRightMenuEntry,
   queryLaborRightsGql,
   QueryLaborRightsData,
-  LaborRightMenuEntry,
   LaborRightEntry,
 } from 'graphql/laborRight';
 
