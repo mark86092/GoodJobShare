@@ -16,7 +16,14 @@ export type CompanyRatingStatistics = {
     count: number;
   }[];
   ratingCount: number;
-} | null;
+};
+
+export type QueryCompanyRatingStatisticsData = {
+  company: {
+    name: string;
+    companyRatingStatistics: CompanyRatingStatistics | null;
+  } | null;
+};
 
 export const queryCompanyRatingStatisticsGql = /* GraphQL */ `
   query($companyName: String!) {
