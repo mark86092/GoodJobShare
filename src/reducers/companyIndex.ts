@@ -48,7 +48,13 @@ const preloadedState: {
   >;
   interviewExperiencesByName: Record<string, FetchBox<any>>;
   workExperiencesByName: Record<string, FetchBox<any>>;
-  isSubscribedByName: Record<string, FetchBox<any>>;
+  isSubscribedByName: Record<
+    string,
+    FetchBox<{
+      isSubscribed: boolean;
+      companyId: string | null;
+    }>
+  >;
   topNJobTitlesByName: Record<string, FetchBox<any>>;
   esgSalaryData: Record<string, FetchBox<any>>;
 } = {
@@ -197,7 +203,16 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_IS_SUBSCRIBED]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<{
+        isSubscribed: boolean;
+        companyId: string | null;
+      }>;
+    },
   ) => {
     return {
       ...state,

@@ -16,6 +16,7 @@ import {
   getCompanyEsgSalaryDataQuery,
   queryCompanyOverviewStatisticsQuery,
   queryCompanyIsSubscribedGql,
+  QueryCompanyIsSubscribedData,
   subscribeCompanyGql,
   unsubscribeCompanyGql,
 } from 'graphql/company';
@@ -144,8 +145,14 @@ export const queryCompaniesApi = ({ start, limit }) =>
     variables: { start, limit },
   });
 
-export const queryCompanyIsSubscribedApi = async ({ companyName, token }) => {
-  const data = await graphqlClient({
+export const queryCompanyIsSubscribedApi = async ({
+  companyName,
+  token,
+}: {
+  companyName: string;
+  token?: string;
+}): Promise<{ isSubscribed: boolean; companyId: string | null }> => {
+  const data = await graphqlClient<QueryCompanyIsSubscribedData>({
     query: queryCompanyIsSubscribedGql,
     token,
     variables: { companyName },

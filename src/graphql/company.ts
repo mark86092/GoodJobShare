@@ -313,6 +313,13 @@ export const queryCompaniesHavingDataGql = /* GraphQL */ `
   }
 `;
 
+export type QueryCompanyIsSubscribedData = {
+  company: {
+    id: string;
+    isSubscribed: boolean;
+  } | null;
+};
+
 export const queryCompanyIsSubscribedGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {
