@@ -19,7 +19,7 @@ import {
   queryJobTitleOverview as queryJobTitleOverviewApi,
   queryJobTitleOverviewStatistics as queryJobTitleOverviewStatisticsApi,
   getJobTitleTimeAndSalary,
-  queryJobTitleSalaryWorkTimeStatistics,
+  queryJobTitleSalaryWorkTimeStatistics as queryJobTitleSalaryWorkTimeStatisticsApi,
   getJobTitleInterviewExperiences,
   getJobTitleWorkExperiences,
   queryJobTitlesApi,
@@ -251,7 +251,7 @@ export const queryJobTitleTimeAndSalaryStatistics = ({ jobTitle }) => async (
   dispatch(setTimeAndSalaryStatistics(jobTitle, toFetching()));
 
   try {
-    const data = await queryJobTitleSalaryWorkTimeStatistics({
+    const data = await queryJobTitleSalaryWorkTimeStatisticsApi({
       jobTitle,
     });
 

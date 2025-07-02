@@ -154,11 +154,11 @@ export type JobTitleSalaryWorkTimeStatistics = {
   salary_work_time_statistics: SalaryWorkTimeStatistics;
 };
 
-export type QueryJobTitleTimeAndSalaryStatisticsData = {
+export type QueryJobTitleSalaryWorkTimeStatisticsData = {
   job_title: JobTitleSalaryWorkTimeStatistics | null;
 };
 
-export const getJobTitleTimeAndSalaryStatisticsQuery = /* GraphQL */ `
+export const queryJobTitleSalaryWorkTimeStatisticsQuery = /* GraphQL */ `
   query($jobTitle: String!) {
     job_title(name: $jobTitle) {
       name
