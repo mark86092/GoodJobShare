@@ -9,6 +9,15 @@ import {
 } from './overview';
 import { fragmentSalaryWorkTimeFields } from './salaryWorkTime';
 
+export type CompanyRatingStatistics = {
+  averageRating: number;
+  ratingDistribution: {
+    rating: number;
+    count: number;
+  }[];
+  ratingCount: number;
+} | null;
+
 export const queryCompanyRatingStatisticsGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {

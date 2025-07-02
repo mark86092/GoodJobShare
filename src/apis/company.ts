@@ -2,6 +2,7 @@ import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
   queryCompanyRatingStatisticsGql,
+  CompanyRatingStatistics,
   getCompanyTimeAndSalaryQuery,
   getCompanyInterviewExperiencesQuery,
   getCompanyWorkExperiencesQuery,
@@ -14,11 +15,17 @@ import {
   unsubscribeCompanyGql,
 } from 'graphql/company';
 
-export const queryCompanyRatingStatisticsApi = ({ companyName }) =>
-  graphqlClient({
+export const queryCompanyRatingStatisticsApi = ({
+  companyName,
+}: {
+  companyName: string;
+}): Promise<CompanyRatingStatistics | null> =>
+  graphqlClient<{
+    company: { companyRatingStatistics: CompanyRatingStatistics | null } | null;
+  }>({
     query: queryCompanyRatingStatisticsGql,
     variables: { companyName },
-  }).then(R.path(['company', 'companyRatingStatistics']));
+  }).then(data => (data.company ? data.company.companyRatingStatistics : null));
 
 export const queryCompanyOverviewStatistics = ({ companyName }) =>
   graphqlClient({
