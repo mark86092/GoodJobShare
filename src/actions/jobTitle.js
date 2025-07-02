@@ -16,13 +16,13 @@ import {
   jobTitleOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
+  queryJobTitleOverview as queryJobTitleOverviewApi,
   queryJobTitleOverviewStatistics as queryJobTitleOverviewStatisticsApi,
   getJobTitleTimeAndSalary,
   getJobTitleInterviewExperiences,
   getJobTitleWorkExperiences,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
-import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
 import getJobTitleTimeAndSalaryStatistics from 'apis/queryJobTitleTimeAndSalaryStatistics';
 import { setExperience } from './experience';
 

@@ -2,11 +2,50 @@ import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
   getJobTitleInterviewExperiencesQuery,
+  queryJobTitleOverviewGql,
+  QueryJobTitleOverviewData,
   getJobTitleTimeAndSalaryQuery,
   getJobTitleWorkExperiencesQuery,
   queryJobTitlesHavingDataGql,
   queryJobTitleOverviewStatisticsGql,
 } from 'graphql/jobTitle';
+import { InterviewExperience, WorkExperience } from 'graphql/overview';
+import { SalaryWorkTime } from 'graphql/salaryWorkTime';
+
+export const queryJobTitleOverview = ({
+  jobTitle,
+  interviewExperiencesLimit,
+  workExperiencesLimit,
+  salaryWorkTimesLimit,
+}: {
+  jobTitle: string;
+  interviewExperiencesLimit: number;
+  workExperiencesLimit: number;
+  salaryWorkTimesLimit: number;
+}): Promise<{
+  name: string;
+  salaryWorkTimesResult: {
+    count: number;
+    salaryWorkTimes: SalaryWorkTime[];
+  };
+  workExperiencesResult: {
+    count: number;
+    workExperiences: WorkExperience[];
+  };
+  interviewExperiencesResult: {
+    count: number;
+    interviewExperiences: InterviewExperience[];
+  };
+} | null> =>
+  graphqlClient<QueryJobTitleOverviewData>({
+    query: queryJobTitleOverviewGql,
+    variables: {
+      jobTitle,
+      interviewExperiencesLimit,
+      workExperiencesLimit,
+      salaryWorkTimesLimit,
+    },
+  }).then(R.prop('job_title'));
 
 export const queryJobTitleOverviewStatistics = ({ jobTitle }) =>
   graphqlClient({

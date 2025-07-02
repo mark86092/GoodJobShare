@@ -6,8 +6,10 @@ import {
 import {
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
+  InterviewExperience,
+  WorkExperience,
 } from './overview';
-import { fragmentSalaryWorkTimeFields } from './salaryWorkTime';
+import { fragmentSalaryWorkTimeFields, SalaryWorkTime } from './salaryWorkTime';
 
 export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
@@ -16,6 +18,24 @@ export const queryJobTitles = /* GraphQL */ `
     }
   }
 `;
+
+export type QueryJobTitleOverviewData = {
+  job_title: {
+    name: string;
+    salaryWorkTimesResult: {
+      count: number;
+      salaryWorkTimes: SalaryWorkTime[];
+    };
+    workExperiencesResult: {
+      count: number;
+      workExperiences: WorkExperience[];
+    };
+    interviewExperiencesResult: {
+      count: number;
+      interviewExperiences: InterviewExperience[];
+    };
+  } | null;
+};
 
 export const queryJobTitleOverviewGql = /* GraphQL */ `
   query(
