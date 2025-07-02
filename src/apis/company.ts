@@ -10,6 +10,8 @@ import {
   getCompanyInterviewExperiencesQuery,
   getCompanyWorkExperiencesQuery,
   queryCompaniesHavingDataGql,
+  getCompanyTimeAndSalaryStatisticsQuery,
+  QueryCompanyTimeAndSalaryStatisticsData,
   getCompanyTopNJobTitlesQuery,
   getCompanyEsgSalaryDataQuery,
   queryCompanyOverviewStatisticsQuery,
@@ -18,7 +20,10 @@ import {
   unsubscribeCompanyGql,
 } from 'graphql/company';
 import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
+import {
+  SalaryWorkTime,
+  SalaryWorkTimeStatistics,
+} from 'graphql/salaryWorkTime';
 
 export const queryCompanyRatingStatisticsApi = ({
   companyName,
@@ -82,6 +87,19 @@ export const getCompanyTimeAndSalary = ({
   graphqlClient({
     query: getCompanyTimeAndSalaryQuery,
     variables: { companyName, jobTitle, start, limit },
+  }).then(R.prop('company'));
+
+export const queryCompanyTimeAndSalaryStatistics = ({
+  companyName,
+}: {
+  companyName: string;
+}): Promise<{
+  name: string;
+  salary_work_time_statistics: SalaryWorkTimeStatistics;
+} | null> =>
+  graphqlClient<QueryCompanyTimeAndSalaryStatisticsData>({
+    query: getCompanyTimeAndSalaryStatisticsQuery,
+    variables: { companyName },
   }).then(R.prop('company'));
 
 export const getCompanyTopNJobTitles = ({ companyName }) =>

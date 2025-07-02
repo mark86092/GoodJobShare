@@ -26,6 +26,7 @@ import {
   getCompanyWorkExperiences,
   queryCompaniesApi,
   queryCompanyRatingStatisticsApi,
+  queryCompanyTimeAndSalaryStatistics as queryCompanyTimeAndSalaryStatisticsApi,
   getCompanyTopNJobTitles,
   getCompanyEsgSalaryData,
   queryCompanyOverviewStatistics as queryCompanyOverviewStatisticsApi,
@@ -33,7 +34,6 @@ import {
   unsubscribeCompanyApi,
   queryCompanyIsSubscribedApi,
 } from 'apis/company';
-import queryCompanyTimeAndSalaryStatisticsApi from 'apis/queryCompanyTimeAndSalaryStatistics';
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 

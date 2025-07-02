@@ -69,6 +69,27 @@ export type SalaryWorkTime = {
   }[];
 };
 
+export const fragmentSalaryWorkTimeStatisticsFields = /* GraphQL */ `
+  fragment salaryWorkTimeStatisticsFields on SalaryWorkTimeStatistics {
+    count
+    is_overtime_salary_legal_count {
+      yes
+      no
+      unknown
+    }
+    has_compensatory_dayoff_count {
+      yes
+      no
+      unknown
+    }
+    has_overtime_salary_count {
+      yes
+      no
+      unknown
+    }
+  }
+`;
+
 type YesNoOrUnknownCount = {
   yes: number;
   no: number;
