@@ -40,7 +40,7 @@ const preloadedState: {
   timeAndSalaryByName: Record<string, FetchBox<any>>;
   timeAndSalaryStatisticsByName: Record<
     string,
-    FetchBox<CompanySalaryWorkTimeStatistics>
+    FetchBox<CompanySalaryWorkTimeStatistics | null>
   >;
   interviewExperiencesByName: Record<string, FetchBox<any>>;
   workExperiencesByName: Record<string, FetchBox<any>>;
@@ -145,7 +145,10 @@ const reducer = createReducer(preloadedState, {
     {
       companyName,
       box,
-    }: { companyName: string; box: FetchBox<CompanySalaryWorkTimeStatistics> },
+    }: {
+      companyName: string;
+      box: FetchBox<CompanySalaryWorkTimeStatistics | null>;
+    },
   ) => {
     return {
       ...state,

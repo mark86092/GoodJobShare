@@ -92,7 +92,7 @@ export const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
 }: {
   companyName: string;
-}): Promise<CompanySalaryWorkTimeStatistics> =>
+}): Promise<CompanySalaryWorkTimeStatistics | null> =>
   graphqlClient<QueryCompanySalaryWorkTimeStatisticsData>({
     query: queryCompanySalaryWorkTimeStatisticsGql,
     variables: { companyName },

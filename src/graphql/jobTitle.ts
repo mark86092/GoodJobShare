@@ -9,7 +9,11 @@ import {
   InterviewExperience,
   WorkExperience,
 } from './overview';
-import { fragmentSalaryWorkTimeFields, SalaryWorkTime } from './salaryWorkTime';
+import {
+  fragmentSalaryWorkTimeFields,
+  SalaryWorkTime,
+  SalaryWorkTimeStatistics,
+} from './salaryWorkTime';
 
 export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
@@ -144,6 +148,15 @@ export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
     }
   }
 `;
+
+export type JobTitleSalaryWorkTimeStatistics = {
+  name: string;
+  salary_work_time_statistics: SalaryWorkTimeStatistics;
+};
+
+export type QueryJobTitleTimeAndSalaryStatisticsData = {
+  job_title: JobTitleSalaryWorkTimeStatistics | null;
+};
 
 export const getJobTitleTimeAndSalaryStatisticsQuery = /* GraphQL */ `
   query($jobTitle: String!) {

@@ -171,7 +171,7 @@ export const getCompanyTimeAndSalaryQuery = /* GraphQL */ `
 export type CompanySalaryWorkTimeStatistics = {
   name: string;
   salary_work_time_statistics: SalaryWorkTimeStatistics;
-} | null;
+};
 
 export type QueryCompanySalaryWorkTimeStatisticsData = {
   company: CompanySalaryWorkTimeStatistics | null;
