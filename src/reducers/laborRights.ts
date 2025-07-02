@@ -11,7 +11,7 @@ const preloadedState: {
   menu: getUnfetched(),
 };
 
-export default createReducer(
+const reducer = createReducer(
   preloadedState,
   {
     [SET_MENU]: (
@@ -39,3 +39,7 @@ export default createReducer(
   },
   { resetOnLogOut: false },
 );
+
+// const handler = reducer.builders[SET_ENTRY];
+
+export default reducer;
