@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import FetchStatus from 'constants/status';
+import FetchStatus from 'constants/fetchStatus';
 
 interface FetchBox<T> {
   data?: T;
