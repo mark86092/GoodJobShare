@@ -4,6 +4,8 @@ import {
   queryCompanyRatingStatisticsGql,
   QueryCompanyRatingStatisticsData,
   CompanyRatingStatistics,
+  queryCompanyOverviewGql,
+  QueryCompanyOverviewData,
   getCompanyTimeAndSalaryQuery,
   getCompanyInterviewExperiencesQuery,
   getCompanyWorkExperiencesQuery,
@@ -15,6 +17,8 @@ import {
   subscribeCompanyGql,
   unsubscribeCompanyGql,
 } from 'graphql/company';
+import { InterviewExperience, WorkExperience } from 'graphql/overview';
+import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
 export const queryCompanyRatingStatisticsApi = ({
   companyName,
@@ -25,6 +29,41 @@ export const queryCompanyRatingStatisticsApi = ({
     query: queryCompanyRatingStatisticsGql,
     variables: { companyName },
   }).then(data => (data.company ? data.company.companyRatingStatistics : null));
+
+export const queryCompanyOverview = ({
+  companyName,
+  interviewExperiencesLimit,
+  workExperiencesLimit,
+  salaryWorkTimesLimit,
+}: {
+  companyName: string;
+  interviewExperiencesLimit: number;
+  workExperiencesLimit: number;
+  salaryWorkTimesLimit: number;
+}): Promise<{
+  name: string;
+  salaryWorkTimesResult: {
+    count: number;
+    salaryWorkTimes: SalaryWorkTime[];
+  };
+  workExperiencesResult: {
+    count: number;
+    workExperiences: WorkExperience[];
+  };
+  interviewExperiencesResult: {
+    count: number;
+    interviewExperiences: InterviewExperience[];
+  };
+} | null> =>
+  graphqlClient<QueryCompanyOverviewData>({
+    query: queryCompanyOverviewGql,
+    variables: {
+      companyName,
+      interviewExperiencesLimit,
+      workExperiencesLimit,
+      salaryWorkTimesLimit,
+    },
+  }).then(R.prop('company'));
 
 export const queryCompanyOverviewStatistics = ({ companyName }) =>
   graphqlClient({

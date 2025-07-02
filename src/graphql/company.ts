@@ -6,8 +6,10 @@ import {
 import {
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
+  InterviewExperience,
+  WorkExperience,
 } from './overview';
-import { fragmentSalaryWorkTimeFields } from './salaryWorkTime';
+import { fragmentSalaryWorkTimeFields, SalaryWorkTime } from './salaryWorkTime';
 
 export type CompanyRatingStatistics = {
   averageRating: number;
@@ -40,6 +42,24 @@ export const queryCompanyRatingStatisticsGql = /* GraphQL */ `
     }
   }
 `;
+
+export type QueryCompanyOverviewData = {
+  company: {
+    name: string;
+    salaryWorkTimesResult: {
+      count: number;
+      salaryWorkTimes: SalaryWorkTime[];
+    };
+    workExperiencesResult: {
+      count: number;
+      workExperiences: WorkExperience[];
+    };
+    interviewExperiencesResult: {
+      count: number;
+      interviewExperiences: InterviewExperience[];
+    };
+  } | null;
+};
 
 export const queryCompanyOverviewGql = /* GraphQL */ `
   query(
