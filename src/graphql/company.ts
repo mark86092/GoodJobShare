@@ -168,11 +168,13 @@ export const getCompanyTimeAndSalaryQuery = /* GraphQL */ `
   }
 `;
 
+export type CompanySalaryWorkTimeStatistics = {
+  name: string;
+  salary_work_time_statistics: SalaryWorkTimeStatistics;
+} | null;
+
 export type QueryCompanySalaryWorkTimeStatisticsData = {
-  company: {
-    name: string;
-    salary_work_time_statistics: SalaryWorkTimeStatistics;
-  } | null;
+  company: CompanySalaryWorkTimeStatistics | null;
 };
 
 export const queryCompanySalaryWorkTimeStatisticsGql = /* GraphQL */ `

@@ -1,14 +1,15 @@
 import R from 'ramda';
 import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
 import { RootState } from 'reducers';
-import {
-  CompanyOverview,
-  CompanySalaryWorkTimeStatistics,
-} from 'reducers/companyIndex';
+import { CompanyOverview } from 'reducers/companyIndex';
 import {
   JobTitleOverview,
   JobTitleSalaryWorkTimeStatistics,
 } from 'reducers/jobTitleIndex';
+import {
+  CompanyRatingStatistics,
+  CompanySalaryWorkTimeStatistics,
+} from 'graphql/company';
 import { SalaryWorkTimeStatistics } from 'graphql/salaryWorkTime';
 
 const data = <
@@ -40,7 +41,7 @@ export const companiesCountSelector = (state: RootState): number => {
 
 export const companyRatingStatisticsBoxSelectorByName = (
   companyName: string,
-) => (state: RootState) => {
+) => (state: RootState): FetchBox<CompanyRatingStatistics | null> => {
   return (
     state.companyIndex.ratingStatisticsByName[companyName] || getUnfetched()
   );

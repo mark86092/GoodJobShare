@@ -14,11 +14,12 @@ import {
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
 import {
-  SalaryWorkTime,
-  SalaryWorkTimeStatistics,
-} from 'graphql/salaryWorkTime';
+  CompanyRatingStatistics,
+  CompanySalaryWorkTimeStatistics,
+} from 'graphql/company';
+import { InterviewExperience, WorkExperience } from 'graphql/overview';
+import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
 export type CompanyOverview = {
   name: string;
@@ -30,15 +31,13 @@ export type CompanyOverview = {
   workExperiencesCount: number;
 } | null;
 
-export type CompanySalaryWorkTimeStatistics = {
-  name: string;
-  salary_work_time_statistics: SalaryWorkTimeStatistics;
-} | null;
-
 const preloadedState: {
   indexesByPage: Record<number, FetchBox<any>>;
   indexCountBox: FetchBox<number>;
-  ratingStatisticsByName: Record<string, FetchBox<any>>;
+  ratingStatisticsByName: Record<
+    string,
+    FetchBox<CompanyRatingStatistics | null>
+  >;
   overviewByName: Record<string, FetchBox<CompanyOverview>>;
   overviewStatisticsByName: Record<string, FetchBox<any>>;
   timeAndSalaryByName: Record<string, FetchBox<any>>;
@@ -92,7 +91,10 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_RATING_STATISTICS]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: { companyName: string; box: FetchBox<CompanyRatingStatistics | null> },
   ) => {
     return {
       ...state,
@@ -143,7 +145,10 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_TIME_AND_SALARY_STATISTICS]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: { companyName: string; box: FetchBox<CompanySalaryWorkTimeStatistics> },
   ) => {
     return {
       ...state,

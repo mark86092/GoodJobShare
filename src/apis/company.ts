@@ -12,6 +12,7 @@ import {
   queryCompaniesHavingDataGql,
   queryCompanySalaryWorkTimeStatisticsGql,
   QueryCompanySalaryWorkTimeStatisticsData,
+  CompanySalaryWorkTimeStatistics,
   getCompanyTopNJobTitlesQuery,
   getCompanyEsgSalaryDataQuery,
   queryCompanyOverviewStatisticsQuery,
@@ -21,10 +22,7 @@ import {
   unsubscribeCompanyGql,
 } from 'graphql/company';
 import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import {
-  SalaryWorkTime,
-  SalaryWorkTimeStatistics,
-} from 'graphql/salaryWorkTime';
+import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
 export const queryCompanyRatingStatisticsApi = ({
   companyName,
@@ -94,10 +92,7 @@ export const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
 }: {
   companyName: string;
-}): Promise<{
-  name: string;
-  salary_work_time_statistics: SalaryWorkTimeStatistics;
-} | null> =>
+}): Promise<CompanySalaryWorkTimeStatistics> =>
   graphqlClient<QueryCompanySalaryWorkTimeStatisticsData>({
     query: queryCompanySalaryWorkTimeStatisticsGql,
     variables: { companyName },
@@ -171,7 +166,13 @@ export const queryCompanyIsSubscribedApi = async ({
   };
 };
 
-export const subscribeCompanyApi = async ({ companyId, token }) => {
+export const subscribeCompanyApi = async ({
+  companyId,
+  token,
+}: {
+  companyId: string;
+  token?: string;
+}) => {
   const data = await graphqlClient({
     query: subscribeCompanyGql,
     token,
@@ -181,7 +182,13 @@ export const subscribeCompanyApi = async ({ companyId, token }) => {
   return data.subscribeCompany.success;
 };
 
-export const unsubscribeCompanyApi = async ({ companyId, token }) => {
+export const unsubscribeCompanyApi = async ({
+  companyId,
+  token,
+}: {
+  companyId: string;
+  token?: string;
+}) => {
   const data = await graphqlClient({
     query: unsubscribeCompanyGql,
     token,
