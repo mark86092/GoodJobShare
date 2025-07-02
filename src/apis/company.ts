@@ -10,8 +10,8 @@ import {
   getCompanyInterviewExperiencesQuery,
   getCompanyWorkExperiencesQuery,
   queryCompaniesHavingDataGql,
-  getCompanyTimeAndSalaryStatisticsQuery,
-  QueryCompanyTimeAndSalaryStatisticsData,
+  queryCompanySalaryWorkTimeStatisticsGql,
+  QueryCompanySalaryWorkTimeStatisticsData,
   getCompanyTopNJobTitlesQuery,
   getCompanyEsgSalaryDataQuery,
   queryCompanyOverviewStatisticsQuery,
@@ -89,7 +89,7 @@ export const getCompanyTimeAndSalary = ({
     variables: { companyName, jobTitle, start, limit },
   }).then(R.prop('company'));
 
-export const queryCompanyTimeAndSalaryStatistics = ({
+export const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
 }: {
   companyName: string;
@@ -97,8 +97,8 @@ export const queryCompanyTimeAndSalaryStatistics = ({
   name: string;
   salary_work_time_statistics: SalaryWorkTimeStatistics;
 } | null> =>
-  graphqlClient<QueryCompanyTimeAndSalaryStatisticsData>({
-    query: getCompanyTimeAndSalaryStatisticsQuery,
+  graphqlClient<QueryCompanySalaryWorkTimeStatisticsData>({
+    query: queryCompanySalaryWorkTimeStatisticsGql,
     variables: { companyName },
   }).then(R.prop('company'));
 

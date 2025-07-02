@@ -25,7 +25,7 @@ import {
   getCompanyInterviewExperiences,
   getCompanyWorkExperiences,
   queryCompaniesApi,
-  queryCompanyTimeAndSalaryStatistics as queryCompanyTimeAndSalaryStatisticsApi,
+  queryCompanySalaryWorkTimeStatistics as queryCompanyTimeAndSalaryStatisticsApi,
   queryCompanyRatingStatisticsApi,
   getCompanyTopNJobTitles,
   getCompanyEsgSalaryData,

@@ -12,7 +12,6 @@ import {
 import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
-  fragmentSalaryWorkTimeStatisticsFields,
   SalaryWorkTimeStatistics,
 } from './salaryWorkTime';
 
@@ -169,23 +168,37 @@ export const getCompanyTimeAndSalaryQuery = /* GraphQL */ `
   }
 `;
 
-export type QueryCompanyTimeAndSalaryStatisticsData = {
+export type QueryCompanySalaryWorkTimeStatisticsData = {
   company: {
     name: string;
     salary_work_time_statistics: SalaryWorkTimeStatistics;
   } | null;
 };
 
-export const getCompanyTimeAndSalaryStatisticsQuery = /* GraphQL */ `
+export const queryCompanySalaryWorkTimeStatisticsGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {
       name
       salary_work_time_statistics {
-        ...salaryWorkTimeStatisticsFields
+        count
+        is_overtime_salary_legal_count {
+          yes
+          no
+          unknown
+        }
+        has_compensatory_dayoff_count {
+          yes
+          no
+          unknown
+        }
+        has_overtime_salary_count {
+          yes
+          no
+          unknown
+        }
       }
     }
   }
-  ${fragmentSalaryWorkTimeStatisticsFields}
 `;
 
 export const getCompanyTopNJobTitlesQuery = /* GraphQL */ `
