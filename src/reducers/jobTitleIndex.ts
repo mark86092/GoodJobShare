@@ -57,11 +57,11 @@ const preloadedState: {
 };
 
 const reducer = createReducer(preloadedState, {
-  [SET_INDEX_COUNT]: (state, { box }) => ({
+  [SET_INDEX_COUNT]: (state, { box }: { box: FetchBox<number> }) => ({
     ...state,
     indexCountBox: box,
   }),
-  [SET_INDEX]: (state, { page, box }) => {
+  [SET_INDEX]: (state, { page, box }: { page: number; box: FetchBox<any> }) => {
     return {
       ...state,
       indexesByPage: {
@@ -82,7 +82,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_OVERVIEW_STATISTICS]: (state, { jobTitle, box }) => {
+  [SET_OVERVIEW_STATISTICS]: (
+    state,
+    { jobTitle, box }: { jobTitle: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       overviewStatisticsByName: {
@@ -91,7 +94,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY]: (state, { jobTitle, box }) => {
+  [SET_TIME_AND_SALARY]: (
+    state,
+    { jobTitle, box }: { jobTitle: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       timeAndSalaryByName: {
@@ -115,7 +121,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_INTERVIEW_EXPERIENCES]: (state, { jobTitle, box }) => {
+  [SET_INTERVIEW_EXPERIENCES]: (
+    state,
+    { jobTitle, box }: { jobTitle: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       interviewExperiencesByName: {
@@ -124,7 +133,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_WORK_EXPERIENCES]: (state, { jobTitle, box }) => {
+  [SET_WORK_EXPERIENCES]: (
+    state,
+    { jobTitle, box }: { jobTitle: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       workExperiencesByName: {
