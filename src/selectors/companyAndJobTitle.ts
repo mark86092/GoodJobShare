@@ -7,7 +7,7 @@ import {
   JobTitleSalaryWorkTimeStatistics,
 } from 'reducers/jobTitleIndex';
 import {
-  CompanyRatingStatistics,
+  RatingStatistics,
   CompanySalaryWorkTimeStatistics,
 } from 'graphql/company';
 import { SalaryWorkTimeStatistics } from 'graphql/salaryWorkTime';
@@ -41,7 +41,7 @@ export const companiesCountSelector = (state: RootState): number => {
 
 export const companyRatingStatisticsBoxSelectorByName = (
   companyName: string,
-) => (state: RootState): FetchBox<CompanyRatingStatistics | null> => {
+) => (state: RootState): FetchBox<RatingStatistics | null> => {
   return (
     state.companyIndex.ratingStatisticsByName[companyName] || getUnfetched()
   );

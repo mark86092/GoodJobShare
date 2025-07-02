@@ -3,7 +3,7 @@ import graphqlClient from 'utils/graphqlClient';
 import {
   queryCompanyRatingStatisticsGql,
   QueryCompanyRatingStatisticsData,
-  CompanyRatingStatistics,
+  RatingStatistics,
   queryCompanyOverviewGql,
   QueryCompanyOverviewData,
   getCompanyTimeAndSalaryQuery,
@@ -28,7 +28,7 @@ export const queryCompanyRatingStatisticsApi = ({
   companyName,
 }: {
   companyName: string;
-}): Promise<CompanyRatingStatistics | null> =>
+}): Promise<RatingStatistics | null> =>
   graphqlClient<QueryCompanyRatingStatisticsData>({
     query: queryCompanyRatingStatisticsGql,
     variables: { companyName },

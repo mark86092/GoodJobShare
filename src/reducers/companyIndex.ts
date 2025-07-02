@@ -15,7 +15,7 @@ import {
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
 import {
-  CompanyRatingStatistics,
+  RatingStatistics,
   CompanySalaryWorkTimeStatistics,
 } from 'graphql/company';
 import { InterviewExperience, WorkExperience } from 'graphql/overview';
@@ -34,10 +34,7 @@ export type CompanyOverview = {
 const preloadedState: {
   indexesByPage: Record<number, FetchBox<any>>;
   indexCountBox: FetchBox<number>;
-  ratingStatisticsByName: Record<
-    string,
-    FetchBox<CompanyRatingStatistics | null>
-  >;
+  ratingStatisticsByName: Record<string, FetchBox<RatingStatistics | null>>;
   overviewByName: Record<string, FetchBox<CompanyOverview>>;
   overviewStatisticsByName: Record<string, FetchBox<any>>;
   timeAndSalaryByName: Record<string, FetchBox<any>>;
@@ -94,7 +91,7 @@ const reducer = createReducer(preloadedState, {
     {
       companyName,
       box,
-    }: { companyName: string; box: FetchBox<CompanyRatingStatistics | null> },
+    }: { companyName: string; box: FetchBox<RatingStatistics | null> },
   ) => {
     return {
       ...state,

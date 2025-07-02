@@ -15,7 +15,7 @@ import {
   SalaryWorkTimeStatistics,
 } from './salaryWorkTime';
 
-export type CompanyRatingStatistics = {
+export type RatingStatistics = {
   averageRating: number;
   ratingDistribution: {
     rating: number;
@@ -27,7 +27,7 @@ export type CompanyRatingStatistics = {
 export type QueryCompanyRatingStatisticsData = {
   company: {
     name: string;
-    companyRatingStatistics: CompanyRatingStatistics | null;
+    companyRatingStatistics: RatingStatistics | null;
   } | null;
 };
 
