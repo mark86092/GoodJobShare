@@ -1,26 +1,22 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { Route } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 // Add http status code when SSR
-const Status = ({ status, children }) => (
+const Status: React.FC<PropsWithChildren<{ status: number }>> = ({
+  status,
+  children,
+}) => (
+  // @ts-ignore due to react router has bug in type
   <Route
+    // @ts-ignore due to react router has bug in type
     render={({ staticContext }) => {
       if (staticContext) {
+        // @ts-ignore
         staticContext.status = status; // eslint-disable-line no-param-reassign
       }
       return children;
     }}
   />
 );
-
-Status.propTypes = {
-  children: PropTypes.node,
-  status: PropTypes.number.isRequired,
-};
-
-Status.defaultProps = {
-  children: null,
-};
 
 export default Status;
