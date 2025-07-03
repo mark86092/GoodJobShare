@@ -1,76 +1,28 @@
-import { AnyAction, Action } from 'redux';
-import { RootState, Thunk } from 'reducers';
-import { LaborRightMenuEntry, LaborRightEntry } from 'graphql/laborRight';
+import { Thunk } from 'reducers';
+import laborRightsReducers, { SET_MENU, SET_ENTRY } from 'reducers/laborRights';
 import {
   queryLaborRightsMenu as queryMenuApi,
   queryLaborRights as queryEntryApi,
 } from 'apis/laborRightsApi';
-import FetchBox, {
-  getError,
-  getFetched,
-  toFetching,
-  isUnfetched,
-} from 'utils/fetchBox';
+import { getError, getFetched, toFetching, isUnfetched } from 'utils/fetchBox';
 import {
   menuBoxSelector,
   entryBoxSelectorById,
 } from 'selectors/laborRightsSelector';
 import { isGraphqlError, UiNotFoundError } from 'utils/errors';
 
-export const SET_MENU = '@@LABOR_RIGHTS/SET_MENU';
-export const SET_ENTRY = '@@LABOR_RIGHTS/SET_ENTRY';
+const setMenu = laborRightsReducers.builders[SET_MENU];
 
-interface Reducer<T> {
-  (params: T): Action<string> & T;
-  reducer: { [key: string]: (state: RootState, action: T) => RootState };
-  actionType: string;
-}
+const setEntry = laborRightsReducers.builders[SET_ENTRY];
 
-const buildReducer = <T>(
-  actionType: string,
-  reducer: (state: RootState, action: T) => RootState,
-): Reducer<T> => {
-  const func = (params: T): Action<string> & T => ({
-    type: actionType,
-    ...params,
-  });
-  func.reducer = {
-    [actionType]: reducer,
-  };
-  func.actionType = actionType;
-  return func;
-};
-
-const setMenu2 = buildReducer<{ menu: FetchBox<LaborRightMenuEntry[]> }>(
-  '@@LABOR_RIGHTS/SET_MENU',
-  (state, { menu }) => ({
-    ...state,
-    menu,
-  }),
-);
-
-const setMenu = (box: FetchBox<LaborRightMenuEntry[]>): AnyAction => ({
-  type: SET_MENU,
-  menu: box,
-});
-
-const setEntry = (
-  entryId: string,
-  box: FetchBox<LaborRightEntry | null>,
-): AnyAction => ({
-  type: SET_ENTRY,
-  entry: box,
-  entryId,
-});
-
-const queryMenu = (): Thunk => async (dispatch): Promise<AnyAction> => {
-  dispatch(setMenu2({ menu: toFetching() }));
+const queryMenu = (): Thunk => async (dispatch): Promise<unknown> => {
+  dispatch(setMenu({ menu: toFetching() }));
 
   try {
     const entries = await queryMenuApi();
-    return dispatch(setMenu(getFetched(entries)));
+    return dispatch(setMenu({ menu: getFetched(entries) }));
   } catch (error) {
-    dispatch(setMenu(getError(error)));
+    dispatch(setMenu({ menu: getError(error) }));
     throw error;
   }
 };
@@ -88,15 +40,17 @@ export const queryMenuIfUnfetched = (): Thunk => async (
 const queryEntry = (entryId: string): Thunk => async (
   dispatch,
 ): Promise<unknown> => {
-  dispatch(setEntry(entryId, toFetching()));
+  dispatch(setEntry({ entryId, entry: toFetching() }));
 
   try {
     const entry = await queryEntryApi({ entryId });
-    return dispatch(setEntry(entryId, getFetched(entry)));
+    return dispatch(setEntry({ entryId, entry: getFetched(entry) }));
   } catch (error) {
     // @ts-ignore
     if (isGraphqlError('GraphqlError')) {
-      return dispatch(setEntry(entryId, getError(new UiNotFoundError())));
+      return dispatch(
+        setEntry({ entryId, entry: getError(new UiNotFoundError()) }),
+      );
     }
 
     // unexpected error

@@ -1,7 +1,9 @@
 import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
-import { SET_MENU, SET_ENTRY } from 'actions/laborRights';
 import { LaborRightEntry, LaborRightMenuEntry } from 'graphql/laborRight';
+
+export const SET_MENU = '@@LABOR_RIGHTS/SET_MENU';
+export const SET_ENTRY = '@@LABOR_RIGHTS/SET_ENTRY';
 
 const preloadedState: {
   entryById: Record<string, FetchBox<LaborRightEntry | null>>;
@@ -39,7 +41,5 @@ const reducer = createReducer(
   },
   { resetOnLogOut: false },
 );
-
-// const handler = reducer.builders[SET_ENTRY];
 
 export default reducer;
