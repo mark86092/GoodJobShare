@@ -6,8 +6,30 @@ import {
 import {
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
+  InterviewExperience,
+  WorkExperience,
 } from './overview';
-import { fragmentSalaryWorkTimeFields } from './salaryWorkTime';
+import {
+  fragmentSalaryWorkTimeFields,
+  SalaryWorkTime,
+  SalaryWorkTimeStatistics,
+} from './salaryWorkTime';
+
+export type RatingStatistics = {
+  averageRating: number;
+  ratingDistribution: {
+    rating: number;
+    count: number;
+  }[];
+  ratingCount: number;
+};
+
+export type QueryCompanyRatingStatisticsData = {
+  company: {
+    name: string;
+    companyRatingStatistics: RatingStatistics | null;
+  } | null;
+};
 
 export const queryCompanyRatingStatisticsGql = /* GraphQL */ `
   query($companyName: String!) {
@@ -24,6 +46,24 @@ export const queryCompanyRatingStatisticsGql = /* GraphQL */ `
     }
   }
 `;
+
+export type QueryCompanyOverviewData = {
+  company: {
+    name: string;
+    salaryWorkTimesResult: {
+      count: number;
+      salaryWorkTimes: SalaryWorkTime[];
+    };
+    workExperiencesResult: {
+      count: number;
+      workExperiences: WorkExperience[];
+    };
+    interviewExperiencesResult: {
+      count: number;
+      interviewExperiences: InterviewExperience[];
+    };
+  } | null;
+};
 
 export const queryCompanyOverviewGql = /* GraphQL */ `
   query(
@@ -128,7 +168,16 @@ export const getCompanyTimeAndSalaryQuery = /* GraphQL */ `
   }
 `;
 
-export const getCompanyTimeAndSalaryStatisticsQuery = /* GraphQL */ `
+export type CompanySalaryWorkTimeStatistics = {
+  name: string;
+  salary_work_time_statistics: SalaryWorkTimeStatistics;
+};
+
+export type QueryCompanySalaryWorkTimeStatisticsData = {
+  company: CompanySalaryWorkTimeStatistics | null;
+};
+
+export const queryCompanySalaryWorkTimeStatisticsGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {
       name
@@ -265,6 +314,13 @@ export const queryCompaniesHavingDataGql = /* GraphQL */ `
     companiesHavingDataCount
   }
 `;
+
+export type QueryCompanyIsSubscribedData = {
+  company: {
+    id: string;
+    isSubscribed: boolean;
+  } | null;
+};
 
 export const queryCompanyIsSubscribedGql = /* GraphQL */ `
   query($companyName: String!) {

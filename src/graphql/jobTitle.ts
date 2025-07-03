@@ -6,8 +6,14 @@ import {
 import {
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
+  InterviewExperience,
+  WorkExperience,
 } from './overview';
-import { fragmentSalaryWorkTimeFields } from './salaryWorkTime';
+import {
+  fragmentSalaryWorkTimeFields,
+  SalaryWorkTime,
+  SalaryWorkTimeStatistics,
+} from './salaryWorkTime';
 
 export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
@@ -16,6 +22,24 @@ export const queryJobTitles = /* GraphQL */ `
     }
   }
 `;
+
+export type QueryJobTitleOverviewData = {
+  job_title: {
+    name: string;
+    salaryWorkTimesResult: {
+      count: number;
+      salaryWorkTimes: SalaryWorkTime[];
+    };
+    workExperiencesResult: {
+      count: number;
+      workExperiences: WorkExperience[];
+    };
+    interviewExperiencesResult: {
+      count: number;
+      interviewExperiences: InterviewExperience[];
+    };
+  } | null;
+};
 
 export const queryJobTitleOverviewGql = /* GraphQL */ `
   query(
@@ -125,7 +149,16 @@ export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
   }
 `;
 
-export const getJobTitleTimeAndSalaryStatisticsQuery = /* GraphQL */ `
+export type JobTitleSalaryWorkTimeStatistics = {
+  name: string;
+  salary_work_time_statistics: SalaryWorkTimeStatistics;
+};
+
+export type QueryJobTitleSalaryWorkTimeStatisticsData = {
+  job_title: JobTitleSalaryWorkTimeStatistics | null;
+};
+
+export const queryJobTitleSalaryWorkTimeStatisticsQuery = /* GraphQL */ `
   query($jobTitle: String!) {
     job_title(name: $jobTitle) {
       name

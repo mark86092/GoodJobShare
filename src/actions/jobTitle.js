@@ -16,14 +16,14 @@ import {
   jobTitleOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
+  queryJobTitleOverview as queryJobTitleOverviewApi,
   queryJobTitleOverviewStatistics as queryJobTitleOverviewStatisticsApi,
   getJobTitleTimeAndSalary,
+  queryJobTitleSalaryWorkTimeStatistics as queryJobTitleSalaryWorkTimeStatisticsApi,
   getJobTitleInterviewExperiences,
   getJobTitleWorkExperiences,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
-import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
-import getJobTitleTimeAndSalaryStatistics from 'apis/queryJobTitleTimeAndSalaryStatistics';
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';
@@ -251,7 +251,7 @@ export const queryJobTitleTimeAndSalaryStatistics = ({ jobTitle }) => async (
   dispatch(setTimeAndSalaryStatistics(jobTitle, toFetching()));
 
   try {
-    const data = await getJobTitleTimeAndSalaryStatistics({
+    const data = await queryJobTitleSalaryWorkTimeStatisticsApi({
       jobTitle,
     });
 

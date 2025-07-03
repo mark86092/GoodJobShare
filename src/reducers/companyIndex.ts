@@ -14,11 +14,12 @@ import {
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
 import {
-  SalaryWorkTime,
-  SalaryWorkTimeStatistics,
-} from 'graphql/salaryWorkTime';
+  RatingStatistics,
+  CompanySalaryWorkTimeStatistics,
+} from 'graphql/company';
+import { InterviewExperience, WorkExperience } from 'graphql/overview';
+import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
 export type CompanyOverview = {
   name: string;
@@ -30,25 +31,26 @@ export type CompanyOverview = {
   workExperiencesCount: number;
 } | null;
 
-export type CompanySalaryWorkTimeStatistics = {
-  name: string;
-  salary_work_time_statistics: SalaryWorkTimeStatistics;
-} | null;
-
 const preloadedState: {
   indexesByPage: Record<number, FetchBox<any>>;
   indexCountBox: FetchBox<number>;
-  ratingStatisticsByName: Record<string, FetchBox<any>>;
+  ratingStatisticsByName: Record<string, FetchBox<RatingStatistics | null>>;
   overviewByName: Record<string, FetchBox<CompanyOverview>>;
   overviewStatisticsByName: Record<string, FetchBox<any>>;
   timeAndSalaryByName: Record<string, FetchBox<any>>;
   timeAndSalaryStatisticsByName: Record<
     string,
-    FetchBox<CompanySalaryWorkTimeStatistics>
+    FetchBox<CompanySalaryWorkTimeStatistics | null>
   >;
   interviewExperiencesByName: Record<string, FetchBox<any>>;
   workExperiencesByName: Record<string, FetchBox<any>>;
-  isSubscribedByName: Record<string, FetchBox<any>>;
+  isSubscribedByName: Record<
+    string,
+    FetchBox<{
+      isSubscribed: boolean;
+      companyId: string | null;
+    }>
+  >;
   topNJobTitlesByName: Record<string, FetchBox<any>>;
   esgSalaryData: Record<string, FetchBox<any>>;
 } = {
@@ -71,11 +73,11 @@ const preloadedState: {
 };
 
 const reducer = createReducer(preloadedState, {
-  [SET_INDEX_COUNT]: (state, { box }) => ({
+  [SET_INDEX_COUNT]: (state, { box }: { box: FetchBox<number> }) => ({
     ...state,
     indexCountBox: box,
   }),
-  [SET_INDEX]: (state, { page, box }) => {
+  [SET_INDEX]: (state, { page, box }: { page: number; box: FetchBox<any> }) => {
     return {
       ...state,
       indexesByPage: {
@@ -84,7 +86,13 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_RATING_STATISTICS]: (state, { companyName, box }) => {
+  [SET_RATING_STATISTICS]: (
+    state,
+    {
+      companyName,
+      box,
+    }: { companyName: string; box: FetchBox<RatingStatistics | null> },
+  ) => {
     return {
       ...state,
       ratingStatisticsByName: {
@@ -108,7 +116,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_OVERVIEW_STATISTICS]: (state, { companyName, box }) => {
+  [SET_OVERVIEW_STATISTICS]: (
+    state,
+    { companyName, box }: { companyName: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       overviewStatisticsByName: {
@@ -117,7 +128,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY]: (state, { companyName, box }) => {
+  [SET_TIME_AND_SALARY]: (
+    state,
+    { companyName, box }: { companyName: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       timeAndSalaryByName: {
@@ -126,7 +140,16 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY_STATISTICS]: (state, { companyName, box }) => {
+  [SET_TIME_AND_SALARY_STATISTICS]: (
+    state,
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<CompanySalaryWorkTimeStatistics | null>;
+    },
+  ) => {
     return {
       ...state,
       timeAndSalaryStatisticsByName: {
@@ -135,7 +158,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_INTERVIEW_EXPERIENCES]: (state, { companyName, box }) => {
+  [SET_INTERVIEW_EXPERIENCES]: (
+    state,
+    { companyName, box }: { companyName: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       interviewExperiencesByName: {
@@ -144,7 +170,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_WORK_EXPERIENCES]: (state, { companyName, box }) => {
+  [SET_WORK_EXPERIENCES]: (
+    state,
+    { companyName, box }: { companyName: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       workExperiencesByName: {
@@ -153,7 +182,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_COMPANY_TOP_N_JOB_TITLES]: (state, { companyName, box }) => {
+  [SET_COMPANY_TOP_N_JOB_TITLES]: (
+    state,
+    { companyName, box }: { companyName: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       topNJobTitlesByName: {
@@ -162,7 +194,10 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_COMPANY_ESG_SALARY_DATA]: (state, { companyName, box }) => {
+  [SET_COMPANY_ESG_SALARY_DATA]: (
+    state,
+    { companyName, box }: { companyName: string; box: FetchBox<any> },
+  ) => {
     return {
       ...state,
       esgSalaryData: {
@@ -171,7 +206,19 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_IS_SUBSCRIBED]: (state, { companyName, box }) => {
+  [SET_IS_SUBSCRIBED]: (
+    state,
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<{
+        isSubscribed: boolean;
+        companyId: string | null;
+      }>;
+    },
+  ) => {
     return {
       ...state,
       isSubscribedByName: {
