@@ -56,5 +56,6 @@ export const toFetching = <T>(
   fetchBox: FetchBox<T> | undefined = undefined,
 ): FetchBox<T> => {
   const { data } = fetchBox || {};
+
   return { status: FetchStatus.FETCHING, data };
 };
