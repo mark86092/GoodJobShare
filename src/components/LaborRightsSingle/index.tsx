@@ -3,11 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Loader from 'common/Loader';
 import { Section } from 'common/base';
-import { isUiNotFoundError } from 'utils/errors';
 import NotFound from 'common/NotFound';
 import CallToActionFolder from 'common/CallToAction/CallToActionFolder';
 import FanPageBlock from 'common/FanPageBlock';
-import { isFetching, isUnfetched, isError, isFetched } from 'utils/fetchBox';
+import { isFetching, isUnfetched, isFetched } from 'utils/fetchBox';
 import {
   queryMenuIfUnfetched,
   queryEntryIfUnfetched,
@@ -35,23 +34,14 @@ const LaborRightsSingle: React.FC & ServerSideRender<Params> = () => {
   }, [dispatch, entryId]);
 
   const entryBox = useEntry(entryId);
-  const [prevEntry, nextEntry] = useNeighborEntry(entryId);
+  const { prevEntry, nextEntry } = useNeighborEntry(entryId);
 
   return (
     <Section>
       {(isFetching(entryBox) || isUnfetched(entryBox)) && <Loader />}
-      {/* @ts-ignore */}
-      {isError(entryBox) && isUiNotFoundError(entryBox.error) && <NotFound />}
-      {isFetched(entryBox) && (
+      {isFetched(entryBox) && entryBox.data ? (
         <Fragment>
-          <Helmet
-            entryId={entryId}
-            seoTitle={entryBox.data.seoTitle || entryBox.data.title}
-            seoDescription={
-              entryBox.data.seoDescription || entryBox.data.description
-            }
-            coverUrl={entryBox.data.coverUrl}
-          />
+          <Helmet entry={entryBox.data} />
           <div>
             <Body
               title={entryBox.data.title}
@@ -60,7 +50,7 @@ const LaborRightsSingle: React.FC & ServerSideRender<Params> = () => {
               content={entryBox.data.content}
             />
             <FanPageBlock className={styles.fanPageBlock} />
-            {entryBox.data.nPublicPages < 0 && (
+            {entryBox.data.nPublicPages && entryBox.data.nPublicPages < 0 && (
               <Section marginTop>
                 <CallToActionFolder />
               </Section>
@@ -68,6 +58,8 @@ const LaborRightsSingle: React.FC & ServerSideRender<Params> = () => {
             <Footer id={entryId} prev={prevEntry} next={nextEntry} />
           </div>
         </Fragment>
+      ) : (
+        <NotFound />
       )}
     </Section>
   );
