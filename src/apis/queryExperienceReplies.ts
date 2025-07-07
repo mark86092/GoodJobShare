@@ -1,7 +1,7 @@
 import graphqlClient from 'utils/graphqlClient';
-import { Reply } from 'types/reply';
+import { Reply } from 'graphql/reply';
 
-const query = /* GraphQL */ `
+const queryExperienceRepliesGql = /* GraphQL */ `
   query($id: ID!) {
     experience(id: $id) {
       replies {
@@ -16,6 +16,13 @@ const query = /* GraphQL */ `
   }
 `;
 
+// TODO: need check whether experience is not null
+type QueryExperienceRepliesData = {
+  experience: {
+    replies: Reply[];
+  };
+};
+
 const queryExperienceReplies = async ({
   id,
   token,
@@ -23,12 +30,8 @@ const queryExperienceReplies = async ({
   id: string;
   token?: string;
 }): Promise<Reply[]> =>
-  graphqlClient<{
-    experience: {
-      replies: Reply[];
-    };
-  }>({
-    query,
+  graphqlClient<QueryExperienceRepliesData>({
+    query: queryExperienceRepliesGql,
     variables: { id },
     token,
   }).then(data => data.experience.replies);
