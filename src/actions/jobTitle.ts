@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { Thunk } from 'reducers';
 import {
-  JobTitleInterviewExperienceResult,
   JobTitleOverview,
   JobTitleSalaryWorkTimeResult,
+  JobTitleInterviewExperienceResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
 import { isGraphqlError } from 'utils/errors';
@@ -35,9 +35,12 @@ import {
 import {
   JobTitle,
   JobTitleSalaryWorkTimeStatistics,
-  SalaryDistributionBin,
+  JobTitleExperiencesPaginationInput,
 } from 'graphql/jobTitle';
-import { OvertimeFrequencyCount } from 'graphql/salaryWorkTime';
+import {
+  SalaryDistributionBin,
+  OvertimeFrequencyCount,
+} from 'graphql/salaryWorkTime';
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';
@@ -205,14 +208,7 @@ export const queryJobTitleOverviewStatistics = (
 
 const setTimeAndSalary = (
   jobTitle: string,
-  box: FetchBox<
-    | JobTitleSalaryWorkTimeResult & {
-        companyName?: string | null;
-        start: number;
-        limit: number;
-      }
-    | null
-  >,
+  box: FetchBox<JobTitleSalaryWorkTimeResult | null>,
 ): AnyAction => ({
   type: SET_TIME_AND_SALARY,
   jobTitle,
@@ -315,15 +311,7 @@ export const queryJobTitleTimeAndSalaryStatistics = ({
 
 const setInterviewExperiences = (
   jobTitle: string,
-  box: FetchBox<
-    | (JobTitleInterviewExperienceResult & {
-        companyName: string | null | undefined;
-        start: number;
-        limit: number;
-        sortBy: string;
-      })
-    | null
-  >,
+  box: FetchBox<JobTitleInterviewExperienceResult | null>,
 ): AnyAction => ({
   type: SET_INTERVIEW_EXPERIENCES,
   jobTitle,
@@ -336,13 +324,10 @@ export const queryJobTitleInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}: {
-  jobTitle: string;
-  companyName?: string | null;
-  start: number;
-  limit: number;
-  sortBy: string; // TODO
-}): Thunk => async (dispatch, getState): Promise<unknown> => {
+}: JobTitleExperiencesPaginationInput): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
   const box = jobTitleInterviewExperiencesBoxSelectorByName(jobTitle)(
     getState(),
   );
@@ -401,15 +386,7 @@ export const queryJobTitleInterviewExperiences = ({
 
 const setWorkExperiences = (
   jobTitle: string,
-  box: FetchBox<
-    | (JobTitleWorkExperienceResult & {
-        companyName: string | null | undefined;
-        start: number;
-        limit: number;
-        sortBy: string;
-      })
-    | null
-  >,
+  box: FetchBox<JobTitleWorkExperienceResult | null>,
 ): AnyAction => ({
   type: SET_WORK_EXPERIENCES,
   jobTitle,
@@ -422,13 +399,10 @@ export const queryJobTitleWorkExperiences = ({
   start,
   limit,
   sortBy,
-}: {
-  jobTitle: string;
-  companyName?: string | null;
-  start: number;
-  limit: number;
-  sortBy: string; // TODO
-}): Thunk => async (dispatch, getState): Promise<unknown> => {
+}: JobTitleExperiencesPaginationInput): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
   const box = jobTitleWorkExperiencesBoxSelectorByName(jobTitle)(getState());
   if (
     isFetching(box) ||

@@ -1,3 +1,4 @@
+import DataResultSortOption from './dataResultSortOption';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
@@ -6,14 +7,15 @@ import {
 import {
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
-  InterviewExperience,
-  WorkExperience,
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
 } from './overview';
 import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
   SalaryWorkTimeStatistics,
   OvertimeFrequencyCount,
+  SalaryDistributionBin,
 } from './salaryWorkTime';
 
 export interface JobTitle {
@@ -41,11 +43,11 @@ export type QueryJobTitleOverviewData = {
         };
         workExperiencesResult: {
           count: number;
-          workExperiences: WorkExperience[];
+          workExperiences: WorkExperienceInOverview[];
         };
         interviewExperiencesResult: {
           count: number;
-          interviewExperiences: InterviewExperience[];
+          interviewExperiences: InterviewExperienceInOverview[];
         };
       })
     | null;
@@ -85,24 +87,13 @@ export const queryJobTitleOverviewGql = /* GraphQL */ `
   ${fragmentSalaryWorkTimeFields}
 `;
 
-export type SalaryWorkTimeStatisticsInJobTitleOverview = {
-  average_week_work_time: number | null;
-  overtime_frequency_count: OvertimeFrequencyCount | null;
-};
-
-export type SalaryDistributionBin = {
-  data_count: number;
-  range: {
-    type: string;
-    from: number;
-    to: number;
-  };
-};
-
 export type QueryJobTitleOverviewStatisticsData = {
   job_title:
     | ({
-        salary_work_time_statistics: SalaryWorkTimeStatisticsInJobTitleOverview;
+        salary_work_time_statistics: {
+          average_week_work_time: number | null;
+          overtime_frequency_count: OvertimeFrequencyCount | null;
+        };
         salary_distribution: {
           bins: SalaryDistributionBin[] | null;
         };
@@ -199,6 +190,14 @@ export const queryJobTitleSalaryWorkTimeStatisticsQuery = /* GraphQL */ `
     }
   }
 `;
+
+export type JobTitleExperiencesPaginationInput = {
+  jobTitle: string;
+  companyName?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: DataResultSortOption;
+};
 
 // TODO
 export type JobTitleInterviewExperience = {};

@@ -1,7 +1,6 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
-  Company,
   queryCompanyRatingStatisticsGql,
   QueryCompanyRatingStatisticsData,
   RatingStatistics,
@@ -11,10 +10,8 @@ import {
   QueryCompanySalaryWorkTimeData,
   getCompanyInterviewExperiencesQuery,
   QueryCompanyInterviewExperiencesData,
-  CompanyInterviewExperience,
   getCompanyWorkExperiencesQuery,
   QueryCompanyWorkExperiencesData,
-  CompanyWorkExperience,
   queryCompaniesHavingDataGql,
   QueryCompaniesHavingDataData,
   queryCompanySalaryWorkTimeStatisticsGql,
@@ -22,22 +19,20 @@ import {
   CompanySalaryWorkTimeStatistics,
   getCompanyTopNJobTitlesQuery,
   QueryCompanyTopNJobTitlesData,
+  TopNJobTitles,
   getCompanyEsgSalaryDataQuery,
   QueryCompanyEsgSalaryDataData,
   ESGSalaryData,
   queryCompanyOverviewStatisticsQuery,
   QueryCompanyOverviewStatisticsData,
-  SalaryWorkTimeStatisticsInCompanyOverview,
   queryCompanyIsSubscribedGql,
   QueryCompanyIsSubscribedData,
   subscribeCompanyGql,
   SubscribeCompanyData,
   unsubscribeCompanyGql,
   UnsubscribeCompanyData,
-  TopNJobTitles,
+  CompanyExperiencesPaginationInput,
 } from 'graphql/company';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
 export const queryCompanyRatingStatisticsApi = ({
   companyName,
@@ -59,21 +54,7 @@ export const queryCompanyOverview = ({
   interviewExperiencesLimit: number;
   workExperiencesLimit: number;
   salaryWorkTimesLimit: number;
-}): Promise<{
-  name: string;
-  salaryWorkTimesResult: {
-    count: number;
-    salaryWorkTimes: SalaryWorkTime[];
-  };
-  workExperiencesResult: {
-    count: number;
-    workExperiences: WorkExperience[];
-  };
-  interviewExperiencesResult: {
-    count: number;
-    interviewExperiences: InterviewExperience[];
-  };
-} | null> =>
+}): Promise<QueryCompanyOverviewData['company']> =>
   graphqlClient<QueryCompanyOverviewData>({
     query: queryCompanyOverviewGql,
     variables: {
@@ -88,9 +69,7 @@ export const queryCompanyOverviewStatistics = ({
   companyName,
 }: {
   companyName: string;
-}): Promise<{
-  salary_work_time_statistics: SalaryWorkTimeStatisticsInCompanyOverview;
-} | null> =>
+}): Promise<QueryCompanyOverviewStatisticsData['company']> =>
   graphqlClient<QueryCompanyOverviewStatisticsData>({
     query: queryCompanyOverviewStatisticsQuery,
     variables: {
@@ -108,15 +87,7 @@ export const getCompanyTimeAndSalary = ({
   jobTitle?: string | null;
   start: number;
   limit: number;
-}): Promise<
-  | (Company & {
-      salaryWorkTimesResult: {
-        count: number;
-        salaryWorkTimes: SalaryWorkTime[];
-      };
-    })
-  | null
-> =>
+}): Promise<QueryCompanySalaryWorkTimeData['company']> =>
   graphqlClient<QueryCompanySalaryWorkTimeData>({
     query: getCompanyTimeAndSalaryQuery,
     variables: { companyName, jobTitle, start, limit },
@@ -136,11 +107,11 @@ export const getCompanyTopNJobTitles = ({
   companyName,
 }: {
   companyName: string;
-}): Promise<(Company & { topNJobTitles: TopNJobTitles }) | null> =>
+}): Promise<TopNJobTitles | null> =>
   graphqlClient<QueryCompanyTopNJobTitlesData>({
     query: getCompanyTopNJobTitlesQuery,
     variables: { companyName },
-  }).then(R.prop('company'));
+  }).then(data => (data.company ? data.company.topNJobTitles : null));
 
 export const getCompanyEsgSalaryData = ({
   companyName,
@@ -158,20 +129,8 @@ export const getCompanyInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}: {
-  companyName: string;
-  jobTitle?: string | null;
-  start: number;
-  limit: number;
-  sortBy: string; // TODO
-}): Promise<
-  | (Company & {
-      interviewExperiencesResult: {
-        count: number;
-        interviewExperiences: CompanyInterviewExperience[];
-      };
-    })
-  | null
+}: CompanyExperiencesPaginationInput): Promise<
+  QueryCompanyInterviewExperiencesData['company']
 > =>
   graphqlClient<QueryCompanyInterviewExperiencesData>({
     query: getCompanyInterviewExperiencesQuery,
@@ -184,20 +143,8 @@ export const getCompanyWorkExperiences = ({
   start,
   limit,
   sortBy,
-}: {
-  companyName: string;
-  jobTitle?: string | null;
-  start: number;
-  limit: number;
-  sortBy: string; // TODO
-}): Promise<
-  | (Company & {
-      workExperiencesResult: {
-        count: number;
-        workExperiences: CompanyWorkExperience[];
-      };
-    })
-  | null
+}: CompanyExperiencesPaginationInput): Promise<
+  QueryCompanyWorkExperiencesData['company']
 > =>
   graphqlClient<QueryCompanyWorkExperiencesData>({
     query: getCompanyWorkExperiencesQuery,

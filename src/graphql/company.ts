@@ -1,3 +1,4 @@
+import DataResultSortOption from './dataResultSortOption';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
@@ -6,11 +7,12 @@ import {
 import {
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
-  InterviewExperience,
-  WorkExperience,
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
 } from './overview';
 import {
   fragmentSalaryWorkTimeFields,
+  JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTime,
   SalaryWorkTimeStatistics,
@@ -62,11 +64,11 @@ export type QueryCompanyOverviewData = {
         };
         workExperiencesResult: {
           count: number;
-          workExperiences: WorkExperience[];
+          workExperiences: WorkExperienceInOverview[];
         };
         interviewExperiencesResult: {
           count: number;
-          interviewExperiences: InterviewExperience[];
+          interviewExperiences: InterviewExperienceInOverview[];
         };
       })
     | null;
@@ -106,26 +108,13 @@ export const queryCompanyOverviewGql = /* GraphQL */ `
   ${fragmentSalaryWorkTimeFields}
 `;
 
-export type JobAverageSalary = {
-  job_title: {
-    name: string;
-  };
-  average_salary: {
-    type: string;
-    amount: number;
-  };
-  data_count: number;
-};
-
-export type SalaryWorkTimeStatisticsInCompanyOverview = {
-  average_week_work_time: number | null;
-  overtime_frequency_count: OvertimeFrequencyCount | null;
-  job_average_salaries: JobAverageSalary[];
-};
-
 export type QueryCompanyOverviewStatisticsData = {
   company: {
-    salary_work_time_statistics: SalaryWorkTimeStatisticsInCompanyOverview;
+    salary_work_time_statistics: {
+      average_week_work_time: number | null;
+      overtime_frequency_count: OvertimeFrequencyCount | null;
+      job_average_salaries: JobAverageSalary[];
+    };
   } | null;
 };
 
@@ -303,6 +292,14 @@ export const getCompanyEsgSalaryDataQuery = /* GraphQL */ `
     }
   }
 `;
+
+export type CompanyExperiencesPaginationInput = {
+  companyName: string;
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: DataResultSortOption;
+};
 
 // TODO
 export type CompanyInterviewExperience = {};

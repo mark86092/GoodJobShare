@@ -69,17 +69,37 @@ export type SalaryWorkTime = {
   }[];
 };
 
-type YesNoOrUnknownCount = {
-  yes: number;
-  no: number;
-  unknown: number;
-};
-
 export type OvertimeFrequencyCount = {
   seldom: number;
   sometimes: number;
   usually: number;
   almost_everyday: number;
+};
+
+export type JobAverageSalary = {
+  job_title: {
+    name: string;
+  };
+  average_salary: {
+    type: string;
+    amount: number;
+  };
+  data_count: number;
+};
+
+export type SalaryDistributionBin = {
+  data_count: number;
+  range: {
+    type: string;
+    from: number;
+    to: number;
+  };
+};
+
+type YesNoOrUnknownCount = {
+  yes: number;
+  no: number;
+  unknown: number;
 };
 
 export type SalaryWorkTimeStatistics = {

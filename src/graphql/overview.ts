@@ -30,7 +30,7 @@ export const fragmentWorkExperienceFields = /* GraphQL */ `
 `;
 
 // Must be the same as fragment
-export type WorkExperience = {
+export type WorkExperienceInOverview = {
   id: string;
   type: string;
   originalCompanyName: string;
@@ -90,7 +90,7 @@ export const fragmentInterviewExperienceFields = /* GraphQL */ `
 `;
 
 // Must be the same as fragment
-export type InterviewExperience = {
+export type InterviewExperienceInOverview = {
   id: string;
   type: string;
   originalCompanyName: string;

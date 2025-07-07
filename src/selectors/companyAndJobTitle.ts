@@ -8,23 +8,22 @@ import {
   CompanyWorkExperienceResult,
 } from 'reducers/companyIndex';
 import {
+  JobTitleInterviewExperienceResult,
   JobTitleOverview,
   JobTitleSalaryWorkTimeResult,
+  JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
 import {
   CompanyInIndex,
   RatingStatistics,
   CompanySalaryWorkTimeStatistics,
-  JobAverageSalary,
   ESGSalaryData,
   TopNJobTitles,
 } from 'graphql/company';
+import { JobTitle, JobTitleSalaryWorkTimeStatistics } from 'graphql/jobTitle';
 import {
-  JobTitle,
-  JobTitleSalaryWorkTimeStatistics,
   SalaryDistributionBin,
-} from 'graphql/jobTitle';
-import {
+  JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTimeStatistics,
 } from 'graphql/salaryWorkTime';
@@ -89,14 +88,7 @@ export const companyOverviewStatisticsBoxSelectorByName = (
 
 export const companyTimeAndSalaryBoxSelectorByName = (companyName: string) => (
   state: RootState,
-): FetchBox<
-  | (CompanySalaryWorkTimeResult & {
-      jobTitle?: string | null;
-      start: number;
-      limit: number;
-    })
-  | null
-> => {
+): FetchBox<CompanySalaryWorkTimeResult | null> => {
   return state.companyIndex.timeAndSalaryByName[companyName] || getUnfetched();
 };
 
@@ -123,17 +115,7 @@ export const companyEsgSalaryDataBoxSelectorByName = (companyName: string) => (
 
 export const companyInterviewExperiencesBoxSelectorByName = (
   companyName: string,
-) => (
-  state: RootState,
-): FetchBox<
-  | (CompanyInterviewExperienceResult & {
-      jobTitle?: string | null;
-      start: number;
-      limit: number;
-      sortBy: string;
-    })
-  | null
-> => {
+) => (state: RootState): FetchBox<CompanyInterviewExperienceResult | null> => {
   return (
     state.companyIndex.interviewExperiencesByName[companyName] || getUnfetched()
   );
@@ -141,17 +123,7 @@ export const companyInterviewExperiencesBoxSelectorByName = (
 
 export const companyWorkExperiencesBoxSelectorByName = (
   companyName: string,
-) => (
-  state: RootState,
-): FetchBox<
-  | (CompanyWorkExperienceResult & {
-      jobTitle?: string | null;
-      start: number;
-      limit: number;
-      sortBy: string;
-    })
-  | null
-> => {
+) => (state: RootState): FetchBox<CompanyWorkExperienceResult | null> => {
   return (
     state.companyIndex.workExperiencesByName[companyName] || getUnfetched()
   );
@@ -190,14 +162,7 @@ export const jobTitleOverviewStatisticsBoxSelectorByName = (
 
 export const jobTitleTimeAndSalaryBoxSelectorByName = (jobTitle: string) => (
   state: RootState,
-): FetchBox<
-  | (JobTitleSalaryWorkTimeResult & {
-      companyName?: string | null;
-      start: number;
-      limit: number;
-    })
-  | null
-> => {
+): FetchBox<JobTitleSalaryWorkTimeResult | null> => {
   return state.jobTitleIndex.timeAndSalaryByName[jobTitle] || getUnfetched();
 };
 
@@ -212,7 +177,7 @@ export const jobTitleTimeAndSalaryStatisticsBoxSelectorByName = (
 
 export const jobTitleInterviewExperiencesBoxSelectorByName = (
   jobTitle: string,
-) => (state: RootState) => {
+) => (state: RootState): FetchBox<JobTitleInterviewExperienceResult | null> => {
   return (
     state.jobTitleIndex.interviewExperiencesByName[jobTitle] || getUnfetched()
   );
@@ -220,7 +185,7 @@ export const jobTitleInterviewExperiencesBoxSelectorByName = (
 
 export const jobTitleWorkExperiencesBoxSelectorByName = (jobTitle: string) => (
   state: RootState,
-) => {
+): FetchBox<JobTitleWorkExperienceResult | null> => {
   return state.jobTitleIndex.workExperiencesByName[jobTitle] || getUnfetched();
 };
 

@@ -1,29 +1,22 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
-  JobTitle,
   getJobTitleInterviewExperiencesQuery,
   QueryJobTitleInterviewExperiencesData,
-  JobTitleInterviewExperience,
   queryJobTitleOverviewGql,
   QueryJobTitleOverviewData,
   getJobTitleTimeAndSalaryQuery,
   QueryJobTitleSalaryWorkTimeData,
   getJobTitleWorkExperiencesQuery,
   QueryJobTitleWorkExperiencesData,
-  JobTitleWorkExperience,
   queryJobTitlesHavingDataGql,
   QueryJobTitlesHavingDataData,
   queryJobTitleSalaryWorkTimeStatisticsQuery,
   QueryJobTitleSalaryWorkTimeStatisticsData,
-  JobTitleSalaryWorkTimeStatistics,
   queryJobTitleOverviewStatisticsGql,
   QueryJobTitleOverviewStatisticsData,
-  SalaryWorkTimeStatisticsInJobTitleOverview,
-  SalaryDistributionBin,
+  JobTitleExperiencesPaginationInput,
 } from 'graphql/jobTitle';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
 export const queryJobTitleOverview = ({
   jobTitle,
@@ -35,21 +28,7 @@ export const queryJobTitleOverview = ({
   interviewExperiencesLimit: number;
   workExperiencesLimit: number;
   salaryWorkTimesLimit: number;
-}): Promise<{
-  name: string;
-  salaryWorkTimesResult: {
-    count: number;
-    salaryWorkTimes: SalaryWorkTime[];
-  };
-  workExperiencesResult: {
-    count: number;
-    workExperiences: WorkExperience[];
-  };
-  interviewExperiencesResult: {
-    count: number;
-    interviewExperiences: InterviewExperience[];
-  };
-} | null> =>
+}): Promise<QueryJobTitleOverviewData['job_title']> =>
   graphqlClient<QueryJobTitleOverviewData>({
     query: queryJobTitleOverviewGql,
     variables: {
@@ -64,12 +43,7 @@ export const queryJobTitleOverviewStatistics = ({
   jobTitle,
 }: {
   jobTitle: string;
-}): Promise<{
-  salary_work_time_statistics: SalaryWorkTimeStatisticsInJobTitleOverview;
-  salary_distribution: {
-    bins: SalaryDistributionBin[] | null;
-  };
-} | null> =>
+}): Promise<QueryJobTitleOverviewStatisticsData['job_title']> =>
   graphqlClient<QueryJobTitleOverviewStatisticsData>({
     query: queryJobTitleOverviewStatisticsGql,
     variables: {
@@ -87,15 +61,7 @@ export const getJobTitleTimeAndSalary = ({
   companyName?: string | null;
   start: number;
   limit: number;
-}): Promise<
-  | (JobTitle & {
-      salaryWorkTimesResult: {
-        count: number;
-        salaryWorkTimes: SalaryWorkTime[];
-      };
-    })
-  | null
-> =>
+}): Promise<QueryJobTitleSalaryWorkTimeData['job_title']> =>
   graphqlClient<QueryJobTitleSalaryWorkTimeData>({
     query: getJobTitleTimeAndSalaryQuery,
     variables: { jobTitle, companyName, start, limit },
@@ -105,7 +71,7 @@ export const queryJobTitleSalaryWorkTimeStatistics = ({
   jobTitle,
 }: {
   jobTitle: string;
-}): Promise<JobTitleSalaryWorkTimeStatistics | null> =>
+}): Promise<QueryJobTitleSalaryWorkTimeStatisticsData['job_title']> =>
   graphqlClient<QueryJobTitleSalaryWorkTimeStatisticsData>({
     query: queryJobTitleSalaryWorkTimeStatisticsQuery,
     variables: { jobTitle },
@@ -117,20 +83,8 @@ export const getJobTitleInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}: {
-  jobTitle: string;
-  companyName?: string | null;
-  start: number;
-  limit: number;
-  sortBy: string; // TODO
-}): Promise<
-  | (JobTitle & {
-      interviewExperiencesResult: {
-        count: number;
-        interviewExperiences: JobTitleInterviewExperience[];
-      };
-    })
-  | null
+}: JobTitleExperiencesPaginationInput): Promise<
+  QueryJobTitleInterviewExperiencesData['job_title']
 > =>
   graphqlClient<QueryJobTitleInterviewExperiencesData>({
     query: getJobTitleInterviewExperiencesQuery,
@@ -143,20 +97,8 @@ export const getJobTitleWorkExperiences = ({
   start,
   limit,
   sortBy,
-}: {
-  jobTitle: string;
-  companyName?: string | null;
-  start: number;
-  limit: number;
-  sortBy: string; // TODO
-}): Promise<
-  | (JobTitle & {
-      workExperiencesResult: {
-        count: number;
-        workExperiences: JobTitleWorkExperience[];
-      };
-    })
-  | null
+}: JobTitleExperiencesPaginationInput): Promise<
+  QueryJobTitleWorkExperiencesData['job_title']
 > =>
   graphqlClient<QueryJobTitleWorkExperiencesData>({
     query: getJobTitleWorkExperiencesQuery,

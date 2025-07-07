@@ -18,22 +18,29 @@ import {
   CompanyInIndex,
   RatingStatistics,
   CompanySalaryWorkTimeStatistics,
-  JobAverageSalary,
   CompanyInterviewExperience,
   CompanyWorkExperience,
   ESGSalaryData,
   TopNJobTitles,
+  CompanyExperiencesPaginationInput,
 } from 'graphql/company';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { OvertimeFrequencyCount, SalaryWorkTime } from 'graphql/salaryWorkTime';
+import {
+  JobAverageSalary,
+  OvertimeFrequencyCount,
+  SalaryWorkTime,
+} from 'graphql/salaryWorkTime';
+import {
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
+} from 'graphql/overview';
 
 export type CompanyOverview = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
-  interviewExperiences: InterviewExperience[];
+  interviewExperiences: InterviewExperienceInOverview[];
   interviewExperiencesCount: number;
-  workExperiences: WorkExperience[];
+  workExperiences: WorkExperienceInOverview[];
   workExperiencesCount: number;
 };
 
@@ -41,19 +48,23 @@ export type CompanySalaryWorkTimeResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
+  // params
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
 };
 
 export type CompanyInterviewExperienceResult = {
   name: string;
   interviewExperiences: CompanyInterviewExperience[];
   interviewExperiencesCount: number;
-};
+} & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
 
 export type CompanyWorkExperienceResult = {
   name: string;
   workExperiences: CompanyWorkExperience[];
   workExperiencesCount: number;
-};
+} & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
 
 const preloadedState: {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
@@ -70,14 +81,7 @@ const preloadedState: {
   >;
   timeAndSalaryByName: Record<
     string,
-    FetchBox<
-      | (CompanySalaryWorkTimeResult & {
-          jobTitle?: string | null;
-          start: number;
-          limit: number;
-        })
-      | null
-    >
+    FetchBox<CompanySalaryWorkTimeResult | null>
   >;
   timeAndSalaryStatisticsByName: Record<
     string,
@@ -85,27 +89,11 @@ const preloadedState: {
   >;
   interviewExperiencesByName: Record<
     string,
-    FetchBox<
-      | (CompanyInterviewExperienceResult & {
-          jobTitle?: string | null;
-          start: number;
-          limit: number;
-          sortBy: string;
-        })
-      | null
-    >
+    FetchBox<CompanyInterviewExperienceResult | null>
   >;
   workExperiencesByName: Record<
     string,
-    FetchBox<
-      | (CompanyWorkExperienceResult & {
-          jobTitle?: string | null;
-          start: number;
-          limit: number;
-          sortBy: string;
-        })
-      | null
-    >
+    FetchBox<CompanyWorkExperienceResult | null>
   >;
   isSubscribedByName: Record<
     string,
@@ -213,14 +201,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       companyName: string;
-      box: FetchBox<
-        | (CompanySalaryWorkTimeResult & {
-            jobTitle?: string | null;
-            start: number;
-            limit: number;
-          })
-        | null
-      >;
+      box: FetchBox<CompanySalaryWorkTimeResult | null>;
     },
   ) => {
     return {
@@ -256,15 +237,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       companyName: string;
-      box: FetchBox<
-        | (CompanyInterviewExperienceResult & {
-            jobTitle?: string | null;
-            start: number;
-            limit: number;
-            sortBy: string;
-          })
-        | null
-      >;
+      box: FetchBox<CompanyInterviewExperienceResult | null>;
     },
   ) => {
     return {
@@ -282,15 +255,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       companyName: string;
-      box: FetchBox<
-        | (CompanyWorkExperienceResult & {
-            jobTitle?: string | null;
-            start: number;
-            limit: number;
-            sortBy: string;
-          })
-        | null
-      >;
+      box: FetchBox<CompanyWorkExperienceResult | null>;
     },
   ) => {
     return {
