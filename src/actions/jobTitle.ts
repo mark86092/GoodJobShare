@@ -197,7 +197,7 @@ export const queryJobTitleOverviewStatistics = (
   }
 };
 
-const setTimeAndSalary = (
+const setSalaryWorkTime = (
   jobTitle: string,
   box: FetchBox<JobTitleSalaryWorkTimeResult | null>,
 ): AnyAction => ({
@@ -234,7 +234,7 @@ export const queryJobTitleSalaryWorkTime = (
     return;
   }
 
-  dispatch(setTimeAndSalary(jobTitle, toFetching()));
+  dispatch(setSalaryWorkTime(jobTitle, toFetching()));
 
   try {
     const data = await queryJobTitleSalaryWorkTimeApi({
@@ -246,10 +246,10 @@ export const queryJobTitleSalaryWorkTime = (
 
     // Not found case
     if (data == null) {
-      return dispatch(setTimeAndSalary(jobTitle, getFetched(data)));
+      return dispatch(setSalaryWorkTime(jobTitle, getFetched(data)));
     }
 
-    const timeAndSalaryData = {
+    const salaryWorkTimeData = {
       name: data.name,
       companyName,
       start,
@@ -258,9 +258,9 @@ export const queryJobTitleSalaryWorkTime = (
       salaryWorkTimesCount: data.salaryWorkTimesResult.count,
     };
 
-    dispatch(setTimeAndSalary(jobTitle, getFetched(timeAndSalaryData)));
+    dispatch(setSalaryWorkTime(jobTitle, getFetched(salaryWorkTimeData)));
   } catch (error) {
-    dispatch(setTimeAndSalary(jobTitle, getError(error)));
+    dispatch(setSalaryWorkTime(jobTitle, getError(error)));
   }
 };
 

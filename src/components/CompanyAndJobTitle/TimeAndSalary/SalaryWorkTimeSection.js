@@ -10,7 +10,7 @@ import WorkingHourBlock from './WorkingHourBlock';
 import ViewLog from './ViewLog';
 import { useQuery } from 'hooks/routing';
 
-const TimeAndSalary = ({
+const SalaryWorkTimeSection = ({
   salaryWorkTimes,
   pageType,
   pageName,
@@ -62,7 +62,7 @@ const TimeAndSalary = ({
   );
 };
 
-TimeAndSalary.propTypes = {
+SalaryWorkTimeSection.propTypes = {
   onCloseReport: PropTypes.func.isRequired,
   page: PropTypes.number,
   pageName: PropTypes.string,
@@ -73,4 +73,4 @@ TimeAndSalary.propTypes = {
   totalCount: PropTypes.number.isRequired,
 };
 
-export default TimeAndSalary;
+export default SalaryWorkTimeSection;

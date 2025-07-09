@@ -23,7 +23,7 @@ import { popularExperiencesBoxSelector } from 'selectors/experienceSelector';
 import { popularCompanyAverageSalaryBoxSelector } from 'selectors/popularCompanyAverageSalary';
 import { popularJobTitleSalaryDistributionBoxSelector } from 'selectors/popularJobTitleSalaryDistribution';
 import { menuBoxSelector } from 'selectors/laborRightsSelector';
-import SearchBar from 'components/TimeAndSalary/SearchBar';
+import SearchBar from 'components/SearchBar/SearchBar';
 
 const entryToProps = ({ id, title, coverUrl }) => ({
   link: `/labor-rights/${id}`,

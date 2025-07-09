@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import TimeAndSalary from 'components/CompanyAndJobTitle/TimeAndSalary';
+import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
 import usePermission from 'hooks/usePermission';
 import { usePage } from 'hooks/routing/page';
 import {
@@ -15,8 +15,8 @@ import {
 } from 'actions/jobTitle';
 import {
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
-  jobTitleSalaryWorkTimeBoxSelectorByName as timeAndSalaryBoxSelectorByName,
-  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
+  jobTitleSalaryWorkTimeBoxSelectorByName,
+  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
@@ -38,9 +38,9 @@ const useOverviewStatisticsBox = pageName => {
 const useSalaryWorkTimeStatistics = pageName => {
   const selector = useCallback(
     state => {
-      const jobTitle = timeAndSalaryStatisticsBoxSelectorByName(pageName)(
-        state,
-      );
+      const jobTitle = jobTitleSalaryWorkTimeStatisticsBoxSelectorByName(
+        pageName,
+      )(state);
       return salaryWorkTimeStatisticsSelector(jobTitle);
     },
     [pageName],
@@ -49,17 +49,17 @@ const useSalaryWorkTimeStatistics = pageName => {
   return useSelector(selector);
 };
 
-const useTimeAndSalaryBoxSelector = pageName => {
+const useSalaryWorkTimeBoxSelector = pageName => {
   return useCallback(
     state => {
-      const jobTitle = timeAndSalaryBoxSelectorByName(pageName)(state);
+      const jobTitle = jobTitleSalaryWorkTimeBoxSelectorByName(pageName)(state);
       return jobTitle;
     },
     [pageName],
   );
 };
 
-const JobTitleTimeAndSalaryProvider = () => {
+const JobTitleSalaryWorkTimeProvider = () => {
   const dispatch = useDispatch();
   const pageType = PAGE_TYPE.JOB_TITLE;
   const jobTitle = useJobTitle();
@@ -106,13 +106,13 @@ const JobTitleTimeAndSalaryProvider = () => {
     fetchPermission();
   }, [pageType, jobTitle, fetchPermission]);
 
-  const boxSelector = useTimeAndSalaryBoxSelector(jobTitle);
+  const boxSelector = useSalaryWorkTimeBoxSelector(jobTitle);
 
   const statisticsBox = useOverviewStatisticsBox(jobTitle);
   const salaryWorkTimeStatistics = useSalaryWorkTimeStatistics(jobTitle);
 
   return (
-    <TimeAndSalary
+    <SalaryWorkTime
       pageType={pageType}
       pageName={jobTitle}
       page={page}
@@ -126,7 +126,7 @@ const JobTitleTimeAndSalaryProvider = () => {
   );
 };
 
-JobTitleTimeAndSalaryProvider.fetchData = ({
+JobTitleSalaryWorkTimeProvider.fetchData = ({
   store: { dispatch },
   ...props
 }) => {
@@ -150,4 +150,4 @@ JobTitleTimeAndSalaryProvider.fetchData = ({
   ]);
 };
 
-export default JobTitleTimeAndSalaryProvider;
+export default JobTitleSalaryWorkTimeProvider;

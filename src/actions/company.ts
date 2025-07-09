@@ -312,7 +312,7 @@ export const queryCompanySalaryWorkTime = (
       return dispatch(setSalaryWorkTime(companyName, getFetched(data)));
     }
 
-    const timeAndSalaryData = {
+    const salaryWorkTimeData = {
       name: data.name,
       jobTitle,
       start,
@@ -321,7 +321,7 @@ export const queryCompanySalaryWorkTime = (
       salaryWorkTimesCount: data.salaryWorkTimesResult.count,
     };
 
-    dispatch(setSalaryWorkTime(companyName, getFetched(timeAndSalaryData)));
+    dispatch(setSalaryWorkTime(companyName, getFetched(salaryWorkTimeData)));
   } catch (error) {
     dispatch(setSalaryWorkTime(companyName, getError(error)));
   }
