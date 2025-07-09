@@ -195,12 +195,6 @@ export const deleteExpereinceLikeGql = /* GraphQL */ `
   }
 `;
 
-export const queryExperienceCountGql = /* GraphQL */ `
-  query {
-    experienceCount
-  }
-`;
-
 export const changeExperienceStatusGql = /* GraphQL */ `
   mutation($input: ChangeExperienceStatusInput!) {
     changeExperienceStatus(input: $input) {
