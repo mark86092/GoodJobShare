@@ -8,11 +8,7 @@ import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
   SalaryWorkTimeStatistics,
-} from './salaryWorkTime';
-
-export interface Company {
-  name: string;
-}
+} from 'apis/salaryWorkTime';
 
 export interface Company {
   name: string;

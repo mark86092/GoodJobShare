@@ -27,11 +27,11 @@ import {
   JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTime,
-} from 'graphql/salaryWorkTime';
+} from 'apis/salaryWorkTime';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
-} from 'graphql/overview';
+} from 'apis/overview';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 
 export type CompanyOverview = {

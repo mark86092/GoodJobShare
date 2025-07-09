@@ -9,14 +9,14 @@ import {
   fragmentWorkExperienceFields,
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
-} from './overview';
+} from 'apis/overview';
 import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
   SalaryWorkTimeStatistics,
   OvertimeFrequencyCount,
   SalaryDistributionBin,
-} from './salaryWorkTime';
+} from 'apis/salaryWorkTime';
 
 export interface JobTitle {
   name: string;

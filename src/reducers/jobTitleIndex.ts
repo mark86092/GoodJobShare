@@ -21,11 +21,11 @@ import {
   SalaryDistributionBin,
   OvertimeFrequencyCount,
   SalaryWorkTime,
-} from 'graphql/salaryWorkTime';
+} from 'apis/salaryWorkTime';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
-} from 'graphql/overview';
+} from 'apis/overview';
 
 export type JobTitleOverview = {
   name: string;

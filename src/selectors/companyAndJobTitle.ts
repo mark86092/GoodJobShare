@@ -25,7 +25,7 @@ import {
   JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTimeStatistics,
-} from 'graphql/salaryWorkTime';
+} from 'apis/salaryWorkTime';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 
 const data = <

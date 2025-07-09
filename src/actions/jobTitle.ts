@@ -40,7 +40,7 @@ import {
 import {
   SalaryDistributionBin,
   OvertimeFrequencyCount,
-} from 'graphql/salaryWorkTime';
+} from 'apis/salaryWorkTime';
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';

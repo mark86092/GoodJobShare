@@ -51,10 +51,7 @@ import {
   ESGSalaryData,
   TopNJobTitles,
 } from 'graphql/company';
-import {
-  JobAverageSalary,
-  OvertimeFrequencyCount,
-} from 'graphql/salaryWorkTime';
+import { JobAverageSalary, OvertimeFrequencyCount } from 'apis/salaryWorkTime';
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 
