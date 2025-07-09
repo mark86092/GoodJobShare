@@ -40,10 +40,10 @@ import {
   queryCompanyIsSubscribedApi,
 } from 'apis/company';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
+import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import queryCompanyRatingStatisticsApi, {
   RatingStatistics,
 } from 'apis/queryCompanyRatingStatistics';
-import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
 import {
   CompanyExperiencesPaginationInput,
