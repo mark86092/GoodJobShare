@@ -5,6 +5,7 @@ import {
   CompanySalaryWorkTimeResult,
   CompanyInterviewExperienceResult,
   CompanyWorkExperienceResult,
+  CompanyOverviewStatistics,
 } from 'reducers/companyIndex';
 import { isGraphqlError } from 'utils/errors';
 import FetchBox, {
@@ -51,7 +52,6 @@ import {
   ESGSalaryData,
   TopNJobTitles,
 } from 'graphql/company';
-import { JobAverageSalary, OvertimeFrequencyCount } from 'apis/salaryWorkTime';
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 
@@ -210,11 +210,7 @@ export const queryCompanyOverview = (
 
 const setOverviewStatistics = (
   companyName: string,
-  box: FetchBox<{
-    jobAverageSalaries: JobAverageSalary[];
-    averageWeekWorkTime: number;
-    overtimeFrequencyCount: OvertimeFrequencyCount | null;
-  } | null>,
+  box: FetchBox<CompanyOverviewStatistics | null>,
 ): AnyAction => ({
   type: SET_OVERVIEW_STATISTICS,
   companyName,

@@ -5,6 +5,7 @@ import {
   JobTitleSalaryWorkTimeResult,
   JobTitleInterviewExperienceResult,
   JobTitleWorkExperienceResult,
+  JobTitleOverviewStatistics,
 } from 'reducers/jobTitleIndex';
 import { isGraphqlError } from 'utils/errors';
 import FetchBox, {
@@ -37,10 +38,6 @@ import {
   JobTitleSalaryWorkTimeStatistics,
   JobTitleExperiencesPaginationInput,
 } from 'graphql/jobTitle';
-import {
-  SalaryDistributionBin,
-  OvertimeFrequencyCount,
-} from 'apis/salaryWorkTime';
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';
@@ -156,11 +153,7 @@ export const queryJobTitleOverview = (
 
 const setOverviewStatistics = (
   jobTitle: string,
-  box: FetchBox<{
-    salaryDistribution: SalaryDistributionBin[];
-    averageWeekWorkTime: number;
-    overtimeFrequencyCount: OvertimeFrequencyCount | null;
-  } | null>,
+  box: FetchBox<JobTitleOverviewStatistics | null>,
 ): AnyAction => ({
   type: SET_OVERVIEW_STATISTICS,
   jobTitle,

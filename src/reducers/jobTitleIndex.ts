@@ -37,6 +37,12 @@ export type JobTitleOverview = {
   workExperiencesCount: number;
 };
 
+export type JobTitleOverviewStatistics = {
+  salaryDistribution: SalaryDistributionBin[];
+  averageWeekWorkTime: number;
+  overtimeFrequencyCount: OvertimeFrequencyCount | null;
+};
+
 export type JobTitleSalaryWorkTimeResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
@@ -65,11 +71,7 @@ const preloadedState: {
   overviewByName: Record<string, FetchBox<JobTitleOverview | null>>;
   overviewStatisticsByName: Record<
     string,
-    FetchBox<{
-      salaryDistribution: SalaryDistributionBin[];
-      averageWeekWorkTime: number;
-      overtimeFrequencyCount: OvertimeFrequencyCount | null;
-    } | null>
+    FetchBox<JobTitleOverviewStatistics | null>
   >;
   timeAndSalaryByName: Record<
     string,
@@ -137,11 +139,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       jobTitle: string;
-      box: FetchBox<{
-        salaryDistribution: SalaryDistributionBin[];
-        averageWeekWorkTime: number;
-        overtimeFrequencyCount: OvertimeFrequencyCount | null;
-      } | null>;
+      box: FetchBox<JobTitleOverviewStatistics | null>;
     },
   ) => {
     return {

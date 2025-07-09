@@ -44,6 +44,12 @@ export type CompanyOverview = {
   workExperiencesCount: number;
 };
 
+export type CompanyOverviewStatistics = {
+  jobAverageSalaries: JobAverageSalary[];
+  averageWeekWorkTime: number;
+  overtimeFrequencyCount: OvertimeFrequencyCount | null;
+};
+
 export type CompanySalaryWorkTimeResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
@@ -73,11 +79,7 @@ const preloadedState: {
   overviewByName: Record<string, FetchBox<CompanyOverview | null>>;
   overviewStatisticsByName: Record<
     string,
-    FetchBox<{
-      jobAverageSalaries: JobAverageSalary[];
-      averageWeekWorkTime: number;
-      overtimeFrequencyCount: OvertimeFrequencyCount | null;
-    } | null>
+    FetchBox<CompanyOverviewStatistics | null>
   >;
   timeAndSalaryByName: Record<
     string,
@@ -179,11 +181,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       companyName: string;
-      box: FetchBox<{
-        jobAverageSalaries: JobAverageSalary[];
-        averageWeekWorkTime: number;
-        overtimeFrequencyCount: OvertimeFrequencyCount | null;
-      } | null>;
+      box: FetchBox<CompanyOverviewStatistics | null>;
     },
   ) => {
     return {
