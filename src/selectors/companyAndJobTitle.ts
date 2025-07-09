@@ -77,13 +77,13 @@ export const companyOverviewStatisticsBoxSelectorByName = (
   );
 };
 
-export const companyTimeAndSalaryBoxSelectorByName = (companyName: string) => (
+export const companySalaryWorkTimeBoxSelectorByName = (companyName: string) => (
   state: RootState,
 ): FetchBox<CompanySalaryWorkTimeResult | null> => {
   return state.companyIndex.timeAndSalaryByName[companyName] || getUnfetched();
 };
 
-export const companyTimeAndSalaryStatisticsBoxSelectorByName = (
+export const companySalaryWorkTimeStatisticsBoxSelectorByName = (
   companyName: string,
 ) => (state: RootState): FetchBox<CompanySalaryWorkTimeStatistics | null> => {
   return (

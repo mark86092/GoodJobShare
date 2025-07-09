@@ -18,8 +18,8 @@ import {
 } from 'actions/company';
 import {
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
-  companyTimeAndSalaryBoxSelectorByName as timeAndSalaryBoxSelectorByName,
-  companyTimeAndSalaryStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
+  companySalaryWorkTimeBoxSelectorByName as timeAndSalaryBoxSelectorByName,
+  companySalaryWorkTimeStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
   companyEsgSalaryDataBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
@@ -79,7 +79,7 @@ const CompanyTimeAndSalaryProvider = () => {
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
 
-  const handleQueryCompanyTimeAndSalary = useCallback(
+  const handleQueryCompanySalaryWorkTime = useCallback(
     ({ force = false } = {}) => {
       dispatch(
         queryCompanySalaryWorkTime(
@@ -129,8 +129,8 @@ const CompanyTimeAndSalaryProvider = () => {
   }, [dispatch, companyName]);
 
   useEffect(() => {
-    handleQueryCompanyTimeAndSalary();
-  }, [handleQueryCompanyTimeAndSalary]);
+    handleQueryCompanySalaryWorkTime();
+  }, [handleQueryCompanySalaryWorkTime]);
 
   const [, fetchPermission] = usePermission();
   useEffect(() => {
@@ -156,7 +156,7 @@ const CompanyTimeAndSalaryProvider = () => {
       salaryWorkTimeStatistics={salaryWorkTimeStatistics}
       boxSelector={boxSelector}
       statisticsBox={statisticsBox}
-      onCloseReport={() => handleQueryCompanyTimeAndSalary({ force: true })}
+      onCloseReport={() => handleQueryCompanySalaryWorkTime({ force: true })}
     />
   );
 };
