@@ -5,12 +5,6 @@ import {
   workExperiencesPartialGql,
 } from './experience';
 import {
-  fragmentInterviewExperienceFields,
-  fragmentWorkExperienceFields,
-  InterviewExperienceInOverview,
-  WorkExperienceInOverview,
-} from 'apis/overview';
-import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
   SalaryWorkTimeStatistics,
@@ -32,59 +26,6 @@ export const queryJobTitles = /* GraphQL */ `
       name
     }
   }
-`;
-
-export type QueryJobTitleOverviewData = {
-  job_title:
-    | (JobTitle & {
-        salaryWorkTimesResult: {
-          count: number;
-          salaryWorkTimes: SalaryWorkTime[];
-        };
-        workExperiencesResult: {
-          count: number;
-          workExperiences: WorkExperienceInOverview[];
-        };
-        interviewExperiencesResult: {
-          count: number;
-          interviewExperiences: InterviewExperienceInOverview[];
-        };
-      })
-    | null;
-};
-
-export const queryJobTitleOverviewGql = /* GraphQL */ `
-  query(
-    $jobTitle: String!
-    $interviewExperiencesLimit: Int!
-    $workExperiencesLimit: Int!
-    $salaryWorkTimesLimit: Int!
-  ) {
-    job_title(name: $jobTitle) {
-      name
-      interviewExperiencesResult(start: 0, limit: $interviewExperiencesLimit) {
-        count
-        interviewExperiences {
-          ...interviewExperienceFields
-        }
-      }
-      workExperiencesResult(start: 0, limit: $workExperiencesLimit) {
-        count
-        workExperiences {
-          ...workExperienceFields
-        }
-      }
-      salaryWorkTimesResult(start: 0, limit: $salaryWorkTimesLimit) {
-        count
-        salaryWorkTimes {
-          ...salaryWorkTimeFields
-        }
-      }
-    }
-  }
-  ${fragmentInterviewExperienceFields}
-  ${fragmentWorkExperienceFields}
-  ${fragmentSalaryWorkTimeFields}
 `;
 
 export type QueryJobTitleOverviewStatisticsData = {

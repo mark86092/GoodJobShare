@@ -24,7 +24,6 @@ import {
   jobTitleOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
-  queryJobTitleOverview as queryJobTitleOverviewApi,
   queryJobTitleOverviewStatistics as queryJobTitleOverviewStatisticsApi,
   getJobTitleTimeAndSalary,
   getJobTitleTimeAndSalaryStatistics,
@@ -32,6 +31,7 @@ import {
   getJobTitleWorkExperiences,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
+import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
 import {
   JobTitle,
   JobTitleSalaryWorkTimeStatistics,
