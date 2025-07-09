@@ -5,10 +5,10 @@ import {
   SET_INDEX,
   SET_OVERVIEW,
   SET_OVERVIEW_STATISTICS,
-  SET_TIME_AND_SALARY,
+  SET_SALARY_WORK_TIME,
   SET_INTERVIEW_EXPERIENCES,
   SET_WORK_EXPERIENCES,
-  SET_TIME_AND_SALARY_STATISTICS,
+  SET_SALARY_WORK_TIME_STATISTICS,
   SET_RATING_STATISTICS,
   SET_COMPANY_TOP_N_JOB_TITLES,
   SET_COMPANY_ESG_SALARY_DATA,
@@ -192,7 +192,7 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY]: (
+  [SET_SALARY_WORK_TIME]: (
     state,
     {
       companyName,
@@ -210,7 +210,7 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY_STATISTICS]: (
+  [SET_SALARY_WORK_TIME_STATISTICS]: (
     state,
     {
       companyName,

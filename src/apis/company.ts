@@ -25,7 +25,7 @@ import {
   CompanyExperiencesPaginationInput,
 } from 'graphql/company';
 
-export const getCompanyTimeAndSalaryStatistics = ({
+export const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
 }: {
   companyName: string;

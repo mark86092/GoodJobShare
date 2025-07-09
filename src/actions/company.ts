@@ -32,7 +32,7 @@ import {
   getCompanyInterviewExperiences,
   getCompanyWorkExperiences,
   queryCompaniesApi,
-  getCompanyTimeAndSalaryStatistics as queryCompanyTimeAndSalaryStatisticsApi,
+  queryCompanySalaryWorkTimeStatistics as QueryCompanySalaryWorkTimeStatisticsApi,
   getCompanyTopNJobTitles,
   getCompanyEsgSalaryData,
   subscribeCompanyApi,
@@ -58,9 +58,9 @@ import { setExperience } from './experience';
 export const SET_RATING_STATISTICS = '@@COMPANY/SET_RATING_STATISTICS';
 export const SET_OVERVIEW = '@@COMPANY/SET_OVERVIEW';
 export const SET_OVERVIEW_STATISTICS = '@@COMPANY/SET_OVERVIEW_STATISTICS';
-export const SET_TIME_AND_SALARY = '@@COMPANY/SET_TIME_AND_SALARY';
-export const SET_TIME_AND_SALARY_STATISTICS =
-  '@@COMPANY/SET_TIME_AND_SALARY_STATISTICS';
+export const SET_SALARY_WORK_TIME = '@@COMPANY/SET_SALARY_WORK_TIME';
+export const SET_SALARY_WORK_TIME_STATISTICS =
+  '@@COMPANY/SET_SALARY_WORK_TIME_STATISTICS';
 export const SET_INTERVIEW_EXPERIENCES = '@@COMPANY/SET_INTERVIEW_EXPERIENCES';
 export const SET_WORK_EXPERIENCES = '@@COMPANY/SET_WORK_EXPERIENCES';
 export const SET_INDEX = '@@COMPANY/SET_INDEX';
@@ -259,16 +259,16 @@ export const queryCompanyOverviewStatistics = (
   }
 };
 
-const setTimeAndSalary = (
+const setSalaryWorkTime = (
   companyName: string,
   box: FetchBox<CompanySalaryWorkTimeResult | null>,
 ): AnyAction => ({
-  type: SET_TIME_AND_SALARY,
+  type: SET_SALARY_WORK_TIME,
   companyName,
   box,
 });
 
-export const queryCompanyTimeAndSalary = (
+export const queryCompanySalaryWorkTime = (
   {
     companyName,
     jobTitle,
@@ -296,7 +296,7 @@ export const queryCompanyTimeAndSalary = (
     return;
   }
 
-  dispatch(setTimeAndSalary(companyName, toFetching()));
+  dispatch(setSalaryWorkTime(companyName, toFetching()));
 
   try {
     const data = await queryCompanySalaryWorkTimeApi({
@@ -308,7 +308,7 @@ export const queryCompanyTimeAndSalary = (
 
     // Not found case
     if (data == null) {
-      return dispatch(setTimeAndSalary(companyName, getFetched(data)));
+      return dispatch(setSalaryWorkTime(companyName, getFetched(data)));
     }
 
     const timeAndSalaryData = {
@@ -320,22 +320,22 @@ export const queryCompanyTimeAndSalary = (
       salaryWorkTimesCount: data.salaryWorkTimesResult.count,
     };
 
-    dispatch(setTimeAndSalary(companyName, getFetched(timeAndSalaryData)));
+    dispatch(setSalaryWorkTime(companyName, getFetched(timeAndSalaryData)));
   } catch (error) {
-    dispatch(setTimeAndSalary(companyName, getError(error)));
+    dispatch(setSalaryWorkTime(companyName, getError(error)));
   }
 };
 
-const setTimeAndSalaryStatistics = (
+const setSalaryWorkTimeStatistics = (
   companyName: string,
   box: FetchBox<CompanySalaryWorkTimeStatistics | null>,
 ): AnyAction => ({
-  type: SET_TIME_AND_SALARY_STATISTICS,
+  type: SET_SALARY_WORK_TIME_STATISTICS,
   companyName,
   box,
 });
 
-export const queryCompanyTimeAndSalaryStatistics = ({
+export const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
 }: {
   companyName: string;
@@ -350,15 +350,15 @@ export const queryCompanyTimeAndSalaryStatistics = ({
     return;
   }
 
-  dispatch(setTimeAndSalaryStatistics(companyName, toFetching()));
+  dispatch(setSalaryWorkTimeStatistics(companyName, toFetching()));
 
   try {
-    const data = await queryCompanyTimeAndSalaryStatisticsApi({
+    const data = await QueryCompanySalaryWorkTimeStatisticsApi({
       companyName,
     });
-    dispatch(setTimeAndSalaryStatistics(companyName, getFetched(data)));
+    dispatch(setSalaryWorkTimeStatistics(companyName, getFetched(data)));
   } catch (error) {
-    dispatch(setTimeAndSalaryStatistics(companyName, getError(error)));
+    dispatch(setSalaryWorkTimeStatistics(companyName, getError(error)));
   }
 };
 

@@ -11,8 +11,8 @@ import {
 import {
   queryCompanyEsgSalaryData,
   queryCompanyOverviewStatistics,
-  queryCompanyTimeAndSalary,
-  queryCompanyTimeAndSalaryStatistics,
+  queryCompanySalaryWorkTime,
+  queryCompanySalaryWorkTimeStatistics,
   queryCompanyTopNJobTitles,
   queryRatingStatistics,
 } from 'actions/company';
@@ -82,7 +82,7 @@ const CompanyTimeAndSalaryProvider = () => {
   const handleQueryCompanyTimeAndSalary = useCallback(
     ({ force = false } = {}) => {
       dispatch(
-        queryCompanyTimeAndSalary(
+        queryCompanySalaryWorkTime(
           {
             companyName,
             jobTitle: jobTitle || undefined,
@@ -102,7 +102,7 @@ const CompanyTimeAndSalaryProvider = () => {
 
   useEffect(() => {
     dispatch(
-      queryCompanyTimeAndSalaryStatistics({
+      queryCompanySalaryWorkTimeStatistics({
         companyName,
       }),
     );
@@ -176,12 +176,12 @@ CompanyTimeAndSalaryProvider.fetchData = ({
     queryCompanyOverviewStatistics(companyName),
   );
   const dispatchTimeAndSalaryStatistics = dispatch(
-    queryCompanyTimeAndSalaryStatistics({
+    queryCompanySalaryWorkTimeStatistics({
       companyName,
     }),
   );
   const dispatchTimeAndSalary = dispatch(
-    queryCompanyTimeAndSalary({
+    queryCompanySalaryWorkTime({
       companyName,
       jobTitle,
       start,
