@@ -15,7 +15,6 @@ import {
 } from 'reducers/jobTitleIndex';
 import {
   CompanyInIndex,
-  RatingStatistics,
   CompanySalaryWorkTimeStatistics,
   ESGSalaryData,
   TopNJobTitles,
@@ -27,6 +26,7 @@ import {
   OvertimeFrequencyCount,
   SalaryWorkTimeStatistics,
 } from 'graphql/salaryWorkTime';
+import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 
 const data = <
   T extends

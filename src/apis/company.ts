@@ -1,11 +1,6 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
-  queryCompanyRatingStatisticsGql,
-  QueryCompanyRatingStatisticsData,
-  RatingStatistics,
-  queryCompanyOverviewGql,
-  QueryCompanyOverviewData,
   getCompanyTimeAndSalaryQuery,
   QueryCompanySalaryWorkTimeData,
   getCompanyInterviewExperiencesQuery,
@@ -23,8 +18,6 @@ import {
   getCompanyEsgSalaryDataQuery,
   QueryCompanyEsgSalaryDataData,
   ESGSalaryData,
-  queryCompanyOverviewStatisticsQuery,
-  QueryCompanyOverviewStatisticsData,
   queryCompanyIsSubscribedGql,
   QueryCompanyIsSubscribedData,
   subscribeCompanyGql,
@@ -33,49 +26,6 @@ import {
   UnsubscribeCompanyData,
   CompanyExperiencesPaginationInput,
 } from 'graphql/company';
-
-export const queryCompanyRatingStatisticsApi = ({
-  companyName,
-}: {
-  companyName: string;
-}): Promise<RatingStatistics | null> =>
-  graphqlClient<QueryCompanyRatingStatisticsData>({
-    query: queryCompanyRatingStatisticsGql,
-    variables: { companyName },
-  }).then(data => (data.company ? data.company.companyRatingStatistics : null));
-
-export const queryCompanyOverview = ({
-  companyName,
-  interviewExperiencesLimit,
-  workExperiencesLimit,
-  salaryWorkTimesLimit,
-}: {
-  companyName: string;
-  interviewExperiencesLimit: number;
-  workExperiencesLimit: number;
-  salaryWorkTimesLimit: number;
-}): Promise<QueryCompanyOverviewData['company']> =>
-  graphqlClient<QueryCompanyOverviewData>({
-    query: queryCompanyOverviewGql,
-    variables: {
-      companyName,
-      interviewExperiencesLimit,
-      workExperiencesLimit,
-      salaryWorkTimesLimit,
-    },
-  }).then(R.prop('company'));
-
-export const queryCompanyOverviewStatistics = ({
-  companyName,
-}: {
-  companyName: string;
-}): Promise<QueryCompanyOverviewStatisticsData['company']> =>
-  graphqlClient<QueryCompanyOverviewStatisticsData>({
-    query: queryCompanyOverviewStatisticsQuery,
-    variables: {
-      companyName,
-    },
-  }).then(R.prop('company'));
 
 export const getCompanyTimeAndSalary = ({
   companyName,

@@ -5,15 +5,7 @@ import {
   workExperiencesPartialGql,
 } from './experience';
 import {
-  fragmentInterviewExperienceFields,
-  fragmentWorkExperienceFields,
-  InterviewExperienceInOverview,
-  WorkExperienceInOverview,
-} from './overview';
-import {
   fragmentSalaryWorkTimeFields,
-  JobAverageSalary,
-  OvertimeFrequencyCount,
   SalaryWorkTime,
   SalaryWorkTimeStatistics,
 } from './salaryWorkTime';
@@ -22,127 +14,9 @@ export interface Company {
   name: string;
 }
 
-export type RatingStatistics = {
-  averageRating: number;
-  ratingDistribution: {
-    rating: number;
-    count: number;
-  }[];
-  ratingCount: number;
-};
-
-export type QueryCompanyRatingStatisticsData = {
-  company:
-    | (Company & {
-        companyRatingStatistics: RatingStatistics | null;
-      })
-    | null;
-};
-
-export const queryCompanyRatingStatisticsGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
-      name
-      companyRatingStatistics {
-        averageRating
-        ratingDistribution {
-          rating
-          count
-        }
-        ratingCount
-      }
-    }
-  }
-`;
-
-export type QueryCompanyOverviewData = {
-  company:
-    | (Company & {
-        salaryWorkTimesResult: {
-          count: number;
-          salaryWorkTimes: SalaryWorkTime[];
-        };
-        workExperiencesResult: {
-          count: number;
-          workExperiences: WorkExperienceInOverview[];
-        };
-        interviewExperiencesResult: {
-          count: number;
-          interviewExperiences: InterviewExperienceInOverview[];
-        };
-      })
-    | null;
-};
-
-export const queryCompanyOverviewGql = /* GraphQL */ `
-  query(
-    $companyName: String!
-    $interviewExperiencesLimit: Int!
-    $workExperiencesLimit: Int!
-    $salaryWorkTimesLimit: Int!
-  ) {
-    company(name: $companyName) {
-      name
-      interviewExperiencesResult(start: 0, limit: $interviewExperiencesLimit) {
-        count
-        interviewExperiences {
-          ...interviewExperienceFields
-        }
-      }
-      workExperiencesResult(start: 0, limit: $workExperiencesLimit) {
-        count
-        workExperiences {
-          ...workExperienceFields
-        }
-      }
-      salaryWorkTimesResult(start: 0, limit: $salaryWorkTimesLimit) {
-        count
-        salaryWorkTimes {
-          ...salaryWorkTimeFields
-        }
-      }
-    }
-  }
-  ${fragmentInterviewExperienceFields}
-  ${fragmentWorkExperienceFields}
-  ${fragmentSalaryWorkTimeFields}
-`;
-
-export type QueryCompanyOverviewStatisticsData = {
-  company: {
-    salary_work_time_statistics: {
-      average_week_work_time: number | null;
-      overtime_frequency_count: OvertimeFrequencyCount | null;
-      job_average_salaries: JobAverageSalary[];
-    };
-  } | null;
-};
-
-export const queryCompanyOverviewStatisticsQuery = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
-      salary_work_time_statistics {
-        average_week_work_time
-        overtime_frequency_count {
-          seldom
-          sometimes
-          usually
-          almost_everyday
-        }
-        job_average_salaries {
-          job_title {
-            name
-          }
-          average_salary {
-            type
-            amount
-          }
-          data_count
-        }
-      }
-    }
-  }
-`;
+export interface Company {
+  name: string;
+}
 
 export type QueryCompanySalaryWorkTimeData = {
   company:

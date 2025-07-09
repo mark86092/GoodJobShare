@@ -28,26 +28,27 @@ import {
   companyIsSubscribedBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
-  queryCompanyOverview as queryCompanyOverviewApi,
   getCompanyTimeAndSalary,
   getCompanyInterviewExperiences,
   getCompanyWorkExperiences,
   queryCompaniesApi,
   getCompanyTimeAndSalaryStatistics,
-  queryCompanyRatingStatisticsApi,
   getCompanyTopNJobTitles,
   getCompanyEsgSalaryData,
-  queryCompanyOverviewStatistics as queryCompanyOverviewStatisticsApi,
   subscribeCompanyApi,
   unsubscribeCompanyApi,
   queryCompanyIsSubscribedApi,
 } from 'apis/company';
+import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
+import queryCompanyRatingStatisticsApi, {
+  RatingStatistics,
+} from 'apis/queryCompanyRatingStatistics';
+import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import {
   CompanyExperiencesPaginationInput,
   CompanyInIndex,
   CompanySalaryWorkTimeStatistics,
   ESGSalaryData,
-  RatingStatistics,
   TopNJobTitles,
 } from 'graphql/company';
 import {

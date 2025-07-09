@@ -16,7 +16,6 @@ import {
 } from 'actions/company';
 import {
   CompanyInIndex,
-  RatingStatistics,
   CompanySalaryWorkTimeStatistics,
   CompanyInterviewExperience,
   CompanyWorkExperience,
@@ -33,6 +32,7 @@ import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'graphql/overview';
+import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 
 export type CompanyOverview = {
   name: string;
