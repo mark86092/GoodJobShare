@@ -159,7 +159,7 @@ const setOverviewStatistics = (
   box: FetchBox<{
     salaryDistribution: SalaryDistributionBin[];
     averageWeekWorkTime: number;
-    overtimeFrequencyCount: OvertimeFrequencyCount | number;
+    overtimeFrequencyCount: OvertimeFrequencyCount | null;
   } | null>,
 ): AnyAction => ({
   type: SET_OVERVIEW_STATISTICS,
@@ -193,7 +193,7 @@ export const queryJobTitleOverviewStatistics = (
       averageWeekWorkTime:
         data.salary_work_time_statistics.average_week_work_time || 0,
       overtimeFrequencyCount:
-        data.salary_work_time_statistics.overtime_frequency_count || 0,
+        data.salary_work_time_statistics.overtime_frequency_count || null,
     };
 
     dispatch(setOverviewStatistics(jobTitle, getFetched(model)));

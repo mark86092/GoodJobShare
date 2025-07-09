@@ -153,7 +153,7 @@ export const jobTitleOverviewStatisticsBoxSelectorByName = (
 ): FetchBox<{
   salaryDistribution: SalaryDistributionBin[];
   averageWeekWorkTime: number;
-  overtimeFrequencyCount: OvertimeFrequencyCount | number;
+  overtimeFrequencyCount: OvertimeFrequencyCount | null;
 } | null> => {
   return (
     state.jobTitleIndex.overviewStatisticsByName[jobTitle] || getUnfetched()

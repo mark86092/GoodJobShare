@@ -68,7 +68,7 @@ const preloadedState: {
     FetchBox<{
       salaryDistribution: SalaryDistributionBin[];
       averageWeekWorkTime: number;
-      overtimeFrequencyCount: OvertimeFrequencyCount | number;
+      overtimeFrequencyCount: OvertimeFrequencyCount | null;
     } | null>
   >;
   timeAndSalaryByName: Record<
@@ -140,7 +140,7 @@ const reducer = createReducer(preloadedState, {
       box: FetchBox<{
         salaryDistribution: SalaryDistributionBin[];
         averageWeekWorkTime: number;
-        overtimeFrequencyCount: OvertimeFrequencyCount | number;
+        overtimeFrequencyCount: OvertimeFrequencyCount | null;
       } | null>;
     },
   ) => {
