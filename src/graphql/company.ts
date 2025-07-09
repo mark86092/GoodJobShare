@@ -4,45 +4,10 @@ import {
   interviewExperiencePartialGql,
   workExperiencesPartialGql,
 } from './experience';
-import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 
 export interface Company {
   name: string;
 }
-
-export type CompanySalaryWorkTimeStatistics = Company & {
-  salary_work_time_statistics: SalaryWorkTimeStatistics;
-};
-
-export type QueryCompanySalaryWorkTimeStatisticsData = {
-  company: CompanySalaryWorkTimeStatistics | null;
-};
-
-export const queryCompanySalaryWorkTimeStatisticsGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
-      name
-      salary_work_time_statistics {
-        count
-        is_overtime_salary_legal_count {
-          yes
-          no
-          unknown
-        }
-        has_compensatory_dayoff_count {
-          yes
-          no
-          unknown
-        }
-        has_overtime_salary_count {
-          yes
-          no
-          unknown
-        }
-      }
-    }
-  }
-`;
 
 export type TopNJobTitles = {
   work: { name: string }[];

@@ -2,10 +2,10 @@ import { AnyAction } from 'redux';
 import { Thunk } from 'reducers';
 import {
   CompanyOverview,
+  CompanyOverviewStatistics,
   CompanySalaryWorkTimeResult,
   CompanyInterviewExperienceResult,
   CompanyWorkExperienceResult,
-  CompanyOverviewStatistics,
 } from 'reducers/companyIndex';
 import { isGraphqlError } from 'utils/errors';
 import FetchBox, {
@@ -29,10 +29,9 @@ import {
   companyIsSubscribedBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
-  getCompanyInterviewExperiences,
-  getCompanyWorkExperiences,
-  queryCompaniesApi,
-  queryCompanySalaryWorkTimeStatistics as QueryCompanySalaryWorkTimeStatisticsApi,
+  queryCompanyInterviewExperiences as queryCompanyInterviewExperiencesApi,
+  queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
+  queryCompanies as queryCompaniesApi,
   getCompanyTopNJobTitles,
   getCompanyEsgSalaryData,
   subscribeCompanyApi,
@@ -45,10 +44,12 @@ import queryCompanyRatingStatisticsApi, {
 } from 'apis/queryCompanyRatingStatistics';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
+import QueryCompanySalaryWorkTimeStatisticsApi, {
+  CompanySalaryWorkTimeStatistics,
+} from 'apis/queryCompanySalaryWorkTimeStatistics';
 import {
   CompanyExperiencesPaginationInput,
   CompanyInIndex,
-  CompanySalaryWorkTimeStatistics,
   ESGSalaryData,
   TopNJobTitles,
 } from 'graphql/company';
@@ -470,7 +471,7 @@ export const queryCompanyInterviewExperiences = ({
   dispatch(setInterviewExperiences(companyName, toFetching()));
 
   try {
-    const data = await getCompanyInterviewExperiences({
+    const data = await queryCompanyInterviewExperiencesApi({
       companyName,
       jobTitle,
       start,
@@ -548,7 +549,7 @@ export const queryCompanyWorkExperiences = ({
   dispatch(setWorkExperiences(companyName, toFetching()));
 
   try {
-    const data = await getCompanyWorkExperiences({
+    const data = await queryCompanyWorkExperiencesApi({
       companyName,
       jobTitle,
       start,

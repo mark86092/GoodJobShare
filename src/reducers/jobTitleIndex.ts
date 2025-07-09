@@ -14,9 +14,9 @@ import {
   JobTitle,
   JobTitleExperiencesPaginationInput,
   JobTitleInterviewExperience,
-  JobTitleSalaryWorkTimeStatistics,
   JobTitleWorkExperience,
 } from 'graphql/jobTitle';
+import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import {
   SalaryDistributionBin,
   OvertimeFrequencyCount,

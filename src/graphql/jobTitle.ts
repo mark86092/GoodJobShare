@@ -7,7 +7,6 @@ import {
 import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
-  SalaryWorkTimeStatistics,
 } from 'apis/salaryWorkTime';
 
 export interface JobTitle {
@@ -54,40 +53,6 @@ export const queryJobTitleSalaryWorkTimeGql = /* GraphQL */ `
     }
   }
   ${fragmentSalaryWorkTimeFields}
-`;
-
-export type JobTitleSalaryWorkTimeStatistics = JobTitle & {
-  salary_work_time_statistics: SalaryWorkTimeStatistics;
-};
-
-export type QueryJobTitleSalaryWorkTimeStatisticsData = {
-  job_title: JobTitleSalaryWorkTimeStatistics | null;
-};
-
-export const queryJobTitleSalaryWorkTimeStatisticsQuery = /* GraphQL */ `
-  query($jobTitle: String!) {
-    job_title(name: $jobTitle) {
-      name
-      salary_work_time_statistics {
-        count
-        is_overtime_salary_legal_count {
-          yes
-          no
-          unknown
-        }
-        has_compensatory_dayoff_count {
-          yes
-          no
-          unknown
-        }
-        has_overtime_salary_count {
-          yes
-          no
-          unknown
-        }
-      }
-    }
-  }
 `;
 
 export type JobTitleExperiencesPaginationInput = {
@@ -152,7 +117,7 @@ export type QueryJobTitleWorkExperiencesData = {
     | null;
 };
 
-export const queryJobTitleWorkExperiencesGql = /* GraphQL */ `
+export const getJobTitleWorkExperiencesQuery = /* GraphQL */ `
   query(
     $jobTitle: String!
     $companyName: String

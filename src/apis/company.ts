@@ -7,9 +7,6 @@ import {
   QueryCompanyWorkExperiencesData,
   queryCompaniesHavingDataGql,
   QueryCompaniesHavingDataData,
-  queryCompanySalaryWorkTimeStatisticsGql,
-  QueryCompanySalaryWorkTimeStatisticsData,
-  CompanySalaryWorkTimeStatistics,
   queryCompanyTopNJobTitlesGql,
   QueryCompanyTopNJobTitlesData,
   TopNJobTitles,
@@ -24,16 +21,6 @@ import {
   UnsubscribeCompanyData,
   CompanyExperiencesPaginationInput,
 } from 'graphql/company';
-
-export const queryCompanySalaryWorkTimeStatistics = ({
-  companyName,
-}: {
-  companyName: string;
-}): Promise<CompanySalaryWorkTimeStatistics | null> =>
-  graphqlClient<QueryCompanySalaryWorkTimeStatisticsData>({
-    query: queryCompanySalaryWorkTimeStatisticsGql,
-    variables: { companyName },
-  }).then(R.prop('company'));
 
 export const getCompanyTopNJobTitles = ({
   companyName,
@@ -55,7 +42,7 @@ export const getCompanyEsgSalaryData = ({
     variables: { companyName },
   }).then(data => (data.company ? data.company.esgSalaryData : null));
 
-export const getCompanyInterviewExperiences = ({
+export const queryCompanyInterviewExperiences = ({
   companyName,
   jobTitle,
   start,
@@ -69,7 +56,7 @@ export const getCompanyInterviewExperiences = ({
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
 
-export const getCompanyWorkExperiences = ({
+export const queryCompanyWorkExperiences = ({
   companyName,
   jobTitle,
   start,
@@ -83,7 +70,7 @@ export const getCompanyWorkExperiences = ({
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
 
-export const queryCompaniesApi = ({
+export const queryCompanies = ({
   start,
   limit,
 }: {

@@ -16,7 +16,6 @@ import {
 } from 'actions/company';
 import {
   CompanyInIndex,
-  CompanySalaryWorkTimeStatistics,
   CompanyInterviewExperience,
   CompanyWorkExperience,
   ESGSalaryData,
@@ -33,6 +32,7 @@ import {
   WorkExperienceInOverview,
 } from 'apis/overview';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
+import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 
 export type CompanyOverview = {
   name: string;

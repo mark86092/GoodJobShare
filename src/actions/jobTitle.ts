@@ -26,18 +26,16 @@ import {
 } from 'selectors/companyAndJobTitle';
 import {
   queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
-  queryJobTitleSalaryWorkTimeStatistics as queryJobTitleSalaryWorkTimeStatisticsApi,
   getJobTitleInterviewExperiences,
   getJobTitleWorkExperiences,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
 import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
 import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
-import {
-  JobTitle,
+import queryJobTitleSalaryWorkTimeStatisticsApi, {
   JobTitleSalaryWorkTimeStatistics,
-  JobTitleExperiencesPaginationInput,
-} from 'graphql/jobTitle';
+} from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';

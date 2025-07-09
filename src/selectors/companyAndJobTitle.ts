@@ -15,13 +15,10 @@ import {
   JobTitleSalaryWorkTimeResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
-import {
-  CompanyInIndex,
-  CompanySalaryWorkTimeStatistics,
-  ESGSalaryData,
-  TopNJobTitles,
-} from 'graphql/company';
-import { JobTitle, JobTitleSalaryWorkTimeStatistics } from 'graphql/jobTitle';
+import { CompanyInIndex, ESGSalaryData, TopNJobTitles } from 'graphql/company';
+import { JobTitle } from 'graphql/jobTitle';
+import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
+import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 
