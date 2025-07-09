@@ -5,6 +5,7 @@ import {
   JobTitleSalaryWorkTimeResult,
   JobTitleInterviewExperienceResult,
   JobTitleWorkExperienceResult,
+  JobTitleOverviewStatistics,
 } from 'reducers/jobTitleIndex';
 import { isGraphqlError } from 'utils/errors';
 import FetchBox, {
@@ -24,23 +25,19 @@ import {
   jobTitleOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
-  queryJobTitleOverview as queryJobTitleOverviewApi,
-  queryJobTitleOverviewStatistics as queryJobTitleOverviewStatisticsApi,
   getJobTitleTimeAndSalary,
   queryJobTitleSalaryWorkTimeStatistics as queryJobTitleSalaryWorkTimeStatisticsApi,
   getJobTitleInterviewExperiences,
   getJobTitleWorkExperiences,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
+import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
+import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
 import {
   JobTitle,
   JobTitleSalaryWorkTimeStatistics,
   JobTitleExperiencesPaginationInput,
 } from 'graphql/jobTitle';
-import {
-  SalaryDistributionBin,
-  OvertimeFrequencyCount,
-} from 'graphql/salaryWorkTime';
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';
@@ -156,11 +153,7 @@ export const queryJobTitleOverview = (
 
 const setOverviewStatistics = (
   jobTitle: string,
-  box: FetchBox<{
-    salaryDistribution: SalaryDistributionBin[];
-    averageWeekWorkTime: number;
-    overtimeFrequencyCount: OvertimeFrequencyCount | number;
-  } | null>,
+  box: FetchBox<JobTitleOverviewStatistics | null>,
 ): AnyAction => ({
   type: SET_OVERVIEW_STATISTICS,
   jobTitle,
@@ -193,7 +186,7 @@ export const queryJobTitleOverviewStatistics = (
       averageWeekWorkTime:
         data.salary_work_time_statistics.average_week_work_time || 0,
       overtimeFrequencyCount:
-        data.salary_work_time_statistics.overtime_frequency_count || 0,
+        data.salary_work_time_statistics.overtime_frequency_count || null,
     };
 
     dispatch(setOverviewStatistics(jobTitle, getFetched(model)));

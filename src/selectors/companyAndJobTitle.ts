@@ -4,29 +4,26 @@ import { RootState } from 'reducers';
 import {
   CompanyInterviewExperienceResult,
   CompanyOverview,
+  CompanyOverviewStatistics,
   CompanySalaryWorkTimeResult,
   CompanyWorkExperienceResult,
 } from 'reducers/companyIndex';
 import {
   JobTitleInterviewExperienceResult,
   JobTitleOverview,
+  JobTitleOverviewStatistics,
   JobTitleSalaryWorkTimeResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
 import {
   CompanyInIndex,
-  RatingStatistics,
   CompanySalaryWorkTimeStatistics,
   ESGSalaryData,
   TopNJobTitles,
 } from 'graphql/company';
 import { JobTitle, JobTitleSalaryWorkTimeStatistics } from 'graphql/jobTitle';
-import {
-  SalaryDistributionBin,
-  JobAverageSalary,
-  OvertimeFrequencyCount,
-  SalaryWorkTimeStatistics,
-} from 'graphql/salaryWorkTime';
+import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
+import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 
 const data = <
   T extends
@@ -74,13 +71,7 @@ export const companyOverviewBoxSelectorByName = (companyName: string) => (
 
 export const companyOverviewStatisticsBoxSelectorByName = (
   companyName: string,
-) => (
-  state: RootState,
-): FetchBox<{
-  jobAverageSalaries: JobAverageSalary[];
-  averageWeekWorkTime: number;
-  overtimeFrequencyCount: OvertimeFrequencyCount | null;
-} | null> => {
+) => (state: RootState): FetchBox<CompanyOverviewStatistics | null> => {
   return (
     state.companyIndex.overviewStatisticsByName[companyName] || getUnfetched()
   );
@@ -148,13 +139,7 @@ export const jobTitleOverviewBoxSelectorByName = (jobTitle: string) => (
 
 export const jobTitleOverviewStatisticsBoxSelectorByName = (
   jobTitle: string,
-) => (
-  state: RootState,
-): FetchBox<{
-  salaryDistribution: SalaryDistributionBin[];
-  averageWeekWorkTime: number;
-  overtimeFrequencyCount: OvertimeFrequencyCount | number;
-} | null> => {
+) => (state: RootState): FetchBox<JobTitleOverviewStatistics | null> => {
   return (
     state.jobTitleIndex.overviewStatisticsByName[jobTitle] || getUnfetched()
   );

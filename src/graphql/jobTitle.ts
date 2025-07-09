@@ -1,22 +1,14 @@
-import DataResultSortOption from './dataResultSortOption';
+import DataResultSortOption from 'apis/dataResultSortOption';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
   workExperiencesPartialGql,
 } from './experience';
 import {
-  fragmentInterviewExperienceFields,
-  fragmentWorkExperienceFields,
-  InterviewExperienceInOverview,
-  WorkExperienceInOverview,
-} from './overview';
-import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
   SalaryWorkTimeStatistics,
-  OvertimeFrequencyCount,
-  SalaryDistributionBin,
-} from './salaryWorkTime';
+} from 'apis/salaryWorkTime';
 
 export interface JobTitle {
   name: string;
@@ -30,99 +22,6 @@ export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
     job_titles(query: $key, page: 0) {
       name
-    }
-  }
-`;
-
-export type QueryJobTitleOverviewData = {
-  job_title:
-    | (JobTitle & {
-        salaryWorkTimesResult: {
-          count: number;
-          salaryWorkTimes: SalaryWorkTime[];
-        };
-        workExperiencesResult: {
-          count: number;
-          workExperiences: WorkExperienceInOverview[];
-        };
-        interviewExperiencesResult: {
-          count: number;
-          interviewExperiences: InterviewExperienceInOverview[];
-        };
-      })
-    | null;
-};
-
-export const queryJobTitleOverviewGql = /* GraphQL */ `
-  query(
-    $jobTitle: String!
-    $interviewExperiencesLimit: Int!
-    $workExperiencesLimit: Int!
-    $salaryWorkTimesLimit: Int!
-  ) {
-    job_title(name: $jobTitle) {
-      name
-      interviewExperiencesResult(start: 0, limit: $interviewExperiencesLimit) {
-        count
-        interviewExperiences {
-          ...interviewExperienceFields
-        }
-      }
-      workExperiencesResult(start: 0, limit: $workExperiencesLimit) {
-        count
-        workExperiences {
-          ...workExperienceFields
-        }
-      }
-      salaryWorkTimesResult(start: 0, limit: $salaryWorkTimesLimit) {
-        count
-        salaryWorkTimes {
-          ...salaryWorkTimeFields
-        }
-      }
-    }
-  }
-  ${fragmentInterviewExperienceFields}
-  ${fragmentWorkExperienceFields}
-  ${fragmentSalaryWorkTimeFields}
-`;
-
-export type QueryJobTitleOverviewStatisticsData = {
-  job_title:
-    | ({
-        salary_work_time_statistics: {
-          average_week_work_time: number | null;
-          overtime_frequency_count: OvertimeFrequencyCount | null;
-        };
-        salary_distribution: {
-          bins: SalaryDistributionBin[] | null;
-        };
-      })
-    | null;
-};
-
-export const queryJobTitleOverviewStatisticsGql = /* GraphQL */ `
-  query($jobTitle: String!) {
-    job_title(name: $jobTitle) {
-      salary_work_time_statistics {
-        average_week_work_time
-        overtime_frequency_count {
-          seldom
-          sometimes
-          usually
-          almost_everyday
-        }
-      }
-      salary_distribution {
-        bins {
-          data_count
-          range {
-            type
-            from
-            to
-          }
-        }
-      }
     }
   }
 `;

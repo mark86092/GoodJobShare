@@ -5,6 +5,7 @@ import {
   CompanySalaryWorkTimeResult,
   CompanyInterviewExperienceResult,
   CompanyWorkExperienceResult,
+  CompanyOverviewStatistics,
 } from 'reducers/companyIndex';
 import { isGraphqlError } from 'utils/errors';
 import FetchBox, {
@@ -28,32 +29,29 @@ import {
   companyIsSubscribedBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
-  queryCompanyOverview as queryCompanyOverviewApi,
-  getCompanyTimeAndSalary,
   getCompanyInterviewExperiences,
   getCompanyWorkExperiences,
   queryCompaniesApi,
-  queryCompanySalaryWorkTimeStatistics as queryCompanyTimeAndSalaryStatisticsApi,
-  queryCompanyRatingStatisticsApi,
+  getCompanyTimeAndSalaryStatistics as queryCompanyTimeAndSalaryStatisticsApi,
   getCompanyTopNJobTitles,
   getCompanyEsgSalaryData,
-  queryCompanyOverviewStatistics as queryCompanyOverviewStatisticsApi,
   subscribeCompanyApi,
   unsubscribeCompanyApi,
   queryCompanyIsSubscribedApi,
 } from 'apis/company';
+import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
+import queryCompanyRatingStatisticsApi, {
+  RatingStatistics,
+} from 'apis/queryCompanyRatingStatistics';
+import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
+import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
 import {
   CompanyExperiencesPaginationInput,
   CompanyInIndex,
   CompanySalaryWorkTimeStatistics,
   ESGSalaryData,
-  RatingStatistics,
   TopNJobTitles,
 } from 'graphql/company';
-import {
-  JobAverageSalary,
-  OvertimeFrequencyCount,
-} from 'graphql/salaryWorkTime';
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 
@@ -212,11 +210,7 @@ export const queryCompanyOverview = (
 
 const setOverviewStatistics = (
   companyName: string,
-  box: FetchBox<{
-    jobAverageSalaries: JobAverageSalary[];
-    averageWeekWorkTime: number;
-    overtimeFrequencyCount: OvertimeFrequencyCount | null;
-  } | null>,
+  box: FetchBox<CompanyOverviewStatistics | null>,
 ): AnyAction => ({
   type: SET_OVERVIEW_STATISTICS,
   companyName,
@@ -305,7 +299,7 @@ export const queryCompanyTimeAndSalary = (
   dispatch(setTimeAndSalary(companyName, toFetching()));
 
   try {
-    const data = await getCompanyTimeAndSalary({
+    const data = await queryCompanySalaryWorkTimeApi({
       companyName,
       jobTitle,
       start,

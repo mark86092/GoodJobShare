@@ -16,7 +16,6 @@ import {
 } from 'actions/company';
 import {
   CompanyInIndex,
-  RatingStatistics,
   CompanySalaryWorkTimeStatistics,
   CompanyInterviewExperience,
   CompanyWorkExperience,
@@ -28,11 +27,12 @@ import {
   JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTime,
-} from 'graphql/salaryWorkTime';
+} from 'apis/salaryWorkTime';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
-} from 'graphql/overview';
+} from 'apis/overview';
+import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 
 export type CompanyOverview = {
   name: string;
@@ -42,6 +42,12 @@ export type CompanyOverview = {
   interviewExperiencesCount: number;
   workExperiences: WorkExperienceInOverview[];
   workExperiencesCount: number;
+};
+
+export type CompanyOverviewStatistics = {
+  jobAverageSalaries: JobAverageSalary[];
+  averageWeekWorkTime: number;
+  overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
 export type CompanySalaryWorkTimeResult = {
@@ -73,11 +79,7 @@ const preloadedState: {
   overviewByName: Record<string, FetchBox<CompanyOverview | null>>;
   overviewStatisticsByName: Record<
     string,
-    FetchBox<{
-      jobAverageSalaries: JobAverageSalary[];
-      averageWeekWorkTime: number;
-      overtimeFrequencyCount: OvertimeFrequencyCount | null;
-    } | null>
+    FetchBox<CompanyOverviewStatistics | null>
   >;
   timeAndSalaryByName: Record<
     string,
@@ -179,11 +181,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       companyName: string;
-      box: FetchBox<{
-        jobAverageSalaries: JobAverageSalary[];
-        averageWeekWorkTime: number;
-        overtimeFrequencyCount: OvertimeFrequencyCount | null;
-      } | null>;
+      box: FetchBox<CompanyOverviewStatistics | null>;
     },
   ) => {
     return {

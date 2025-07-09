@@ -21,11 +21,11 @@ import {
   SalaryDistributionBin,
   OvertimeFrequencyCount,
   SalaryWorkTime,
-} from 'graphql/salaryWorkTime';
+} from 'apis/salaryWorkTime';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
-} from 'graphql/overview';
+} from 'apis/overview';
 
 export type JobTitleOverview = {
   name: string;
@@ -35,6 +35,12 @@ export type JobTitleOverview = {
   interviewExperiencesCount: number;
   workExperiences: WorkExperienceInOverview[];
   workExperiencesCount: number;
+};
+
+export type JobTitleOverviewStatistics = {
+  salaryDistribution: SalaryDistributionBin[];
+  averageWeekWorkTime: number;
+  overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
 export type JobTitleSalaryWorkTimeResult = {
@@ -65,11 +71,7 @@ const preloadedState: {
   overviewByName: Record<string, FetchBox<JobTitleOverview | null>>;
   overviewStatisticsByName: Record<
     string,
-    FetchBox<{
-      salaryDistribution: SalaryDistributionBin[];
-      averageWeekWorkTime: number;
-      overtimeFrequencyCount: OvertimeFrequencyCount | number;
-    } | null>
+    FetchBox<JobTitleOverviewStatistics | null>
   >;
   timeAndSalaryByName: Record<
     string,
@@ -137,11 +139,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       jobTitle: string;
-      box: FetchBox<{
-        salaryDistribution: SalaryDistributionBin[];
-        averageWeekWorkTime: number;
-        overtimeFrequencyCount: OvertimeFrequencyCount | number;
-      } | null>;
+      box: FetchBox<JobTitleOverviewStatistics | null>;
     },
   ) => {
     return {
