@@ -1,19 +1,19 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
-  getCompanyInterviewExperiencesQuery,
+  queryCompanyInterviewExperiencesGql,
   QueryCompanyInterviewExperiencesData,
-  getCompanyWorkExperiencesQuery,
+  queryCompanyWorkExperiencesGql,
   QueryCompanyWorkExperiencesData,
   queryCompaniesHavingDataGql,
   QueryCompaniesHavingDataData,
   queryCompanySalaryWorkTimeStatisticsGql,
   QueryCompanySalaryWorkTimeStatisticsData,
   CompanySalaryWorkTimeStatistics,
-  getCompanyTopNJobTitlesQuery,
+  queryCompanyTopNJobTitlesGql,
   QueryCompanyTopNJobTitlesData,
   TopNJobTitles,
-  getCompanyEsgSalaryDataQuery,
+  queryCompanyEsgSalaryDataGql,
   QueryCompanyEsgSalaryDataData,
   ESGSalaryData,
   queryCompanyIsSubscribedGql,
@@ -41,7 +41,7 @@ export const getCompanyTopNJobTitles = ({
   companyName: string;
 }): Promise<TopNJobTitles | null> =>
   graphqlClient<QueryCompanyTopNJobTitlesData>({
-    query: getCompanyTopNJobTitlesQuery,
+    query: queryCompanyTopNJobTitlesGql,
     variables: { companyName },
   }).then(data => (data.company ? data.company.topNJobTitles : null));
 
@@ -51,7 +51,7 @@ export const getCompanyEsgSalaryData = ({
   companyName: string;
 }): Promise<ESGSalaryData | null> =>
   graphqlClient<QueryCompanyEsgSalaryDataData>({
-    query: getCompanyEsgSalaryDataQuery,
+    query: queryCompanyEsgSalaryDataGql,
     variables: { companyName },
   }).then(data => (data.company ? data.company.esgSalaryData : null));
 
@@ -65,7 +65,7 @@ export const getCompanyInterviewExperiences = ({
   QueryCompanyInterviewExperiencesData['company']
 > =>
   graphqlClient<QueryCompanyInterviewExperiencesData>({
-    query: getCompanyInterviewExperiencesQuery,
+    query: queryCompanyInterviewExperiencesGql,
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
 
@@ -79,7 +79,7 @@ export const getCompanyWorkExperiences = ({
   QueryCompanyWorkExperiencesData['company']
 > =>
   graphqlClient<QueryCompanyWorkExperiencesData>({
-    query: getCompanyWorkExperiencesQuery,
+    query: queryCompanyWorkExperiencesGql,
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
 

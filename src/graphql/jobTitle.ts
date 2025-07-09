@@ -112,7 +112,7 @@ export type QueryJobTitleInterviewExperiencesData = {
     | null;
 };
 
-export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
+export const queryJobTitleInterviewExperiencesGql = /* GraphQL */ `
   query(
     $jobTitle: String!
     $companyName: String
@@ -152,7 +152,7 @@ export type QueryJobTitleWorkExperiencesData = {
     | null;
 };
 
-export const getJobTitleWorkExperiencesQuery = /* GraphQL */ `
+export const queryJobTitleWorkExperiencesGql = /* GraphQL */ `
   query(
     $jobTitle: String!
     $companyName: String

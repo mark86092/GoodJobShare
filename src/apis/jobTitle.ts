@@ -1,11 +1,11 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
-  getJobTitleInterviewExperiencesQuery,
+  queryJobTitleInterviewExperiencesGql,
   QueryJobTitleInterviewExperiencesData,
   queryJobTitleSalaryWorkTimeGql,
   QueryJobTitleSalaryWorkTimeData,
-  getJobTitleWorkExperiencesQuery,
+  queryJobTitleWorkExperiencesGql,
   QueryJobTitleWorkExperiencesData,
   queryJobTitlesHavingDataGql,
   QueryJobTitlesHavingDataData,
@@ -50,7 +50,7 @@ export const getJobTitleInterviewExperiences = ({
   QueryJobTitleInterviewExperiencesData['job_title']
 > =>
   graphqlClient<QueryJobTitleInterviewExperiencesData>({
-    query: getJobTitleInterviewExperiencesQuery,
+    query: queryJobTitleInterviewExperiencesGql,
     variables: { jobTitle, companyName, start, limit, sortBy },
   }).then(R.prop('job_title'));
 
@@ -64,7 +64,7 @@ export const getJobTitleWorkExperiences = ({
   QueryJobTitleWorkExperiencesData['job_title']
 > =>
   graphqlClient<QueryJobTitleWorkExperiencesData>({
-    query: getJobTitleWorkExperiencesQuery,
+    query: queryJobTitleWorkExperiencesGql,
     variables: { jobTitle, companyName, start, limit, sortBy },
   }).then(R.prop('job_title'));
 

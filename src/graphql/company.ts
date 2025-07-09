@@ -55,7 +55,7 @@ export type QueryCompanyTopNJobTitlesData = {
   company: (Company & { topNJobTitles: TopNJobTitles }) | null;
 };
 
-export const getCompanyTopNJobTitlesQuery = /* GraphQL */ `
+export const queryCompanyTopNJobTitlesGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {
       name
@@ -106,7 +106,7 @@ export type QueryCompanyEsgSalaryDataData = {
   } | null;
 };
 
-export const getCompanyEsgSalaryDataQuery = /* GraphQL */ `
+export const queryCompanyEsgSalaryDataGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {
       esgSalaryData {
@@ -155,7 +155,7 @@ export type QueryCompanyInterviewExperiencesData = {
     | null;
 };
 
-export const getCompanyInterviewExperiencesQuery = /* GraphQL */ `
+export const queryCompanyInterviewExperiencesGql = /* GraphQL */ `
   query(
     $companyName: String!
     $jobTitle: String
@@ -195,7 +195,7 @@ export type QueryCompanyWorkExperiencesData = {
     | null;
 };
 
-export const getCompanyWorkExperiencesQuery = /* GraphQL */ `
+export const queryCompanyWorkExperiencesGql = /* GraphQL */ `
   query(
     $companyName: String!
     $jobTitle: String
