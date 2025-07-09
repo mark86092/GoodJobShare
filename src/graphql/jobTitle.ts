@@ -8,8 +8,6 @@ import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
   SalaryWorkTimeStatistics,
-  OvertimeFrequencyCount,
-  SalaryDistributionBin,
 } from 'apis/salaryWorkTime';
 
 export interface JobTitle {
@@ -24,46 +22,6 @@ export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
     job_titles(query: $key, page: 0) {
       name
-    }
-  }
-`;
-
-export type QueryJobTitleOverviewStatisticsData = {
-  job_title:
-    | ({
-        salary_work_time_statistics: {
-          average_week_work_time: number | null;
-          overtime_frequency_count: OvertimeFrequencyCount | null;
-        };
-        salary_distribution: {
-          bins: SalaryDistributionBin[] | null;
-        };
-      })
-    | null;
-};
-
-export const queryJobTitleOverviewStatisticsGql = /* GraphQL */ `
-  query($jobTitle: String!) {
-    job_title(name: $jobTitle) {
-      salary_work_time_statistics {
-        average_week_work_time
-        overtime_frequency_count {
-          seldom
-          sometimes
-          usually
-          almost_everyday
-        }
-      }
-      salary_distribution {
-        bins {
-          data_count
-          range {
-            type
-            from
-            to
-          }
-        }
-      }
     }
   }
 `;
