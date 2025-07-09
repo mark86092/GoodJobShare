@@ -1,8 +1,6 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
-  getCompanyTimeAndSalaryQuery,
-  QueryCompanySalaryWorkTimeData,
   getCompanyInterviewExperiencesQuery,
   QueryCompanyInterviewExperiencesData,
   getCompanyWorkExperiencesQuery,
@@ -26,22 +24,6 @@ import {
   UnsubscribeCompanyData,
   CompanyExperiencesPaginationInput,
 } from 'graphql/company';
-
-export const getCompanyTimeAndSalary = ({
-  companyName,
-  jobTitle,
-  start,
-  limit,
-}: {
-  companyName: string;
-  jobTitle?: string | null;
-  start: number;
-  limit: number;
-}): Promise<QueryCompanySalaryWorkTimeData['company']> =>
-  graphqlClient<QueryCompanySalaryWorkTimeData>({
-    query: getCompanyTimeAndSalaryQuery,
-    variables: { companyName, jobTitle, start, limit },
-  }).then(R.prop('company'));
 
 export const getCompanyTimeAndSalaryStatistics = ({
   companyName,

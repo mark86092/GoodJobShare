@@ -1,4 +1,4 @@
-import DataResultSortOption from './dataResultSortOption';
+import DataResultSortOption from 'apis/dataResultSortOption';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,

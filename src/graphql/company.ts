@@ -1,44 +1,14 @@
-import DataResultSortOption from './dataResultSortOption';
+import DataResultSortOption from 'apis/dataResultSortOption';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
   workExperiencesPartialGql,
 } from './experience';
-import {
-  fragmentSalaryWorkTimeFields,
-  SalaryWorkTime,
-  SalaryWorkTimeStatistics,
-} from 'apis/salaryWorkTime';
+import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 
 export interface Company {
   name: string;
 }
-
-export type QueryCompanySalaryWorkTimeData = {
-  company:
-    | (Company & {
-        salaryWorkTimesResult: {
-          count: number;
-          salaryWorkTimes: SalaryWorkTime[];
-        };
-      })
-    | null;
-};
-
-export const getCompanyTimeAndSalaryQuery = /* GraphQL */ `
-  query($companyName: String!, $jobTitle: String, $start: Int!, $limit: Int!) {
-    company(name: $companyName) {
-      name
-      salaryWorkTimesResult(jobTitle: $jobTitle, start: $start, limit: $limit) {
-        count
-        salaryWorkTimes {
-          ...salaryWorkTimeFields
-        }
-      }
-    }
-  }
-  ${fragmentSalaryWorkTimeFields}
-`;
 
 export type CompanySalaryWorkTimeStatistics = Company & {
   salary_work_time_statistics: SalaryWorkTimeStatistics;
