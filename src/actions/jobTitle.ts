@@ -18,14 +18,14 @@ import FetchBox, {
 import {
   jobTitleIndexesBoxSelectorAtPage,
   jobTitleOverviewBoxSelectorByName,
-  jobTitleTimeAndSalaryBoxSelectorByName,
-  jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
+  jobTitleSalaryWorkTimeBoxSelectorByName,
+  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName,
   jobTitleInterviewExperiencesBoxSelectorByName,
   jobTitleWorkExperiencesBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
-  getJobTitleTimeAndSalary,
+  queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
   queryJobTitleSalaryWorkTimeStatistics as queryJobTitleSalaryWorkTimeStatisticsApi,
   getJobTitleInterviewExperiences,
   getJobTitleWorkExperiences,
@@ -42,9 +42,9 @@ import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';
 export const SET_OVERVIEW_STATISTICS = '@@JOB_TITLE/SET_OVERVIEW_STATISTICS';
-export const SET_TIME_AND_SALARY = '@@JOB_TITLE/SET_TIME_AND_SALARY';
-export const SET_TIME_AND_SALARY_STATISTICS =
-  '@@JOB_TITLE/SET_TIME_AND_SALARY_STATISTICS';
+export const SET_SALARY_WORK_TIME = '@@JOB_TITLE/SET_SALARY_WORK_TIME';
+export const SET_SALARY_WORK_TIME_STATISTICS =
+  '@@JOB_TITLE/SET_SALARY_WORK_TIME_STATISTICS';
 export const SET_INTERVIEW_EXPERIENCES =
   '@@JOB_TITLE/SET_INTERVIEW_EXPERIENCES';
 export const SET_WORK_EXPERIENCES = '@@JOB_TITLE/SET_WORK_EXPERIENCES';
@@ -203,12 +203,12 @@ const setTimeAndSalary = (
   jobTitle: string,
   box: FetchBox<JobTitleSalaryWorkTimeResult | null>,
 ): AnyAction => ({
-  type: SET_TIME_AND_SALARY,
+  type: SET_SALARY_WORK_TIME,
   jobTitle,
   box,
 });
 
-export const queryJobTitleTimeAndSalary = (
+export const queryJobTitleSalaryWorkTime = (
   {
     jobTitle,
     companyName,
@@ -222,7 +222,7 @@ export const queryJobTitleTimeAndSalary = (
   },
   { force = false } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = jobTitleTimeAndSalaryBoxSelectorByName(jobTitle)(getState());
+  const box = jobTitleSalaryWorkTimeBoxSelectorByName(jobTitle)(getState());
   if (
     !force &&
     (isFetching(box) ||
@@ -239,7 +239,7 @@ export const queryJobTitleTimeAndSalary = (
   dispatch(setTimeAndSalary(jobTitle, toFetching()));
 
   try {
-    const data = await getJobTitleTimeAndSalary({
+    const data = await queryJobTitleSalaryWorkTimeApi({
       jobTitle,
       companyName,
       start,
@@ -266,21 +266,21 @@ export const queryJobTitleTimeAndSalary = (
   }
 };
 
-const setTimeAndSalaryStatistics = (
+const setSalaryWorkTimeStatistics = (
   jobTitle: string,
   box: FetchBox<JobTitleSalaryWorkTimeStatistics | null>,
 ): AnyAction => ({
-  type: SET_TIME_AND_SALARY_STATISTICS,
+  type: SET_SALARY_WORK_TIME_STATISTICS,
   jobTitle,
   box,
 });
 
-export const queryJobTitleTimeAndSalaryStatistics = ({
+export const queryJobTitleSalaryWorkTimeStatistics = ({
   jobTitle,
 }: {
   jobTitle: string;
 }): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = jobTitleTimeAndSalaryStatisticsBoxSelectorByName(jobTitle)(
+  const box = jobTitleSalaryWorkTimeStatisticsBoxSelectorByName(jobTitle)(
     getState(),
   );
   if (
@@ -290,15 +290,15 @@ export const queryJobTitleTimeAndSalaryStatistics = ({
     return;
   }
 
-  dispatch(setTimeAndSalaryStatistics(jobTitle, toFetching()));
+  dispatch(setSalaryWorkTimeStatistics(jobTitle, toFetching()));
 
   try {
     const data = await queryJobTitleSalaryWorkTimeStatisticsApi({
       jobTitle,
     });
-    dispatch(setTimeAndSalaryStatistics(jobTitle, getFetched(data)));
+    dispatch(setSalaryWorkTimeStatistics(jobTitle, getFetched(data)));
   } catch (error) {
-    dispatch(setTimeAndSalaryStatistics(jobTitle, getError(error)));
+    dispatch(setSalaryWorkTimeStatistics(jobTitle, getError(error)));
   }
 };
 

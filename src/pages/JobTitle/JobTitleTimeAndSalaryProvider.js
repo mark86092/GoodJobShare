@@ -10,13 +10,13 @@ import {
 } from 'constants/companyJobTitle';
 import {
   queryJobTitleOverviewStatistics,
-  queryJobTitleTimeAndSalary,
-  queryJobTitleTimeAndSalaryStatistics,
+  queryJobTitleSalaryWorkTime,
+  queryJobTitleSalaryWorkTimeStatistics,
 } from 'actions/jobTitle';
 import {
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
-  jobTitleTimeAndSalaryBoxSelectorByName as timeAndSalaryBoxSelectorByName,
-  jobTitleTimeAndSalaryStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
+  jobTitleSalaryWorkTimeBoxSelectorByName as timeAndSalaryBoxSelectorByName,
+  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
@@ -68,10 +68,10 @@ const JobTitleTimeAndSalaryProvider = () => {
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
 
-  const handleQueryJobTitleTimeAndSalary = useCallback(
+  const handleQueryJobTitleSalaryWorkTime = useCallback(
     ({ force = false } = {}) => {
       dispatch(
-        queryJobTitleTimeAndSalary(
+        queryJobTitleSalaryWorkTime(
           {
             jobTitle,
             companyName: companyName || undefined,
@@ -91,15 +91,15 @@ const JobTitleTimeAndSalaryProvider = () => {
 
   useEffect(() => {
     dispatch(
-      queryJobTitleTimeAndSalaryStatistics({
+      queryJobTitleSalaryWorkTimeStatistics({
         jobTitle,
       }),
     );
   }, [dispatch, jobTitle]);
 
   useEffect(() => {
-    handleQueryJobTitleTimeAndSalary();
-  }, [handleQueryJobTitleTimeAndSalary]);
+    handleQueryJobTitleSalaryWorkTime();
+  }, [handleQueryJobTitleSalaryWorkTime]);
 
   const [, fetchPermission] = usePermission();
   useEffect(() => {
@@ -121,7 +121,7 @@ const JobTitleTimeAndSalaryProvider = () => {
       salaryWorkTimeStatistics={salaryWorkTimeStatistics}
       boxSelector={boxSelector}
       statisticsBox={statisticsBox}
-      onCloseReport={() => handleQueryJobTitleTimeAndSalary({ force: true })}
+      onCloseReport={() => handleQueryJobTitleSalaryWorkTime({ force: true })}
     />
   );
 };
@@ -140,7 +140,7 @@ JobTitleTimeAndSalaryProvider.fetchData = ({
   return Promise.all([
     dispatch(queryJobTitleOverviewStatistics(jobTitle)),
     dispatch(
-      queryJobTitleTimeAndSalary({
+      queryJobTitleSalaryWorkTime({
         jobTitle,
         companyName,
         start,

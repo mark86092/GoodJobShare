@@ -37,7 +37,7 @@ export type QueryJobTitleSalaryWorkTimeData = {
     | null;
 };
 
-export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
+export const queryJobTitleSalaryWorkTimeGql = /* GraphQL */ `
   query($jobTitle: String!, $companyName: String, $start: Int!, $limit: Int!) {
     job_title(name: $jobTitle) {
       name

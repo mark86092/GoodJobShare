@@ -4,10 +4,10 @@ import {
   SET_INDEX_COUNT,
   SET_INDEX,
   SET_OVERVIEW,
-  SET_TIME_AND_SALARY,
+  SET_SALARY_WORK_TIME,
   SET_INTERVIEW_EXPERIENCES,
   SET_WORK_EXPERIENCES,
-  SET_TIME_AND_SALARY_STATISTICS,
+  SET_SALARY_WORK_TIME_STATISTICS,
   SET_OVERVIEW_STATISTICS,
 } from 'actions/jobTitle';
 import {
@@ -150,7 +150,7 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY]: (
+  [SET_SALARY_WORK_TIME]: (
     state,
     {
       jobTitle,
@@ -168,7 +168,7 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY_STATISTICS]: (
+  [SET_SALARY_WORK_TIME_STATISTICS]: (
     state,
     {
       jobTitle,

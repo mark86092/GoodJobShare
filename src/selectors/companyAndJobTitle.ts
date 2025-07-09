@@ -145,13 +145,13 @@ export const jobTitleOverviewStatisticsBoxSelectorByName = (
   );
 };
 
-export const jobTitleTimeAndSalaryBoxSelectorByName = (jobTitle: string) => (
+export const jobTitleSalaryWorkTimeBoxSelectorByName = (jobTitle: string) => (
   state: RootState,
 ): FetchBox<JobTitleSalaryWorkTimeResult | null> => {
   return state.jobTitleIndex.timeAndSalaryByName[jobTitle] || getUnfetched();
 };
 
-export const jobTitleTimeAndSalaryStatisticsBoxSelectorByName = (
+export const jobTitleSalaryWorkTimeStatisticsBoxSelectorByName = (
   jobTitle: string,
 ) => (state: RootState): FetchBox<JobTitleSalaryWorkTimeStatistics | null> => {
   return (
