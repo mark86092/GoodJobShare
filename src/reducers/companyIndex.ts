@@ -5,45 +5,98 @@ import {
   SET_INDEX,
   SET_OVERVIEW,
   SET_OVERVIEW_STATISTICS,
-  SET_TIME_AND_SALARY,
+  SET_SALARY_WORK_TIME,
   SET_INTERVIEW_EXPERIENCES,
   SET_WORK_EXPERIENCES,
-  SET_TIME_AND_SALARY_STATISTICS,
+  SET_SALARY_WORK_TIME_STATISTICS,
   SET_RATING_STATISTICS,
   SET_COMPANY_TOP_N_JOB_TITLES,
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
 import {
-  RatingStatistics,
-  CompanySalaryWorkTimeStatistics,
+  CompanyInIndex,
+  CompanyInterviewExperience,
+  CompanyWorkExperience,
+  ESGSalaryData,
+  TopNJobTitles,
+  CompanyExperiencesPaginationInput,
 } from 'graphql/company';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
+import {
+  JobAverageSalary,
+  OvertimeFrequencyCount,
+  SalaryWorkTime,
+} from 'apis/salaryWorkTime';
+import {
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
+} from 'apis/overview';
+import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
+import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 
 export type CompanyOverview = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
-  interviewExperiences: InterviewExperience[];
+  interviewExperiences: InterviewExperienceInOverview[];
   interviewExperiencesCount: number;
-  workExperiences: WorkExperience[];
+  workExperiences: WorkExperienceInOverview[];
   workExperiencesCount: number;
-} | null;
+};
+
+export type CompanyOverviewStatistics = {
+  jobAverageSalaries: JobAverageSalary[];
+  averageWeekWorkTime: number;
+  overtimeFrequencyCount: OvertimeFrequencyCount | null;
+};
+
+export type CompanySalaryWorkTimeResult = {
+  name: string;
+  salaryWorkTimes: SalaryWorkTime[];
+  salaryWorkTimesCount: number;
+  // params
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+};
+
+export type CompanyInterviewExperienceResult = {
+  name: string;
+  interviewExperiences: CompanyInterviewExperience[];
+  interviewExperiencesCount: number;
+} & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
+
+export type CompanyWorkExperienceResult = {
+  name: string;
+  workExperiences: CompanyWorkExperience[];
+  workExperiencesCount: number;
+} & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
 
 const preloadedState: {
-  indexesByPage: Record<number, FetchBox<any>>;
+  indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
   indexCountBox: FetchBox<number>;
   ratingStatisticsByName: Record<string, FetchBox<RatingStatistics | null>>;
-  overviewByName: Record<string, FetchBox<CompanyOverview>>;
-  overviewStatisticsByName: Record<string, FetchBox<any>>;
-  timeAndSalaryByName: Record<string, FetchBox<any>>;
+  overviewByName: Record<string, FetchBox<CompanyOverview | null>>;
+  overviewStatisticsByName: Record<
+    string,
+    FetchBox<CompanyOverviewStatistics | null>
+  >;
+  timeAndSalaryByName: Record<
+    string,
+    FetchBox<CompanySalaryWorkTimeResult | null>
+  >;
   timeAndSalaryStatisticsByName: Record<
     string,
     FetchBox<CompanySalaryWorkTimeStatistics | null>
   >;
-  interviewExperiencesByName: Record<string, FetchBox<any>>;
-  workExperiencesByName: Record<string, FetchBox<any>>;
+  interviewExperiencesByName: Record<
+    string,
+    FetchBox<CompanyInterviewExperienceResult | null>
+  >;
+  workExperiencesByName: Record<
+    string,
+    FetchBox<CompanyWorkExperienceResult | null>
+  >;
   isSubscribedByName: Record<
     string,
     FetchBox<{
@@ -51,13 +104,11 @@ const preloadedState: {
       companyId: string | null;
     }>
   >;
-  topNJobTitlesByName: Record<string, FetchBox<any>>;
-  esgSalaryData: Record<string, FetchBox<any>>;
+  topNJobTitlesByName: Record<string, FetchBox<TopNJobTitles | null>>;
+  esgSalaryData: Record<string, FetchBox<ESGSalaryData | null>>;
 } = {
-  // page --> indexBox
   indexesByPage: {},
   indexCountBox: getUnfetched(),
-  // companyName --> box
   ratingStatisticsByName: {},
   overviewByName: {},
   overviewStatisticsByName: {},
@@ -66,8 +117,6 @@ const preloadedState: {
   interviewExperiencesByName: {},
   workExperiencesByName: {},
   isSubscribedByName: {},
-  // companyName --> box
-  // box.data: null | {all, interview, work, salary}
   topNJobTitlesByName: {},
   esgSalaryData: {},
 };
@@ -77,7 +126,16 @@ const reducer = createReducer(preloadedState, {
     ...state,
     indexCountBox: box,
   }),
-  [SET_INDEX]: (state, { page, box }: { page: number; box: FetchBox<any> }) => {
+  [SET_INDEX]: (
+    state,
+    {
+      page,
+      box,
+    }: {
+      page: number;
+      box: FetchBox<CompanyInIndex[]>;
+    },
+  ) => {
     return {
       ...state,
       indexesByPage: {
@@ -106,7 +164,7 @@ const reducer = createReducer(preloadedState, {
     {
       companyName,
       box,
-    }: { companyName: string; box: FetchBox<CompanyOverview> },
+    }: { companyName: string; box: FetchBox<CompanyOverview | null> },
   ) => {
     return {
       ...state,
@@ -118,7 +176,13 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_OVERVIEW_STATISTICS]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<CompanyOverviewStatistics | null>;
+    },
   ) => {
     return {
       ...state,
@@ -128,9 +192,15 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY]: (
+  [SET_SALARY_WORK_TIME]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<CompanySalaryWorkTimeResult | null>;
+    },
   ) => {
     return {
       ...state,
@@ -140,7 +210,7 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY_STATISTICS]: (
+  [SET_SALARY_WORK_TIME_STATISTICS]: (
     state,
     {
       companyName,
@@ -160,7 +230,13 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_INTERVIEW_EXPERIENCES]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<CompanyInterviewExperienceResult | null>;
+    },
   ) => {
     return {
       ...state,
@@ -172,7 +248,13 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_WORK_EXPERIENCES]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<CompanyWorkExperienceResult | null>;
+    },
   ) => {
     return {
       ...state,
@@ -184,7 +266,10 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_COMPANY_TOP_N_JOB_TITLES]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: { companyName: string; box: FetchBox<TopNJobTitles | null> },
   ) => {
     return {
       ...state,
@@ -196,7 +281,10 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_COMPANY_ESG_SALARY_DATA]: (
     state,
-    { companyName, box }: { companyName: string; box: FetchBox<any> },
+    {
+      companyName,
+      box,
+    }: { companyName: string; box: FetchBox<ESGSalaryData | null> },
   ) => {
     return {
       ...state,

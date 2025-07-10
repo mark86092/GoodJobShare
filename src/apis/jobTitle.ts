@@ -1,82 +1,31 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
-  getJobTitleInterviewExperiencesQuery,
-  queryJobTitleOverviewGql,
-  QueryJobTitleOverviewData,
-  getJobTitleTimeAndSalaryQuery,
+  queryJobTitleInterviewExperiencesGql,
+  QueryJobTitleInterviewExperiencesData,
+  queryJobTitleSalaryWorkTimeGql,
+  QueryJobTitleSalaryWorkTimeData,
   getJobTitleWorkExperiencesQuery,
+  QueryJobTitleWorkExperiencesData,
   queryJobTitlesHavingDataGql,
-  queryJobTitleSalaryWorkTimeStatisticsQuery,
-  QueryJobTitleSalaryWorkTimeStatisticsData,
-  JobTitleSalaryWorkTimeStatistics,
-  queryJobTitleOverviewStatisticsGql,
+  QueryJobTitlesHavingDataData,
+  JobTitleExperiencesPaginationInput,
 } from 'graphql/jobTitle';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
-export const queryJobTitleOverview = ({
-  jobTitle,
-  interviewExperiencesLimit,
-  workExperiencesLimit,
-  salaryWorkTimesLimit,
-}: {
-  jobTitle: string;
-  interviewExperiencesLimit: number;
-  workExperiencesLimit: number;
-  salaryWorkTimesLimit: number;
-}): Promise<{
-  name: string;
-  salaryWorkTimesResult: {
-    count: number;
-    salaryWorkTimes: SalaryWorkTime[];
-  };
-  workExperiencesResult: {
-    count: number;
-    workExperiences: WorkExperience[];
-  };
-  interviewExperiencesResult: {
-    count: number;
-    interviewExperiences: InterviewExperience[];
-  };
-} | null> =>
-  graphqlClient<QueryJobTitleOverviewData>({
-    query: queryJobTitleOverviewGql,
-    variables: {
-      jobTitle,
-      interviewExperiencesLimit,
-      workExperiencesLimit,
-      salaryWorkTimesLimit,
-    },
-  }).then(R.prop('job_title'));
-
-export const queryJobTitleOverviewStatistics = ({ jobTitle }) =>
-  graphqlClient({
-    query: queryJobTitleOverviewStatisticsGql,
-    variables: {
-      jobTitle,
-    },
-  }).then(R.prop('job_title'));
-
-export const getJobTitleTimeAndSalary = ({
+export const queryJobTitleSalaryWorkTime = ({
   jobTitle,
   companyName,
   start,
   limit,
-}) =>
-  graphqlClient({
-    query: getJobTitleTimeAndSalaryQuery,
-    variables: { jobTitle, companyName, start, limit },
-  }).then(R.prop('job_title'));
-
-export const queryJobTitleSalaryWorkTimeStatistics = ({
-  jobTitle,
 }: {
   jobTitle: string;
-}): Promise<JobTitleSalaryWorkTimeStatistics | null> =>
-  graphqlClient<QueryJobTitleSalaryWorkTimeStatisticsData>({
-    query: queryJobTitleSalaryWorkTimeStatisticsQuery,
-    variables: { jobTitle },
+  companyName?: string | null;
+  start: number;
+  limit: number;
+}): Promise<QueryJobTitleSalaryWorkTimeData['job_title']> =>
+  graphqlClient<QueryJobTitleSalaryWorkTimeData>({
+    query: queryJobTitleSalaryWorkTimeGql,
+    variables: { jobTitle, companyName, start, limit },
   }).then(R.prop('job_title'));
 
 export const getJobTitleInterviewExperiences = ({
@@ -85,9 +34,11 @@ export const getJobTitleInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}) =>
-  graphqlClient({
-    query: getJobTitleInterviewExperiencesQuery,
+}: JobTitleExperiencesPaginationInput): Promise<
+  QueryJobTitleInterviewExperiencesData['job_title']
+> =>
+  graphqlClient<QueryJobTitleInterviewExperiencesData>({
+    query: queryJobTitleInterviewExperiencesGql,
     variables: { jobTitle, companyName, start, limit, sortBy },
   }).then(R.prop('job_title'));
 
@@ -97,14 +48,22 @@ export const getJobTitleWorkExperiences = ({
   start,
   limit,
   sortBy,
-}) =>
-  graphqlClient({
+}: JobTitleExperiencesPaginationInput): Promise<
+  QueryJobTitleWorkExperiencesData['job_title']
+> =>
+  graphqlClient<QueryJobTitleWorkExperiencesData>({
     query: getJobTitleWorkExperiencesQuery,
     variables: { jobTitle, companyName, start, limit, sortBy },
   }).then(R.prop('job_title'));
 
-export const queryJobTitlesApi = ({ start, limit }) =>
-  graphqlClient({
+export const queryJobTitlesApi = ({
+  start,
+  limit,
+}: {
+  start: number;
+  limit: number;
+}): Promise<QueryJobTitlesHavingDataData> =>
+  graphqlClient<QueryJobTitlesHavingDataData>({
     query: queryJobTitlesHavingDataGql,
     variables: { start, limit },
   });

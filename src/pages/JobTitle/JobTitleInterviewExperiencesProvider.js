@@ -47,7 +47,7 @@ const useInterviewExperiencesBoxSelector = jobTitle => {
   );
 };
 
-const JobTitleTimeAndSalaryProvider = () => {
+const JobTitleInterviewExperiencesProvider = () => {
   const dispatch = useDispatch();
   const pageType = PAGE_TYPE.JOB_TITLE;
   const jobTitle = useJobTitle();
@@ -88,7 +88,7 @@ const JobTitleTimeAndSalaryProvider = () => {
   );
 };
 
-JobTitleTimeAndSalaryProvider.fetchData = ({
+JobTitleInterviewExperiencesProvider.fetchData = ({
   store: { dispatch },
   ...props
 }) => {
@@ -111,4 +111,4 @@ JobTitleTimeAndSalaryProvider.fetchData = ({
   );
 };
 
-export default JobTitleTimeAndSalaryProvider;
+export default JobTitleInterviewExperiencesProvider;

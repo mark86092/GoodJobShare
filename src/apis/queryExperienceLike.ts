@@ -1,12 +1,19 @@
 import graphqlClient from 'utils/graphqlClient';
 
-const query = /* GraphQL */ `
+const queryExperienceLikeGql = /* GraphQL */ `
   query($id: ID!) {
     experience(id: $id) {
       liked
     }
   }
 `;
+
+// TODO: need check whether experience is not null
+type QueryExperienceLikeData = {
+  experience: {
+    liked: boolean | null;
+  };
+};
 
 const queryExperienceLike = async ({
   id,
@@ -15,12 +22,8 @@ const queryExperienceLike = async ({
   id: string;
   token?: string;
 }): Promise<boolean | null> => {
-  const data = await graphqlClient<{
-    experience: {
-      liked: boolean | null;
-    };
-  }>({
-    query,
+  const data = await graphqlClient<QueryExperienceLikeData>({
+    query: queryExperienceLikeGql,
     variables: { id },
     token,
   });

@@ -4,43 +4,94 @@ import {
   SET_INDEX_COUNT,
   SET_INDEX,
   SET_OVERVIEW,
-  SET_TIME_AND_SALARY,
+  SET_SALARY_WORK_TIME,
   SET_INTERVIEW_EXPERIENCES,
   SET_WORK_EXPERIENCES,
-  SET_TIME_AND_SALARY_STATISTICS,
+  SET_SALARY_WORK_TIME_STATISTICS,
   SET_OVERVIEW_STATISTICS,
 } from 'actions/jobTitle';
-import { JobTitleSalaryWorkTimeStatistics } from 'graphql/jobTitle';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
+import {
+  JobTitle,
+  JobTitleExperiencesPaginationInput,
+  JobTitleInterviewExperience,
+  JobTitleWorkExperience,
+} from 'graphql/jobTitle';
+import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+import {
+  SalaryDistributionBin,
+  OvertimeFrequencyCount,
+  SalaryWorkTime,
+} from 'apis/salaryWorkTime';
+import {
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
+} from 'apis/overview';
 
 export type JobTitleOverview = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
-  interviewExperiences: InterviewExperience[];
+  interviewExperiences: InterviewExperienceInOverview[];
   interviewExperiencesCount: number;
-  workExperiences: WorkExperience[];
+  workExperiences: WorkExperienceInOverview[];
   workExperiencesCount: number;
-} | null;
+};
+
+export type JobTitleOverviewStatistics = {
+  salaryDistribution: SalaryDistributionBin[];
+  averageWeekWorkTime: number;
+  overtimeFrequencyCount: OvertimeFrequencyCount | null;
+};
+
+export type JobTitleSalaryWorkTimeResult = {
+  name: string;
+  salaryWorkTimes: SalaryWorkTime[];
+  salaryWorkTimesCount: number;
+  // params
+  companyName?: string | null;
+  start: number;
+  limit: number;
+};
+
+export type JobTitleInterviewExperienceResult = {
+  name: string;
+  interviewExperiences: JobTitleInterviewExperience[];
+  interviewExperiencesCount: number;
+} & Omit<JobTitleExperiencesPaginationInput, 'jobTitle'>;
+
+export type JobTitleWorkExperienceResult = {
+  name: string;
+  workExperiences: JobTitleWorkExperience[];
+  workExperiencesCount: number;
+} & Omit<JobTitleExperiencesPaginationInput, 'jobTitle'>;
 
 const preloadedState: {
-  indexesByPage: Record<number, FetchBox<any>>;
+  indexesByPage: Record<number, FetchBox<JobTitle[]>>;
   indexCountBox: FetchBox<number>;
-  overviewByName: Record<string, FetchBox<JobTitleOverview>>;
-  overviewStatisticsByName: Record<string, FetchBox<any>>;
-  timeAndSalaryByName: Record<string, FetchBox<any>>;
+  overviewByName: Record<string, FetchBox<JobTitleOverview | null>>;
+  overviewStatisticsByName: Record<
+    string,
+    FetchBox<JobTitleOverviewStatistics | null>
+  >;
+  timeAndSalaryByName: Record<
+    string,
+    FetchBox<JobTitleSalaryWorkTimeResult | null>
+  >;
   timeAndSalaryStatisticsByName: Record<
     string,
     FetchBox<JobTitleSalaryWorkTimeStatistics | null>
   >;
-  interviewExperiencesByName: Record<string, FetchBox<any>>;
-  workExperiencesByName: Record<string, FetchBox<any>>;
+  interviewExperiencesByName: Record<
+    string,
+    FetchBox<JobTitleInterviewExperienceResult | null>
+  >;
+  workExperiencesByName: Record<
+    string,
+    FetchBox<JobTitleWorkExperienceResult | null>
+  >;
 } = {
-  // page --> indexBox
   indexesByPage: {},
   indexCountBox: getUnfetched(),
-  // jobTitle --> overviewBox
   overviewByName: {},
   overviewStatisticsByName: {},
   timeAndSalaryByName: {},
@@ -54,7 +105,10 @@ const reducer = createReducer(preloadedState, {
     ...state,
     indexCountBox: box,
   }),
-  [SET_INDEX]: (state, { page, box }: { page: number; box: FetchBox<any> }) => {
+  [SET_INDEX]: (
+    state,
+    { page, box }: { page: number; box: FetchBox<JobTitle[]> },
+  ) => {
     return {
       ...state,
       indexesByPage: {
@@ -65,7 +119,10 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_OVERVIEW]: (
     state,
-    { jobTitle, box }: { jobTitle: string; box: FetchBox<JobTitleOverview> },
+    {
+      jobTitle,
+      box,
+    }: { jobTitle: string; box: FetchBox<JobTitleOverview | null> },
   ) => {
     return {
       ...state,
@@ -77,7 +134,13 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_OVERVIEW_STATISTICS]: (
     state,
-    { jobTitle, box }: { jobTitle: string; box: FetchBox<any> },
+    {
+      jobTitle,
+      box,
+    }: {
+      jobTitle: string;
+      box: FetchBox<JobTitleOverviewStatistics | null>;
+    },
   ) => {
     return {
       ...state,
@@ -87,9 +150,15 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY]: (
+  [SET_SALARY_WORK_TIME]: (
     state,
-    { jobTitle, box }: { jobTitle: string; box: FetchBox<any> },
+    {
+      jobTitle,
+      box,
+    }: {
+      jobTitle: string;
+      box: FetchBox<JobTitleSalaryWorkTimeResult | null>;
+    },
   ) => {
     return {
       ...state,
@@ -99,7 +168,7 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY_STATISTICS]: (
+  [SET_SALARY_WORK_TIME_STATISTICS]: (
     state,
     {
       jobTitle,
@@ -119,7 +188,13 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_INTERVIEW_EXPERIENCES]: (
     state,
-    { jobTitle, box }: { jobTitle: string; box: FetchBox<any> },
+    {
+      jobTitle,
+      box,
+    }: {
+      jobTitle: string;
+      box: FetchBox<JobTitleInterviewExperienceResult | null>;
+    },
   ) => {
     return {
       ...state,
@@ -131,7 +206,13 @@ const reducer = createReducer(preloadedState, {
   },
   [SET_WORK_EXPERIENCES]: (
     state,
-    { jobTitle, box }: { jobTitle: string; box: FetchBox<any> },
+    {
+      jobTitle,
+      box,
+    }: {
+      jobTitle: string;
+      box: FetchBox<JobTitleWorkExperienceResult | null>;
+    },
   ) => {
     return {
       ...state,

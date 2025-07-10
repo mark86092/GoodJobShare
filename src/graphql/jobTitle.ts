@@ -1,19 +1,21 @@
+import DataResultSortOption from 'apis/dataResultSortOption';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
   workExperiencesPartialGql,
 } from './experience';
 import {
-  fragmentInterviewExperienceFields,
-  fragmentWorkExperienceFields,
-  InterviewExperience,
-  WorkExperience,
-} from './overview';
-import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
-  SalaryWorkTimeStatistics,
-} from './salaryWorkTime';
+} from 'apis/salaryWorkTime';
+
+export interface JobTitle {
+  name: string;
+}
+
+export type QueryJobTitlesData = {
+  job_titles: JobTitle[];
+};
 
 export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
@@ -23,85 +25,18 @@ export const queryJobTitles = /* GraphQL */ `
   }
 `;
 
-export type QueryJobTitleOverviewData = {
-  job_title: {
-    name: string;
-    salaryWorkTimesResult: {
-      count: number;
-      salaryWorkTimes: SalaryWorkTime[];
-    };
-    workExperiencesResult: {
-      count: number;
-      workExperiences: WorkExperience[];
-    };
-    interviewExperiencesResult: {
-      count: number;
-      interviewExperiences: InterviewExperience[];
-    };
-  } | null;
+export type QueryJobTitleSalaryWorkTimeData = {
+  job_title:
+    | (JobTitle & {
+        salaryWorkTimesResult: {
+          count: number;
+          salaryWorkTimes: SalaryWorkTime[];
+        };
+      })
+    | null;
 };
 
-export const queryJobTitleOverviewGql = /* GraphQL */ `
-  query(
-    $jobTitle: String!
-    $interviewExperiencesLimit: Int!
-    $workExperiencesLimit: Int!
-    $salaryWorkTimesLimit: Int!
-  ) {
-    job_title(name: $jobTitle) {
-      name
-      interviewExperiencesResult(start: 0, limit: $interviewExperiencesLimit) {
-        count
-        interviewExperiences {
-          ...interviewExperienceFields
-        }
-      }
-      workExperiencesResult(start: 0, limit: $workExperiencesLimit) {
-        count
-        workExperiences {
-          ...workExperienceFields
-        }
-      }
-      salaryWorkTimesResult(start: 0, limit: $salaryWorkTimesLimit) {
-        count
-        salaryWorkTimes {
-          ...salaryWorkTimeFields
-        }
-      }
-    }
-  }
-  ${fragmentInterviewExperienceFields}
-  ${fragmentWorkExperienceFields}
-  ${fragmentSalaryWorkTimeFields}
-`;
-
-export const queryJobTitleOverviewStatisticsGql = /* GraphQL */ `
-  query($jobTitle: String!) {
-    job_title(name: $jobTitle) {
-      salary_work_time_statistics {
-        average_week_work_time
-        overtime_frequency_count {
-          seldom
-          sometimes
-          usually
-          almost_everyday
-        }
-      }
-      salary_distribution {
-        bins {
-          data_count
-          range {
-            type
-            from
-            to
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
+export const queryJobTitleSalaryWorkTimeGql = /* GraphQL */ `
   query($jobTitle: String!, $companyName: String, $start: Int!, $limit: Int!) {
     job_title(name: $jobTitle) {
       name
@@ -112,79 +47,37 @@ export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
       ) {
         count
         salaryWorkTimes {
-          id
-          week_work_time
-          salary {
-            type
-            amount
-          }
-          sector
-          day_real_work_time
-          day_promised_work_time
-          experience_in_year
-          estimated_hourly_wage
-          overtime_frequency
-          employment_type
-          job_title {
-            name
-          }
-          company {
-            name
-          }
-          originalCompanyName
-          data_time {
-            month
-            year
-          }
-          reportCount
-          reports {
-            id
-            reasonCategory
-            reason
-            createdAt
-          }
+          ...salaryWorkTimeFields
         }
       }
     }
   }
+  ${fragmentSalaryWorkTimeFields}
 `;
 
-export type JobTitleSalaryWorkTimeStatistics = {
-  name: string;
-  salary_work_time_statistics: SalaryWorkTimeStatistics;
+export type JobTitleExperiencesPaginationInput = {
+  jobTitle: string;
+  companyName?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: DataResultSortOption;
 };
 
-export type QueryJobTitleSalaryWorkTimeStatisticsData = {
-  job_title: JobTitleSalaryWorkTimeStatistics | null;
+// TODO
+export type JobTitleInterviewExperience = {};
+
+export type QueryJobTitleInterviewExperiencesData = {
+  job_title:
+    | (JobTitle & {
+        interviewExperiencesResult: {
+          count: number;
+          interviewExperiences: JobTitleInterviewExperience[];
+        };
+      })
+    | null;
 };
 
-export const queryJobTitleSalaryWorkTimeStatisticsQuery = /* GraphQL */ `
-  query($jobTitle: String!) {
-    job_title(name: $jobTitle) {
-      name
-      salary_work_time_statistics {
-        count
-        is_overtime_salary_legal_count {
-          yes
-          no
-          unknown
-        }
-        has_compensatory_dayoff_count {
-          yes
-          no
-          unknown
-        }
-        has_overtime_salary_count {
-          yes
-          no
-          unknown
-        }
-      }
-    }
-  }
-`;
-
-export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
+export const queryJobTitleInterviewExperiencesGql = /* GraphQL */ `
   query(
     $jobTitle: String!
     $companyName: String
@@ -209,6 +102,20 @@ export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
     }
   }
 `;
+
+// TODO
+export type JobTitleWorkExperience = {};
+
+export type QueryJobTitleWorkExperiencesData = {
+  job_title:
+    | (JobTitle & {
+        workExperiencesResult: {
+          count: number;
+          workExperiences: JobTitleWorkExperience[];
+        };
+      })
+    | null;
+};
 
 export const getJobTitleWorkExperiencesQuery = /* GraphQL */ `
   query(
@@ -235,6 +142,11 @@ export const getJobTitleWorkExperiencesQuery = /* GraphQL */ `
     }
   }
 `;
+
+export type QueryJobTitlesHavingDataData = {
+  jobTitlesHavingData: JobTitle[];
+  jobTitlesHavingDataCount: number;
+};
 
 export const queryJobTitlesHavingDataGql = /* GraphQL */ `
   query($start: Int!, $limit: Int!) {

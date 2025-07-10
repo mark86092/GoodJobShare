@@ -1,141 +1,83 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import {
-  queryCompanyRatingStatisticsGql,
-  QueryCompanyRatingStatisticsData,
-  RatingStatistics,
-  queryCompanyOverviewGql,
-  QueryCompanyOverviewData,
-  getCompanyTimeAndSalaryQuery,
-  getCompanyInterviewExperiencesQuery,
-  getCompanyWorkExperiencesQuery,
+  queryCompanyInterviewExperiencesGql,
+  QueryCompanyInterviewExperiencesData,
+  queryCompanyWorkExperiencesGql,
+  QueryCompanyWorkExperiencesData,
   queryCompaniesHavingDataGql,
-  queryCompanySalaryWorkTimeStatisticsGql,
-  QueryCompanySalaryWorkTimeStatisticsData,
-  CompanySalaryWorkTimeStatistics,
-  getCompanyTopNJobTitlesQuery,
-  getCompanyEsgSalaryDataQuery,
-  queryCompanyOverviewStatisticsQuery,
+  QueryCompaniesHavingDataData,
+  queryCompanyTopNJobTitlesGql,
+  QueryCompanyTopNJobTitlesData,
+  TopNJobTitles,
+  queryCompanyEsgSalaryDataGql,
+  QueryCompanyEsgSalaryDataData,
+  ESGSalaryData,
   queryCompanyIsSubscribedGql,
   QueryCompanyIsSubscribedData,
   subscribeCompanyGql,
+  SubscribeCompanyData,
   unsubscribeCompanyGql,
+  UnsubscribeCompanyData,
+  CompanyExperiencesPaginationInput,
 } from 'graphql/company';
-import { InterviewExperience, WorkExperience } from 'graphql/overview';
-import { SalaryWorkTime } from 'graphql/salaryWorkTime';
 
-export const queryCompanyRatingStatisticsApi = ({
+export const getCompanyTopNJobTitles = ({
   companyName,
 }: {
   companyName: string;
-}): Promise<RatingStatistics | null> =>
-  graphqlClient<QueryCompanyRatingStatisticsData>({
-    query: queryCompanyRatingStatisticsGql,
+}): Promise<TopNJobTitles | null> =>
+  graphqlClient<QueryCompanyTopNJobTitlesData>({
+    query: queryCompanyTopNJobTitlesGql,
     variables: { companyName },
-  }).then(data => (data.company ? data.company.companyRatingStatistics : null));
+  }).then(data => (data.company ? data.company.topNJobTitles : null));
 
-export const queryCompanyOverview = ({
-  companyName,
-  interviewExperiencesLimit,
-  workExperiencesLimit,
-  salaryWorkTimesLimit,
-}: {
-  companyName: string;
-  interviewExperiencesLimit: number;
-  workExperiencesLimit: number;
-  salaryWorkTimesLimit: number;
-}): Promise<{
-  name: string;
-  salaryWorkTimesResult: {
-    count: number;
-    salaryWorkTimes: SalaryWorkTime[];
-  };
-  workExperiencesResult: {
-    count: number;
-    workExperiences: WorkExperience[];
-  };
-  interviewExperiencesResult: {
-    count: number;
-    interviewExperiences: InterviewExperience[];
-  };
-} | null> =>
-  graphqlClient<QueryCompanyOverviewData>({
-    query: queryCompanyOverviewGql,
-    variables: {
-      companyName,
-      interviewExperiencesLimit,
-      workExperiencesLimit,
-      salaryWorkTimesLimit,
-    },
-  }).then(R.prop('company'));
-
-export const queryCompanyOverviewStatistics = ({ companyName }) =>
-  graphqlClient({
-    query: queryCompanyOverviewStatisticsQuery,
-    variables: {
-      companyName,
-    },
-  }).then(R.prop('company'));
-
-export const getCompanyTimeAndSalary = ({
-  companyName,
-  jobTitle,
-  start,
-  limit,
-}) =>
-  graphqlClient({
-    query: getCompanyTimeAndSalaryQuery,
-    variables: { companyName, jobTitle, start, limit },
-  }).then(R.prop('company'));
-
-export const queryCompanySalaryWorkTimeStatistics = ({
+export const getCompanyEsgSalaryData = ({
   companyName,
 }: {
   companyName: string;
-}): Promise<CompanySalaryWorkTimeStatistics | null> =>
-  graphqlClient<QueryCompanySalaryWorkTimeStatisticsData>({
-    query: queryCompanySalaryWorkTimeStatisticsGql,
+}): Promise<ESGSalaryData | null> =>
+  graphqlClient<QueryCompanyEsgSalaryDataData>({
+    query: queryCompanyEsgSalaryDataGql,
     variables: { companyName },
-  }).then(R.prop('company'));
+  }).then(data => (data.company ? data.company.esgSalaryData : null));
 
-export const getCompanyTopNJobTitles = ({ companyName }) =>
-  graphqlClient({
-    query: getCompanyTopNJobTitlesQuery,
-    variables: { companyName },
-  }).then(R.prop('company'));
-
-export const getCompanyEsgSalaryData = ({ companyName }) =>
-  graphqlClient({
-    query: getCompanyEsgSalaryDataQuery,
-    variables: { companyName },
-  }).then(R.path(['company', 'esgSalaryData']));
-
-export const getCompanyInterviewExperiences = ({
+export const queryCompanyInterviewExperiences = ({
   companyName,
   jobTitle,
   start,
   limit,
   sortBy,
-}) =>
-  graphqlClient({
-    query: getCompanyInterviewExperiencesQuery,
+}: CompanyExperiencesPaginationInput): Promise<
+  QueryCompanyInterviewExperiencesData['company']
+> =>
+  graphqlClient<QueryCompanyInterviewExperiencesData>({
+    query: queryCompanyInterviewExperiencesGql,
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
 
-export const getCompanyWorkExperiences = ({
+export const queryCompanyWorkExperiences = ({
   companyName,
   jobTitle,
   start,
   limit,
   sortBy,
-}) =>
-  graphqlClient({
-    query: getCompanyWorkExperiencesQuery,
+}: CompanyExperiencesPaginationInput): Promise<
+  QueryCompanyWorkExperiencesData['company']
+> =>
+  graphqlClient<QueryCompanyWorkExperiencesData>({
+    query: queryCompanyWorkExperiencesGql,
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
 
-export const queryCompaniesApi = ({ start, limit }) =>
-  graphqlClient({
+export const queryCompanies = ({
+  start,
+  limit,
+}: {
+  start: number;
+  limit: number;
+}): Promise<QueryCompaniesHavingDataData> =>
+  graphqlClient<QueryCompaniesHavingDataData>({
     query: queryCompaniesHavingDataGql,
     variables: { start, limit },
   });
@@ -172,8 +114,8 @@ export const subscribeCompanyApi = async ({
 }: {
   companyId: string;
   token?: string;
-}) => {
-  const data = await graphqlClient({
+}): Promise<boolean> => {
+  const data = await graphqlClient<SubscribeCompanyData>({
     query: subscribeCompanyGql,
     token,
     variables: { input: { companyId } },
@@ -188,8 +130,8 @@ export const unsubscribeCompanyApi = async ({
 }: {
   companyId: string;
   token?: string;
-}) => {
-  const data = await graphqlClient({
+}): Promise<boolean> => {
+  const data = await graphqlClient<UnsubscribeCompanyData>({
     query: unsubscribeCompanyGql,
     token,
     variables: { input: { companyId } },

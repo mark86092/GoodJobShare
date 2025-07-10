@@ -22,12 +22,12 @@ import VerificationPage from './components/EmailVerification/VerificationPage';
 import CompanyAndJobTitlePageContainer from './components/CompanyAndJobTitle';
 import CompanyIndexProvider from 'pages/Company/CompanyIndexProvider';
 import CompanyOverviewProvider from 'pages/Company/CompanyOverviewProvider';
-import CompanyTimeAndSalaryProvider from 'pages/Company/CompanyTimeAndSalaryProvider';
+import CompanySalaryWorkTimeProvider from 'pages/Company/CompanyTimeAndSalaryProvider';
 import CompanyInterviewExperiencesProvider from 'pages/Company/CompanyInterviewExperiencesProvider';
 import CompanyWorkExperiencesProvider from 'pages/Company/CompanyWorkExperiencesProvider';
 import JobTitleIndexProvider from 'pages/JobTitle/JobTitleIndexProvider';
 import JobTitleOverviewProvider from 'pages/JobTitle/JobTitleOverviewProvider';
-import JobTitleTimeAndSalaryProvider from 'pages/JobTitle/JobTitleTimeAndSalaryProvider';
+import JobTitleSalaryWorkTimeProvider from 'pages/JobTitle/JobTitleTimeAndSalaryProvider';
 import JobTitleInterviewExperiencesProvider from 'pages/JobTitle/JobTitleInterviewExperiencesProvider';
 import JobTitleWorkExperiencesProvider from 'pages/JobTitle/JobTitleWorkExperiencesProvider';
 
@@ -133,7 +133,7 @@ const routes = [
       },
       {
         path: companySalaryWorkTimesPath,
-        component: CompanyTimeAndSalaryProvider,
+        component: CompanySalaryWorkTimeProvider,
         exact: true,
       },
       {
@@ -176,7 +176,7 @@ const routes = [
       },
       {
         path: jobTitleSalaryWorkTimesPath,
-        component: JobTitleTimeAndSalaryProvider,
+        component: JobTitleSalaryWorkTimeProvider,
         exact: true,
       },
       {

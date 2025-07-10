@@ -8,7 +8,7 @@ import FetchBox, {
 } from 'utils/fetchBox';
 import { tokenSelector } from 'selectors/authSelector';
 import { experienceCountBoxSelector } from 'selectors/countSelector';
-import { queryExperienceCountApi } from 'apis/experiencesApi';
+import queryExperienceCountApi from 'apis/queryExperienceCount';
 import { postInterviewExperience as postInterviewExperienceApi } from 'apis/interviewExperiencesApi';
 import { postWorkExperienceWithRating as postWorkExperienceWithRatingApi } from 'apis/workExperiencesApi';
 import { queryMyPublishIds } from './me';

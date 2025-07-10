@@ -1,5 +1,14 @@
-import { isGraphqlError } from 'utils/errors';
+import { AnyAction } from 'redux';
+import { Thunk } from 'reducers';
 import {
+  CompanyOverview,
+  CompanyOverviewStatistics,
+  CompanySalaryWorkTimeResult,
+  CompanyInterviewExperienceResult,
+  CompanyWorkExperienceResult,
+} from 'reducers/companyIndex';
+import { isGraphqlError } from 'utils/errors';
+import FetchBox, {
   isFetching,
   isFetched,
   toFetching,
@@ -10,8 +19,8 @@ import {
   companyIndexesBoxSelectorAtPage,
   companyOverviewBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
-  companyTimeAndSalaryBoxSelectorByName,
-  companyTimeAndSalaryStatisticsBoxSelectorByName,
+  companySalaryWorkTimeBoxSelectorByName,
+  companySalaryWorkTimeStatisticsBoxSelectorByName,
   companyInterviewExperiencesBoxSelectorByName,
   companyWorkExperiencesBoxSelectorByName,
   companyRatingStatisticsBoxSelectorByName,
@@ -20,29 +29,39 @@ import {
   companyIsSubscribedBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
-  queryCompanyOverview as queryCompanyOverviewApi,
-  getCompanyTimeAndSalary,
-  getCompanyInterviewExperiences,
-  getCompanyWorkExperiences,
-  queryCompaniesApi,
-  queryCompanySalaryWorkTimeStatistics as queryCompanyTimeAndSalaryStatisticsApi,
-  queryCompanyRatingStatisticsApi,
+  queryCompanyInterviewExperiences as queryCompanyInterviewExperiencesApi,
+  queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
+  queryCompanies as queryCompaniesApi,
   getCompanyTopNJobTitles,
   getCompanyEsgSalaryData,
-  queryCompanyOverviewStatistics as queryCompanyOverviewStatisticsApi,
   subscribeCompanyApi,
   unsubscribeCompanyApi,
   queryCompanyIsSubscribedApi,
 } from 'apis/company';
+import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
+import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
+import queryCompanyRatingStatisticsApi, {
+  RatingStatistics,
+} from 'apis/queryCompanyRatingStatistics';
+import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
+import queryCompanySalaryWorkTimeStatisticsApi, {
+  CompanySalaryWorkTimeStatistics,
+} from 'apis/queryCompanySalaryWorkTimeStatistics';
+import {
+  CompanyExperiencesPaginationInput,
+  CompanyInIndex,
+  ESGSalaryData,
+  TopNJobTitles,
+} from 'graphql/company';
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 
 export const SET_RATING_STATISTICS = '@@COMPANY/SET_RATING_STATISTICS';
 export const SET_OVERVIEW = '@@COMPANY/SET_OVERVIEW';
 export const SET_OVERVIEW_STATISTICS = '@@COMPANY/SET_OVERVIEW_STATISTICS';
-export const SET_TIME_AND_SALARY = '@@COMPANY/SET_TIME_AND_SALARY';
-export const SET_TIME_AND_SALARY_STATISTICS =
-  '@@COMPANY/SET_TIME_AND_SALARY_STATISTICS';
+export const SET_SALARY_WORK_TIME = '@@COMPANY/SET_SALARY_WORK_TIME';
+export const SET_SALARY_WORK_TIME_STATISTICS =
+  '@@COMPANY/SET_SALARY_WORK_TIME_STATISTICS';
 export const SET_INTERVIEW_EXPERIENCES = '@@COMPANY/SET_INTERVIEW_EXPERIENCES';
 export const SET_WORK_EXPERIENCES = '@@COMPANY/SET_WORK_EXPERIENCES';
 export const SET_INDEX = '@@COMPANY/SET_INDEX';
@@ -53,21 +72,27 @@ export const SET_COMPANY_ESG_SALARY_DATA =
   '@@COMPANY/SET_COMPANY_ESG_SALARY_DATA';
 export const SET_IS_SUBSCRIBED = '@@COMPANY/SET_IS_SUBSCRIBED';
 
-const setIndex = (page, box) => ({
+const setIndex = (
+  page: number,
+  box: FetchBox<CompanyInIndex[]>,
+): AnyAction => ({
   type: SET_INDEX,
   page,
   box,
 });
 
-const setIndexCount = box => ({
+const setIndexCount = (box: FetchBox<number>): AnyAction => ({
   type: SET_INDEX_COUNT,
   box,
 });
 
-export const fetchCompanyNames = ({ page, pageSize }) => async (
-  dispatch,
-  getState,
-) => {
+export const fetchCompanyNames = ({
+  page,
+  pageSize,
+}: {
+  page: number;
+  pageSize: number;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyIndexesBoxSelectorAtPage(page)(getState());
   if (isFetching(box) || isFetched(box)) {
     return;
@@ -84,6 +109,7 @@ export const fetchCompanyNames = ({ page, pageSize }) => async (
     dispatch(setIndex(page, getFetched(data.companiesHavingData)));
     dispatch(setIndexCount(getFetched(data.companiesHavingDataCount)));
   } catch (error) {
+    // @ts-ignore
     if (isGraphqlError(error)) {
       return dispatch(setIndex(page, getError(error)));
     }
@@ -91,16 +117,19 @@ export const fetchCompanyNames = ({ page, pageSize }) => async (
   }
 };
 
-const setRatingStatistcs = (companyName, box) => ({
+const setRatingStatistcs = (
+  companyName: string,
+  box: FetchBox<RatingStatistics | null>,
+): AnyAction => ({
   type: SET_RATING_STATISTICS,
   companyName,
   box,
 });
 
-export const queryRatingStatistics = companyName => async (
+export const queryRatingStatistics = (companyName: string): Thunk => async (
   dispatch,
   getState,
-) => {
+): Promise<unknown> => {
   const box = companyRatingStatisticsBoxSelectorByName(companyName)(getState());
   if (isFetching(box) || isFetched(box)) {
     return;
@@ -112,14 +141,9 @@ export const queryRatingStatistics = companyName => async (
     const data = await queryCompanyRatingStatisticsApi({
       companyName,
     });
-
-    // Not found case
-    if (data == null) {
-      return dispatch(setRatingStatistcs(companyName, getFetched(data)));
-    }
-
     dispatch(setRatingStatistcs(companyName, getFetched(data)));
   } catch (error) {
+    // @ts-ignore
     if (isGraphqlError(error)) {
       dispatch(setRatingStatistcs(companyName, getError(error)));
     }
@@ -131,16 +155,19 @@ const SALARY_WORK_TIMES_LIMIT = 5;
 const WORK_EXPERIENCES_LIMIT = 3;
 const INTERVIEW_EXPERIENCES_LIMIT = 3;
 
-const setOverview = (companyName, box) => ({
+const setOverview = (
+  companyName: string,
+  box: FetchBox<CompanyOverview | null>,
+): AnyAction => ({
   type: SET_OVERVIEW,
   companyName,
   box,
 });
 
 export const queryCompanyOverview = (
-  companyName,
+  companyName: string,
   { force = false } = {},
-) => async (dispatch, getState) => {
+): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyOverviewBoxSelectorByName(companyName)(getState());
   if (!force && (isFetching(box) || isFetched(box))) {
     return;
@@ -174,6 +201,7 @@ export const queryCompanyOverview = (
 
     dispatch(setOverview(companyName, getFetched(overviewData)));
   } catch (error) {
+    // @ts-ignore
     if (isGraphqlError(error)) {
       dispatch(setOverview(companyName, getError(error)));
     }
@@ -181,17 +209,18 @@ export const queryCompanyOverview = (
   }
 };
 
-const setOverviewStatistics = (companyName, box) => ({
+const setOverviewStatistics = (
+  companyName: string,
+  box: FetchBox<CompanyOverviewStatistics | null>,
+): AnyAction => ({
   type: SET_OVERVIEW_STATISTICS,
   companyName,
   box,
 });
 
-export const queryCompanyOverviewStatistics = companyName => async (
-  dispatch,
-  getState,
-  { api },
-) => {
+export const queryCompanyOverviewStatistics = (
+  companyName: string,
+): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyOverviewStatisticsBoxSelectorByName(companyName)(
     getState(),
   );
@@ -211,8 +240,8 @@ export const queryCompanyOverviewStatistics = companyName => async (
       return dispatch(setOverviewStatistics(companyName, getFetched(data)));
     }
 
+    // TODO: don't process default value
     const model = {
-      name: data.name,
       jobAverageSalaries:
         data.salary_work_time_statistics.job_average_salaries || [],
       averageWeekWorkTime:
@@ -223,6 +252,7 @@ export const queryCompanyOverviewStatistics = companyName => async (
 
     dispatch(setOverviewStatistics(companyName, getFetched(model)));
   } catch (error) {
+    // @ts-ignore
     if (isGraphqlError(error)) {
       dispatch(setOverviewStatistics(companyName, getError(error)));
     }
@@ -230,23 +260,30 @@ export const queryCompanyOverviewStatistics = companyName => async (
   }
 };
 
-const setTimeAndSalary = (companyName, box) => ({
-  type: SET_TIME_AND_SALARY,
+const setSalaryWorkTime = (
+  companyName: string,
+  box: FetchBox<CompanySalaryWorkTimeResult | null>,
+): AnyAction => ({
+  type: SET_SALARY_WORK_TIME,
   companyName,
   box,
 });
 
-const setInterviewExperiences = (companyName, box) => ({
-  type: SET_INTERVIEW_EXPERIENCES,
-  companyName,
-  box,
-});
-
-export const queryCompanyTimeAndSalary = (
-  { companyName, jobTitle, start, limit },
+export const queryCompanySalaryWorkTime = (
+  {
+    companyName,
+    jobTitle,
+    start,
+    limit,
+  }: {
+    companyName: string;
+    jobTitle?: string | null;
+    start: number;
+    limit: number;
+  },
   { force = false } = {},
-) => async (dispatch, getState) => {
-  const box = companyTimeAndSalaryBoxSelectorByName(companyName)(getState());
+): Thunk => async (dispatch, getState): Promise<unknown> => {
+  const box = companySalaryWorkTimeBoxSelectorByName(companyName)(getState());
   if (
     !force &&
     (isFetching(box) ||
@@ -260,10 +297,10 @@ export const queryCompanyTimeAndSalary = (
     return;
   }
 
-  dispatch(setTimeAndSalary(companyName, toFetching()));
+  dispatch(setSalaryWorkTime(companyName, toFetching()));
 
   try {
-    const data = await getCompanyTimeAndSalary({
+    const data = await queryCompanySalaryWorkTimeApi({
       companyName,
       jobTitle,
       start,
@@ -272,10 +309,10 @@ export const queryCompanyTimeAndSalary = (
 
     // Not found case
     if (data == null) {
-      return dispatch(setTimeAndSalary(companyName, getFetched(data)));
+      return dispatch(setSalaryWorkTime(companyName, getFetched(data)));
     }
 
-    const timeAndSalaryData = {
+    const salaryWorkTimeData = {
       name: data.name,
       jobTitle,
       start,
@@ -284,29 +321,27 @@ export const queryCompanyTimeAndSalary = (
       salaryWorkTimesCount: data.salaryWorkTimesResult.count,
     };
 
-    dispatch(setTimeAndSalary(companyName, getFetched(timeAndSalaryData)));
+    dispatch(setSalaryWorkTime(companyName, getFetched(salaryWorkTimeData)));
   } catch (error) {
-    dispatch(setTimeAndSalary(companyName, getError(error)));
+    dispatch(setSalaryWorkTime(companyName, getError(error)));
   }
 };
 
-const setTimeAndSalaryStatistics = (companyName, box) => ({
-  type: SET_TIME_AND_SALARY_STATISTICS,
+const setSalaryWorkTimeStatistics = (
+  companyName: string,
+  box: FetchBox<CompanySalaryWorkTimeStatistics | null>,
+): AnyAction => ({
+  type: SET_SALARY_WORK_TIME_STATISTICS,
   companyName,
   box,
 });
 
-const setCompanyTopNJobTitles = (companyName, box) => ({
-  type: SET_COMPANY_TOP_N_JOB_TITLES,
+export const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
-  box,
-});
-
-export const queryCompanyTimeAndSalaryStatistics = ({ companyName }) => async (
-  dispatch,
-  getState,
-) => {
-  const box = companyTimeAndSalaryStatisticsBoxSelectorByName(companyName)(
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
+  const box = companySalaryWorkTimeStatisticsBoxSelectorByName(companyName)(
     getState(),
   );
   if (
@@ -316,46 +351,32 @@ export const queryCompanyTimeAndSalaryStatistics = ({ companyName }) => async (
     return;
   }
 
-  dispatch(setTimeAndSalaryStatistics(companyName, toFetching()));
+  dispatch(setSalaryWorkTimeStatistics(companyName, toFetching()));
 
   try {
-    const data = await queryCompanyTimeAndSalaryStatisticsApi({
+    const data = await queryCompanySalaryWorkTimeStatisticsApi({
       companyName,
     });
-
-    // Not found case
-    if (data == null) {
-      return dispatch(
-        setTimeAndSalaryStatistics(companyName, getFetched(data)),
-      );
-    }
-
-    const timeAndSalaryStatisticsData = {
-      name: data.name,
-      salary_work_time_statistics: data.salary_work_time_statistics,
-    };
-
-    dispatch(
-      setTimeAndSalaryStatistics(
-        companyName,
-        getFetched(timeAndSalaryStatisticsData),
-      ),
-    );
+    dispatch(setSalaryWorkTimeStatistics(companyName, getFetched(data)));
   } catch (error) {
-    dispatch(setTimeAndSalaryStatistics(companyName, getError(error)));
+    dispatch(setSalaryWorkTimeStatistics(companyName, getError(error)));
   }
 };
 
-const setEsgSalaryData = (companyName, box) => ({
+const setEsgSalaryData = (
+  companyName: string,
+  box: FetchBox<ESGSalaryData | null>,
+): AnyAction => ({
   type: SET_COMPANY_ESG_SALARY_DATA,
   companyName,
   box,
 });
 
-export const queryCompanyEsgSalaryData = ({ companyName }) => async (
-  dispatch,
-  getState,
-) => {
+export const queryCompanyEsgSalaryData = ({
+  companyName,
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyEsgSalaryDataBoxSelectorByName(companyName)(getState());
 
   if (isFetching(box) || isFetched(box)) {
@@ -371,7 +392,7 @@ export const queryCompanyEsgSalaryData = ({ companyName }) => async (
 
     // Not found case
     if (!data) {
-      return dispatch(setEsgSalaryData(companyName, getFetched()));
+      return dispatch(setEsgSalaryData(companyName, getFetched(null)));
     }
 
     dispatch(setEsgSalaryData(companyName, getFetched(data)));
@@ -380,10 +401,20 @@ export const queryCompanyEsgSalaryData = ({ companyName }) => async (
   }
 };
 
-export const queryCompanyTopNJobTitles = ({ companyName }) => async (
-  dispatch,
-  getState,
-) => {
+const setCompanyTopNJobTitles = (
+  companyName: string,
+  box: FetchBox<TopNJobTitles | null>,
+): AnyAction => ({
+  type: SET_COMPANY_TOP_N_JOB_TITLES,
+  companyName,
+  box,
+});
+
+export const queryCompanyTopNJobTitles = ({
+  companyName,
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyTopNJobTitlesBoxSelectorByName(companyName)(getState());
 
   if (isFetching(box) || isFetched(box)) {
@@ -396,19 +427,20 @@ export const queryCompanyTopNJobTitles = ({ companyName }) => async (
     const data = await getCompanyTopNJobTitles({
       companyName,
     });
-
-    // Not found case
-    if (!data || !data.topNJobTitles) {
-      return dispatch(setCompanyTopNJobTitles(companyName, getFetched(data)));
-    }
-
-    dispatch(
-      setCompanyTopNJobTitles(companyName, getFetched(data.topNJobTitles)),
-    );
+    dispatch(setCompanyTopNJobTitles(companyName, getFetched(data)));
   } catch (error) {
     dispatch(setCompanyTopNJobTitles(companyName, getError(error)));
   }
 };
+
+const setInterviewExperiences = (
+  companyName: string,
+  box: FetchBox<CompanyInterviewExperienceResult | null>,
+): AnyAction => ({
+  type: SET_INTERVIEW_EXPERIENCES,
+  companyName,
+  box,
+});
 
 export const queryCompanyInterviewExperiences = ({
   companyName,
@@ -416,7 +448,10 @@ export const queryCompanyInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}) => async (dispatch, getState) => {
+}: CompanyExperiencesPaginationInput): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
   const box = companyInterviewExperiencesBoxSelectorByName(companyName)(
     getState(),
   );
@@ -436,7 +471,7 @@ export const queryCompanyInterviewExperiences = ({
   dispatch(setInterviewExperiences(companyName, toFetching()));
 
   try {
-    const data = await getCompanyInterviewExperiences({
+    const data = await queryCompanyInterviewExperiencesApi({
       companyName,
       jobTitle,
       start,
@@ -469,6 +504,7 @@ export const queryCompanyInterviewExperiences = ({
 
     // Update state.experiences which is the source of truth for all experiences
     data.interviewExperiencesResult.interviewExperiences.forEach(e => {
+      // @ts-ignore
       dispatch(setExperience(e.id, getFetched(e)));
     });
   } catch (error) {
@@ -477,7 +513,10 @@ export const queryCompanyInterviewExperiences = ({
   }
 };
 
-const setWorkExperiences = (companyName, box) => ({
+const setWorkExperiences = (
+  companyName: string,
+  box: FetchBox<CompanyWorkExperienceResult | null>,
+): AnyAction => ({
   type: SET_WORK_EXPERIENCES,
   companyName,
   box,
@@ -489,7 +528,10 @@ export const queryCompanyWorkExperiences = ({
   start,
   limit,
   sortBy,
-}) => async (dispatch, getState) => {
+}: CompanyExperiencesPaginationInput): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
   const box = companyWorkExperiencesBoxSelectorByName(companyName)(getState());
   if (
     isFetching(box) ||
@@ -507,7 +549,7 @@ export const queryCompanyWorkExperiences = ({
   dispatch(setWorkExperiences(companyName, toFetching()));
 
   try {
-    const data = await getCompanyWorkExperiences({
+    const data = await queryCompanyWorkExperiencesApi({
       companyName,
       jobTitle,
       start,
@@ -534,6 +576,7 @@ export const queryCompanyWorkExperiences = ({
 
     // Update state.experiences which is the source of truth for all experiences
     data.workExperiencesResult.workExperiences.forEach(e => {
+      // @ts-ignore
       dispatch(setExperience(e.id, getFetched(e)));
     });
   } catch (error) {
@@ -541,13 +584,23 @@ export const queryCompanyWorkExperiences = ({
   }
 };
 
-const setIsSubscribed = (companyName, box) => ({
+const setIsSubscribed = (
+  companyName: string,
+  box: FetchBox<{
+    isSubscribed: boolean;
+    companyId: string | null;
+  }>,
+): AnyAction => ({
   type: SET_IS_SUBSCRIBED,
   companyName,
   box,
 });
 
-const subscribeCompany = ({ companyName }) => async (dispatch, getState) => {
+const subscribeCompany = ({
+  companyName,
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const state = getState();
   const token = tokenSelector(state);
   const box = companyIsSubscribedBoxSelectorByName(companyName)(state);
@@ -599,7 +652,11 @@ const subscribeCompany = ({ companyName }) => async (dispatch, getState) => {
   }
 };
 
-const unsubscribeCompany = ({ companyName }) => async (dispatch, getState) => {
+const unsubscribeCompany = ({
+  companyName,
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const state = getState();
   const token = tokenSelector(state);
   const box = companyIsSubscribedBoxSelectorByName(companyName)(state);
@@ -651,10 +708,11 @@ const unsubscribeCompany = ({ companyName }) => async (dispatch, getState) => {
   }
 };
 
-export const toggleSubscribeCompany = ({ companyName }) => async (
-  dispatch,
-  getState,
-) => {
+export const toggleSubscribeCompany = ({
+  companyName,
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const state = getState();
   const box = companyIsSubscribedBoxSelectorByName(companyName)(state);
   if (!isFetched(box) || !box.data) {
@@ -669,10 +727,12 @@ export const toggleSubscribeCompany = ({ companyName }) => async (
   }
 };
 
-export const queryCompanyIsSubscribed = ({ companyName }) => async (
-  dispatch,
-  getState,
-) => {
+// TODO
+export const queryCompanyIsSubscribed = ({
+  companyName,
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyIsSubscribedBoxSelectorByName(companyName)(getState());
   if (isFetching(box) || isFetched(box)) {
     return;
@@ -684,13 +744,9 @@ export const queryCompanyIsSubscribed = ({ companyName }) => async (
     const state = getState();
     const token = tokenSelector(state);
     const data = await queryCompanyIsSubscribedApi({ companyName, token });
-
-    if (data == null) {
-      return dispatch(setIsSubscribed(companyName, getFetched(data)));
-    }
-
     dispatch(setIsSubscribed(companyName, getFetched(data)));
   } catch (error) {
+    // @ts-ignore
     if (isGraphqlError(error)) {
       dispatch(setIsSubscribed(companyName, getError(error)));
     }
