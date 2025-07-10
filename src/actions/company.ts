@@ -44,7 +44,7 @@ import queryCompanyRatingStatisticsApi, {
   RatingStatistics,
 } from 'apis/queryCompanyRatingStatistics';
 import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
-import QueryCompanySalaryWorkTimeStatisticsApi, {
+import queryCompanySalaryWorkTimeStatisticsApi, {
   CompanySalaryWorkTimeStatistics,
 } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import {
@@ -354,7 +354,7 @@ export const queryCompanySalaryWorkTimeStatistics = ({
   dispatch(setSalaryWorkTimeStatistics(companyName, toFetching()));
 
   try {
-    const data = await QueryCompanySalaryWorkTimeStatisticsApi({
+    const data = await queryCompanySalaryWorkTimeStatisticsApi({
       companyName,
     });
     dispatch(setSalaryWorkTimeStatistics(companyName, getFetched(data)));
