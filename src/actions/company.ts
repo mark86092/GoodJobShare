@@ -34,6 +34,7 @@ import {
   queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
   queryCompanies as queryCompaniesApi,
   getCompanyTopNJobTitles,
+  CompanyExperiencesPaginationInput,
 } from 'apis/company';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
@@ -50,10 +51,7 @@ import queryCompanySalaryWorkTimeStatisticsApi, {
 } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
-import {
-  CompanyExperiencesPaginationInput,
-  TopNJobTitles,
-} from 'graphql/company';
+import { TopNJobTitles } from 'graphql/company';
 
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';

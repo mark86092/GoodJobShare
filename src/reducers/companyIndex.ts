@@ -14,13 +14,13 @@ import {
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
+import { TopNJobTitles } from 'graphql/company';
 import {
+  CompanyInIndex,
+  CompanyExperiencesPaginationInput,
   CompanyInterviewExperience,
   CompanyWorkExperience,
-  TopNJobTitles,
-  CompanyExperiencesPaginationInput,
-} from 'graphql/company';
-import { CompanyInIndex } from 'apis/company';
+} from 'apis/company';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import {
   JobAverageSalary,

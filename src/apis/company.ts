@@ -1,16 +1,17 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
+import DataResultSortOption from 'apis/dataResultSortOption';
 import {
-  queryCompanyInterviewExperiencesGql,
-  QueryCompanyInterviewExperiencesData,
-  queryCompanyWorkExperiencesGql,
-  QueryCompanyWorkExperiencesData,
   queryCompanyTopNJobTitlesGql,
   QueryCompanyTopNJobTitlesData,
   TopNJobTitles,
-  CompanyExperiencesPaginationInput,
   Company,
 } from 'graphql/company';
+import {
+  experiencePartialGql,
+  interviewExperiencePartialGql,
+  workExperiencesPartialGql,
+} from 'graphql/experience';
 
 export const getCompanyTopNJobTitles = ({
   companyName,
@@ -21,6 +22,54 @@ export const getCompanyTopNJobTitles = ({
     query: queryCompanyTopNJobTitlesGql,
     variables: { companyName },
   }).then(data => (data.company ? data.company.topNJobTitles : null));
+
+export type CompanyExperiencesPaginationInput = {
+  companyName: string;
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: DataResultSortOption;
+};
+
+// TODO
+export type CompanyInterviewExperience = {};
+
+export type QueryCompanyInterviewExperiencesData = {
+  company:
+    | (Company & {
+        interviewExperiencesResult: {
+          count: number;
+          interviewExperiences: CompanyInterviewExperience[];
+        };
+      })
+    | null;
+};
+
+export const queryCompanyInterviewExperiencesGql = /* GraphQL */ `
+  query(
+    $companyName: String!
+    $jobTitle: String
+    $start: Int!
+    $limit: Int!
+    $sortBy: DataResultSortOption
+  ) {
+    company(name: $companyName) {
+      name
+      interviewExperiencesResult(
+        jobTitle: $jobTitle
+        start: $start
+        limit: $limit
+        sortBy: $sortBy
+      ) {
+        count
+        interviewExperiences {
+          ${experiencePartialGql}
+          ${interviewExperiencePartialGql()}
+        }
+      }
+    }
+  }
+`;
 
 export const queryCompanyInterviewExperiences = ({
   companyName,
@@ -35,6 +84,47 @@ export const queryCompanyInterviewExperiences = ({
     query: queryCompanyInterviewExperiencesGql,
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
+
+// TODO
+
+export type CompanyWorkExperience = {};
+
+export type QueryCompanyWorkExperiencesData = {
+  company:
+    | (Company & {
+        workExperiencesResult: {
+          count: number;
+          workExperiences: CompanyWorkExperience[];
+        };
+      })
+    | null;
+};
+
+export const queryCompanyWorkExperiencesGql = /* GraphQL */ `
+  query(
+    $companyName: String!
+    $jobTitle: String
+    $start: Int!
+    $limit: Int!
+    $sortBy: DataResultSortOption
+  ) {
+    company(name: $companyName) {
+      name
+      workExperiencesResult(
+        jobTitle: $jobTitle
+        start: $start
+        limit: $limit
+        sortBy: $sortBy
+      ) {
+        count
+        workExperiences {
+          ${experiencePartialGql}
+          ${workExperiencesPartialGql()}
+        }
+      }
+    }
+  }
+`;
 
 export const queryCompanyWorkExperiences = ({
   companyName,
