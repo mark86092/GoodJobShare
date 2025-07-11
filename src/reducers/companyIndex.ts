@@ -19,7 +19,6 @@ import {
   CompanyInterviewExperience,
   CompanyWorkExperience,
 } from 'apis/company';
-import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
@@ -28,6 +27,7 @@ import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
+import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
