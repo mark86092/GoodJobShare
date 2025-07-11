@@ -10,9 +10,6 @@ import {
   queryCompanyTopNJobTitlesGql,
   QueryCompanyTopNJobTitlesData,
   TopNJobTitles,
-  queryCompanyEsgSalaryDataGql,
-  QueryCompanyEsgSalaryDataData,
-  ESGSalaryData,
   queryCompanyIsSubscribedGql,
   QueryCompanyIsSubscribedData,
   subscribeCompanyGql,
@@ -31,16 +28,6 @@ export const getCompanyTopNJobTitles = ({
     query: queryCompanyTopNJobTitlesGql,
     variables: { companyName },
   }).then(data => (data.company ? data.company.topNJobTitles : null));
-
-export const getCompanyEsgSalaryData = ({
-  companyName,
-}: {
-  companyName: string;
-}): Promise<ESGSalaryData | null> =>
-  graphqlClient<QueryCompanyEsgSalaryDataData>({
-    query: queryCompanyEsgSalaryDataGql,
-    variables: { companyName },
-  }).then(data => (data.company ? data.company.esgSalaryData : null));
 
 export const queryCompanyInterviewExperiences = ({
   companyName,

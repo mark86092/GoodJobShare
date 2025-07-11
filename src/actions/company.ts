@@ -33,11 +33,11 @@ import {
   queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
   queryCompanies as queryCompaniesApi,
   getCompanyTopNJobTitles,
-  getCompanyEsgSalaryData,
   subscribeCompanyApi,
   unsubscribeCompanyApi,
   queryCompanyIsSubscribedApi,
 } from 'apis/company';
+import queryCompanyEsgSalaryDataApi from 'apis/queryCompanyEsgSalaryData';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import queryCompanyRatingStatisticsApi, {
@@ -50,9 +50,9 @@ import queryCompanySalaryWorkTimeStatisticsApi, {
 import {
   CompanyExperiencesPaginationInput,
   CompanyInIndex,
-  ESGSalaryData,
   TopNJobTitles,
 } from 'graphql/company';
+import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 
@@ -386,7 +386,7 @@ export const queryCompanyEsgSalaryData = ({
   dispatch(setEsgSalaryData(companyName, toFetching()));
 
   try {
-    const data = await getCompanyEsgSalaryData({
+    const data = await queryCompanyEsgSalaryDataApi({
       companyName,
     });
 

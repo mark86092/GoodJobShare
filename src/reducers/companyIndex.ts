@@ -18,10 +18,10 @@ import {
   CompanyInIndex,
   CompanyInterviewExperience,
   CompanyWorkExperience,
-  ESGSalaryData,
   TopNJobTitles,
   CompanyExperiencesPaginationInput,
 } from 'graphql/company';
+import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
