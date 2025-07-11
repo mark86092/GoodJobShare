@@ -15,8 +15,7 @@ import {
   JobTitleSalaryWorkTimeResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
-import { TopNJobTitles } from 'graphql/company';
-import { CompanyInIndex } from 'apis/company';
+import { CompanyInIndex, TopNJobTitles } from 'apis/company';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { JobTitle } from 'graphql/jobTitle';
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';

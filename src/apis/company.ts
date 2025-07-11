@@ -1,17 +1,45 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import DataResultSortOption from 'apis/dataResultSortOption';
-import {
-  queryCompanyTopNJobTitlesGql,
-  QueryCompanyTopNJobTitlesData,
-  TopNJobTitles,
-  Company,
-} from 'graphql/company';
+import { Company } from 'graphql/company';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
   workExperiencesPartialGql,
 } from 'graphql/experience';
+
+export type TopNJobTitles = {
+  work: { name: string }[];
+  interview: { name: string }[];
+  salary: { name: string }[];
+  all: { name: string }[];
+};
+
+type QueryCompanyTopNJobTitlesData = {
+  company: (Company & { topNJobTitles: TopNJobTitles }) | null;
+};
+
+export const queryCompanyTopNJobTitlesGql = /* GraphQL */ `
+  query($companyName: String!) {
+    company(name: $companyName) {
+      name
+      topNJobTitles {
+        work {
+          name
+        }
+        interview {
+          name
+        }
+        salary {
+          name
+        }
+        all {
+          name
+        }
+      }
+    }
+  }
+`;
 
 export const getCompanyTopNJobTitles = ({
   companyName,
