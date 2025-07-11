@@ -15,24 +15,24 @@ import {
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
 import {
-  CompanyInIndex,
   CompanyExperiencesPaginationInput,
   CompanyInterviewExperience,
   CompanyWorkExperience,
   TopNJobTitles,
 } from 'apis/company';
+import {
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
+} from 'apis/overview';
+import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
+import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
+import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
-import {
-  InterviewExperienceInOverview,
-  WorkExperienceInOverview,
-} from 'apis/overview';
-import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
-import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 
 export type CompanyOverview = {
   name: string;

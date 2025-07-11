@@ -29,10 +29,8 @@ import {
   companyIsSubscribedBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
-  CompanyInIndex,
   queryCompanyInterviewExperiences as queryCompanyInterviewExperiencesApi,
   queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
-  queryCompanies as queryCompaniesApi,
   getCompanyTopNJobTitles,
   CompanyExperiencesPaginationInput,
   TopNJobTitles,
@@ -52,6 +50,7 @@ import queryCompanySalaryWorkTimeStatisticsApi, {
 } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
+import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
