@@ -33,8 +33,6 @@ import {
   queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
   queryCompanies as queryCompaniesApi,
   getCompanyTopNJobTitles,
-  subscribeCompanyApi,
-  unsubscribeCompanyApi,
 } from 'apis/company';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
@@ -49,6 +47,8 @@ import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
 import queryCompanySalaryWorkTimeStatisticsApi, {
   CompanySalaryWorkTimeStatistics,
 } from 'apis/queryCompanySalaryWorkTimeStatistics';
+import subscribeCompanyApi from 'apis/subscribeCompany';
+import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
 import {
   CompanyExperiencesPaginationInput,
   CompanyInIndex,

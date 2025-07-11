@@ -10,12 +10,6 @@ import {
   queryCompanyTopNJobTitlesGql,
   QueryCompanyTopNJobTitlesData,
   TopNJobTitles,
-  queryCompanyIsSubscribedGql,
-  QueryCompanyIsSubscribedData,
-  subscribeCompanyGql,
-  SubscribeCompanyData,
-  unsubscribeCompanyGql,
-  UnsubscribeCompanyData,
   CompanyExperiencesPaginationInput,
 } from 'graphql/company';
 
@@ -68,61 +62,3 @@ export const queryCompanies = ({
     query: queryCompaniesHavingDataGql,
     variables: { start, limit },
   });
-
-export const queryCompanyIsSubscribedApi = async ({
-  companyName,
-  token,
-}: {
-  companyName: string;
-  token?: string;
-}): Promise<{ isSubscribed: boolean; companyId: string | null }> => {
-  const data = await graphqlClient<QueryCompanyIsSubscribedData>({
-    query: queryCompanyIsSubscribedGql,
-    token,
-    variables: { companyName },
-  });
-
-  if (!data.company) {
-    return {
-      isSubscribed: false,
-      companyId: null,
-    };
-  }
-
-  return {
-    isSubscribed: data.company.isSubscribed,
-    companyId: data.company.id,
-  };
-};
-
-export const subscribeCompanyApi = async ({
-  companyId,
-  token,
-}: {
-  companyId: string;
-  token?: string;
-}): Promise<boolean> => {
-  const data = await graphqlClient<SubscribeCompanyData>({
-    query: subscribeCompanyGql,
-    token,
-    variables: { input: { companyId } },
-  });
-
-  return data.subscribeCompany.success;
-};
-
-export const unsubscribeCompanyApi = async ({
-  companyId,
-  token,
-}: {
-  companyId: string;
-  token?: string;
-}): Promise<boolean> => {
-  const data = await graphqlClient<UnsubscribeCompanyData>({
-    query: unsubscribeCompanyGql,
-    token,
-    variables: { input: { companyId } },
-  });
-
-  return data.unsubscribeCompany.success;
-};

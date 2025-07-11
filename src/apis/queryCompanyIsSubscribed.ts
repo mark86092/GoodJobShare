@@ -1,8 +1,20 @@
 import graphqlClient from 'utils/graphqlClient';
-import {
-  queryCompanyIsSubscribedGql,
-  QueryCompanyIsSubscribedData,
-} from 'graphql/company';
+
+const queryCompanyIsSubscribedGql = /* GraphQL */ `
+  query($companyName: String!) {
+    company(name: $companyName) {
+      id
+      isSubscribed
+    }
+  }
+`;
+
+type QueryCompanyIsSubscribedData = {
+  company: {
+    id: string;
+    isSubscribed: boolean;
+  } | null;
+};
 
 const queryCompanyIsSubscribed = async ({
   companyName,
