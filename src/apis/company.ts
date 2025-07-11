@@ -19,7 +19,7 @@ type QueryCompanyTopNJobTitlesData = {
   company: (Company & { topNJobTitles: TopNJobTitles }) | null;
 };
 
-export const queryCompanyTopNJobTitlesGql = /* GraphQL */ `
+const queryCompanyTopNJobTitlesGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {
       name
@@ -62,7 +62,7 @@ export type CompanyExperiencesPaginationInput = {
 // TODO
 export type CompanyInterviewExperience = {};
 
-export type QueryCompanyInterviewExperiencesData = {
+type QueryCompanyInterviewExperiencesData = {
   company:
     | (Company & {
         interviewExperiencesResult: {
@@ -73,7 +73,7 @@ export type QueryCompanyInterviewExperiencesData = {
     | null;
 };
 
-export const queryCompanyInterviewExperiencesGql = /* GraphQL */ `
+const queryCompanyInterviewExperiencesGql = /* GraphQL */ `
   query(
     $companyName: String!
     $jobTitle: String
@@ -114,10 +114,9 @@ export const queryCompanyInterviewExperiences = ({
   }).then(R.prop('company'));
 
 // TODO
-
 export type CompanyWorkExperience = {};
 
-export type QueryCompanyWorkExperiencesData = {
+type QueryCompanyWorkExperiencesData = {
   company:
     | (Company & {
         workExperiencesResult: {
@@ -128,7 +127,7 @@ export type QueryCompanyWorkExperiencesData = {
     | null;
 };
 
-export const queryCompanyWorkExperiencesGql = /* GraphQL */ `
+const queryCompanyWorkExperiencesGql = /* GraphQL */ `
   query(
     $companyName: String!
     $jobTitle: String
