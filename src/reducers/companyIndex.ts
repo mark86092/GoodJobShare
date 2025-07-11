@@ -15,12 +15,12 @@ import {
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
 import {
-  CompanyInIndex,
   CompanyInterviewExperience,
   CompanyWorkExperience,
   TopNJobTitles,
   CompanyExperiencesPaginationInput,
 } from 'graphql/company';
+import { CompanyInIndex } from 'apis/company';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import {
   JobAverageSalary,

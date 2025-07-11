@@ -129,24 +129,3 @@ export const queryCompanyWorkExperiencesGql = /* GraphQL */ `
     }
   }
 `;
-
-export type CompanyInIndex = Company & {
-  businessNumber: string | null;
-  dataCount: number;
-};
-
-export type QueryCompaniesHavingDataData = {
-  companiesHavingData: CompanyInIndex[];
-  companiesHavingDataCount: number;
-};
-
-export const queryCompaniesHavingDataGql = /* GraphQL */ `
-  query($start: Int!, $limit: Int!) {
-    companiesHavingData(start: $start, limit: $limit) {
-      name
-      businessNumber
-      dataCount
-    }
-    companiesHavingDataCount
-  }
-`;

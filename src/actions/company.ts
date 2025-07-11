@@ -29,6 +29,7 @@ import {
   companyIsSubscribedBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import {
+  CompanyInIndex,
   queryCompanyInterviewExperiences as queryCompanyInterviewExperiencesApi,
   queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
   queryCompanies as queryCompaniesApi,
@@ -51,9 +52,9 @@ import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
 import {
   CompanyExperiencesPaginationInput,
-  CompanyInIndex,
   TopNJobTitles,
 } from 'graphql/company';
+
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 
@@ -728,7 +729,6 @@ export const toggleSubscribeCompany = ({
   }
 };
 
-// TODO
 export const queryCompanyIsSubscribed = ({
   companyName,
 }: {

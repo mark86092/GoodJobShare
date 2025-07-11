@@ -5,12 +5,11 @@ import {
   QueryCompanyInterviewExperiencesData,
   queryCompanyWorkExperiencesGql,
   QueryCompanyWorkExperiencesData,
-  queryCompaniesHavingDataGql,
-  QueryCompaniesHavingDataData,
   queryCompanyTopNJobTitlesGql,
   QueryCompanyTopNJobTitlesData,
   TopNJobTitles,
   CompanyExperiencesPaginationInput,
+  Company,
 } from 'graphql/company';
 
 export const getCompanyTopNJobTitles = ({
@@ -50,6 +49,27 @@ export const queryCompanyWorkExperiences = ({
     query: queryCompanyWorkExperiencesGql,
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
+
+const queryCompaniesHavingDataGql = /* GraphQL */ `
+  query($start: Int!, $limit: Int!) {
+    companiesHavingData(start: $start, limit: $limit) {
+      name
+      businessNumber
+      dataCount
+    }
+    companiesHavingDataCount
+  }
+`;
+
+export type CompanyInIndex = Company & {
+  businessNumber: string | null;
+  dataCount: number;
+};
+
+type QueryCompaniesHavingDataData = {
+  companiesHavingData: CompanyInIndex[];
+  companiesHavingDataCount: number;
+};
 
 export const queryCompanies = ({
   start,
