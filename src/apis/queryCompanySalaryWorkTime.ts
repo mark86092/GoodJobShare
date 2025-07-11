@@ -4,7 +4,7 @@ import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
-import { Company } from 'graphql/company';
+import { Company } from './company';
 
 type QueryCompanySalaryWorkTimeData = {
   company:

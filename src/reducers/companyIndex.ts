@@ -14,20 +14,18 @@ import {
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
-import {
-  CompanyExperiencesPaginationInput,
-  CompanyInterviewExperience,
-  CompanyWorkExperience,
-} from 'apis/company';
+import { CompanyExperiencesPaginationInput } from 'apis/company';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
+import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
+import { CompanyWorkExperience } from 'apis/queryCompanyWorkExperiences';
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
