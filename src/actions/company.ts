@@ -35,11 +35,11 @@ import {
   getCompanyTopNJobTitles,
   subscribeCompanyApi,
   unsubscribeCompanyApi,
-  queryCompanyIsSubscribedApi,
 } from 'apis/company';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
 } from 'apis/queryCompanyEsgSalaryData';
+import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import queryCompanyRatingStatisticsApi, {
