@@ -2,10 +2,10 @@ import { AnyAction } from 'redux';
 import { Thunk } from 'reducers';
 import {
   JobTitleOverview,
+  JobTitleOverviewStatistics,
   JobTitleSalaryWorkTimeResult,
   JobTitleInterviewExperienceResult,
   JobTitleWorkExperienceResult,
-  JobTitleOverviewStatistics,
 } from 'reducers/jobTitleIndex';
 import { isGraphqlError } from 'utils/errors';
 import FetchBox, {
