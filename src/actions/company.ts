@@ -47,7 +47,7 @@ import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
 import queryCompanySalaryWorkTimeStatisticsApi, {
   CompanySalaryWorkTimeStatistics,
 } from 'apis/queryCompanySalaryWorkTimeStatistics';
-import getCompanyTopNJobTitles, {
+import queryCompanyTopNJobTitlesApi, {
   TopNJobTitles,
 } from 'apis/queryCompanyTopNJobTitles';
 import subscribeCompanyApi from 'apis/subscribeCompany';
@@ -423,7 +423,7 @@ export const queryCompanyTopNJobTitles = ({
   dispatch(setCompanyTopNJobTitles(companyName, toFetching()));
 
   try {
-    const data = await getCompanyTopNJobTitles({
+    const data = await queryCompanyTopNJobTitlesApi({
       companyName,
     });
     dispatch(setCompanyTopNJobTitles(companyName, getFetched(data)));

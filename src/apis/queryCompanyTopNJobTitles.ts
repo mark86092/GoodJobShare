@@ -34,7 +34,7 @@ const queryCompanyTopNJobTitlesGql = /* GraphQL */ `
   }
 `;
 
-const getCompanyTopNJobTitles = ({
+const queryCompanyTopNJobTitles = ({
   companyName,
 }: {
   companyName: string;
@@ -44,4 +44,4 @@ const getCompanyTopNJobTitles = ({
     variables: { companyName },
   }).then(data => (data.company ? data.company.topNJobTitles : null));
 
-export default getCompanyTopNJobTitles;
+export default queryCompanyTopNJobTitles;
