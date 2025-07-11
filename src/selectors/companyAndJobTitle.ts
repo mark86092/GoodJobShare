@@ -15,7 +15,7 @@ import {
   JobTitleSalaryWorkTimeResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
-import { TopNJobTitles } from 'apis/company';
+import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';

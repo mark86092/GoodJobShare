@@ -31,9 +31,7 @@ import {
 import {
   queryCompanyInterviewExperiences as queryCompanyInterviewExperiencesApi,
   queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
-  getCompanyTopNJobTitles,
   CompanyExperiencesPaginationInput,
-  TopNJobTitles,
 } from 'apis/company';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import queryCompanyEsgSalaryDataApi, {
@@ -49,6 +47,9 @@ import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
 import queryCompanySalaryWorkTimeStatisticsApi, {
   CompanySalaryWorkTimeStatistics,
 } from 'apis/queryCompanySalaryWorkTimeStatistics';
+import getCompanyTopNJobTitles, {
+  TopNJobTitles,
+} from 'apis/queryCompanyTopNJobTitles';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
 import { tokenSelector } from 'selectors/authSelector';

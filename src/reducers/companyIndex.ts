@@ -18,8 +18,8 @@ import {
   CompanyExperiencesPaginationInput,
   CompanyInterviewExperience,
   CompanyWorkExperience,
-  TopNJobTitles,
 } from 'apis/company';
+import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
