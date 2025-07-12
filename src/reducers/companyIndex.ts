@@ -14,25 +14,23 @@ import {
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
+import { CompanyExperiencesPaginationInput } from 'apis/company';
 import {
-  CompanyInIndex,
-  CompanyInterviewExperience,
-  CompanyWorkExperience,
-  ESGSalaryData,
-  TopNJobTitles,
-  CompanyExperiencesPaginationInput,
-} from 'graphql/company';
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
+} from 'apis/overview';
+import { CompanyInIndex } from 'apis/queryCompanies';
+import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
+import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
+import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
+import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
+import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
+import { CompanyWorkExperience } from 'apis/queryCompanyWorkExperiences';
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
-import {
-  InterviewExperienceInOverview,
-  WorkExperienceInOverview,
-} from 'apis/overview';
-import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
-import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 
 export type CompanyOverview = {
   name: string;

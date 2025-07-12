@@ -1,10 +1,10 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
+import { Company } from 'apis/company';
 import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
-import { Company } from 'graphql/company';
 
 type QueryCompanySalaryWorkTimeData = {
   company:

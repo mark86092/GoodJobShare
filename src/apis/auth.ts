@@ -1,11 +1,6 @@
 import graphqlClient from 'utils/graphqlClient';
 import { User } from 'reducers/auth';
-import { queryMeGql, facebookLogin, googleLogin } from 'graphql/auth';
-
-export const queryMeApi = ({ token }: { token?: string }): Promise<User> =>
-  graphqlClient<{ me: User }>({ query: queryMeGql, token }).then(
-    data => data.me,
-  );
+import { facebookLogin, googleLogin } from 'graphql/auth';
 
 type LoginResponse = {
   token: string;

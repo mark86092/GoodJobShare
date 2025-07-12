@@ -6,8 +6,11 @@ import {
   fragmentWorkExperienceFields,
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
-} from './overview';
-import { fragmentSalaryWorkTimeFields, SalaryWorkTime } from './salaryWorkTime';
+} from 'apis/overview';
+import {
+  fragmentSalaryWorkTimeFields,
+  SalaryWorkTime,
+} from 'apis/salaryWorkTime';
 
 const queryJobTitleOverviewGql = /* GraphQL */ `
   query(

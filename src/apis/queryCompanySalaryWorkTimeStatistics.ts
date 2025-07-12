@@ -1,7 +1,7 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
-import { Company } from 'graphql/company';
-import { SalaryWorkTimeStatistics } from './salaryWorkTime';
+import { Company } from 'apis/company';
+import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 
 export type CompanySalaryWorkTimeStatistics = Company & {
   salary_work_time_statistics: SalaryWorkTimeStatistics;

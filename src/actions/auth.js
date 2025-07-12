@@ -2,8 +2,8 @@ import ReactGA from 'react-ga4';
 import {
   postAuthFacebook as postAuthFacebookApi,
   postAuthGoogle as postAuthGoogleApi,
-  queryMeApi,
 } from 'apis/auth';
+import queryMeApi from 'apis/queryMe';
 import authStatus from 'constants/authStatus';
 import { pushErrorNotificationAndRollbarAndThrowError } from 'actions/toastNotification';
 import { GraphqlError } from 'utils/errors';

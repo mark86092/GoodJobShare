@@ -28,16 +28,13 @@ import {
   companyEsgSalaryDataBoxSelectorByName,
   companyIsSubscribedBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-import {
-  queryCompanyInterviewExperiences as queryCompanyInterviewExperiencesApi,
-  queryCompanyWorkExperiences as queryCompanyWorkExperiencesApi,
-  queryCompanies as queryCompaniesApi,
-  getCompanyTopNJobTitles,
-  getCompanyEsgSalaryData,
-  subscribeCompanyApi,
-  unsubscribeCompanyApi,
-  queryCompanyIsSubscribedApi,
-} from 'apis/company';
+import { CompanyExperiencesPaginationInput } from 'apis/company';
+import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
+import queryCompanyEsgSalaryDataApi, {
+  ESGSalaryData,
+} from 'apis/queryCompanyEsgSalaryData';
+import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
+import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import queryCompanyRatingStatisticsApi, {
@@ -47,12 +44,12 @@ import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
 import queryCompanySalaryWorkTimeStatisticsApi, {
   CompanySalaryWorkTimeStatistics,
 } from 'apis/queryCompanySalaryWorkTimeStatistics';
-import {
-  CompanyExperiencesPaginationInput,
-  CompanyInIndex,
-  ESGSalaryData,
+import queryCompanyTopNJobTitlesApi, {
   TopNJobTitles,
-} from 'graphql/company';
+} from 'apis/queryCompanyTopNJobTitles';
+import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
+import subscribeCompanyApi from 'apis/subscribeCompany';
+import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
 import { tokenSelector } from 'selectors/authSelector';
 import { setExperience } from './experience';
 
@@ -386,7 +383,7 @@ export const queryCompanyEsgSalaryData = ({
   dispatch(setEsgSalaryData(companyName, toFetching()));
 
   try {
-    const data = await getCompanyEsgSalaryData({
+    const data = await queryCompanyEsgSalaryDataApi({
       companyName,
     });
 
@@ -424,7 +421,7 @@ export const queryCompanyTopNJobTitles = ({
   dispatch(setCompanyTopNJobTitles(companyName, toFetching()));
 
   try {
-    const data = await getCompanyTopNJobTitles({
+    const data = await queryCompanyTopNJobTitlesApi({
       companyName,
     });
     dispatch(setCompanyTopNJobTitles(companyName, getFetched(data)));
@@ -727,7 +724,6 @@ export const toggleSubscribeCompany = ({
   }
 };
 
-// TODO
 export const queryCompanyIsSubscribed = ({
   companyName,
 }: {
