@@ -22,7 +22,7 @@ import { useTopNJobTitles } from './useTopNJobTitles';
 
 const useOverviewBoxSelector = (
   pageName: string,
-): ((state: RootState) => FetchBox<CompanyOverview>) => {
+): ((state: RootState) => FetchBox<CompanyOverview | null>) => {
   return useMemo(() => overviewBoxSelectorByName(pageName), [pageName]);
 };
 

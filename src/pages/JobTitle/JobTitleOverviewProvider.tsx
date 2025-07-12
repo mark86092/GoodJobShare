@@ -19,7 +19,7 @@ import { ServerSideRender } from 'types/serverSideRender';
 
 const useOverviewBoxSelector = (
   pageName: string,
-): ((state: RootState) => FetchBox<JobTitleOverview>) => {
+): ((state: RootState) => FetchBox<JobTitleOverview | null>) => {
   return useMemo(() => overviewBoxSelectorByName(pageName), [pageName]);
 };
 

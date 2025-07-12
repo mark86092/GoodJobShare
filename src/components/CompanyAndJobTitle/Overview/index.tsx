@@ -15,7 +15,7 @@ type OverviewProps = {
   tabType: TabType;
   boxSelector: (
     state: RootState,
-  ) => FetchBox<CompanyOverview> | FetchBox<JobTitleOverview>;
+  ) => FetchBox<CompanyOverview | null> | FetchBox<JobTitleOverview | null>;
   statisticsBox: any;
   topNJobTitles?: any;
   onCloseReport: any;
