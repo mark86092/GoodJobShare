@@ -6,14 +6,14 @@ import styles from './P.module.css';
 const sizeOptions = ['xl', 'l', 'm', 's'];
 
 const P = ({
-  Tag,
-  size,
-  bold,
-  center,
+  Tag = 'div',
+  size = 'm',
+  bold = false,
+  center = false,
   children,
-  style,
+  style = {},
   className,
-  title,
+  title = undefined,
   ...props
 }) => (
   <Tag
@@ -28,21 +28,16 @@ const P = ({
     {children}
   </Tag>
 );
+
 P.propTypes = {
   Tag: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
   bold: PropTypes.bool,
   center: PropTypes.bool,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   className: PropTypes.string,
   size: PropTypes.oneOf(sizeOptions).isRequired,
   style: PropTypes.object,
   title: PropTypes.string,
-};
-P.defaultProps = {
-  children: '',
-  size: 'm',
-  Tag: 'div',
-  bold: false,
 };
 
 export default P;

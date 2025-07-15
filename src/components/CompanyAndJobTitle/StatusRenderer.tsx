@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
-import PropTypes from 'prop-types';
 import Redirect from 'common/routing/Redirect';
 import Loader from 'common/Loader';
 import NotFoundStatus from 'common/routing/NotFound';
@@ -78,13 +77,5 @@ function PageBoxRenderer<T extends DataWithName | null>({
     />
   );
 }
-
-PageBoxRenderer.propTypes = {
-  boxSelector: PropTypes.func.isRequired,
-  pageName: PropTypes.string.isRequired,
-  pageType: PropTypes.string.isRequired,
-  render: PropTypes.func.isRequired,
-  tabType: PropTypes.string.isRequired,
-};
 
 export { PageBoxRenderer };
