@@ -12,7 +12,6 @@ import {
   queryRelatedExperiencesGql,
   queryExperienceCountGql,
 } from 'graphql/experience';
-import { getPopularExperiencesQuery } from 'graphql/popularExperience';
 import { deleteReplyLike, createReplyLike } from 'graphql/reply';
 
 export const queryExperienceReplies = async ({ id, token }) =>
@@ -110,11 +109,6 @@ export const queryExperienceLike = async ({ id, token }) => {
 
   return data.experience.liked;
 };
-
-export const getPopularExperiences = () =>
-  graphqlClient({
-    query: getPopularExperiencesQuery,
-  }).then(data => data.popular_experiences);
 
 export const changeExperienceStatus = ({ id, status, token }) =>
   graphqlClient({

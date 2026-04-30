@@ -17,8 +17,8 @@ import {
 import {
   queryExperience as queryExperienceApi,
   queryRelatedExperiences as queryRelatedExperiencesApi,
-  getPopularExperiences as queryPopularExperiencesApi,
 } from 'apis/experiencesApi';
+import queryPopularExperiencesApi from 'apis/queryPopularExperiences';
 
 export const SET_EXPERIENCE = '@@EXPERIENCE/SET_EXPERIENCE';
 export const SET_RELATED_EXPERIENCES = '@@EXPERIENCE/SET_RELATED_EXPERIENCES';
