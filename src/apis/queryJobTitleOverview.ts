@@ -1,25 +1,25 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
-import { Company } from 'apis/company';
+import { JobTitle } from 'graphql/jobTitle';
 import {
-  WorkExperienceInOverview,
-  InterviewExperienceInOverview,
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
 } from 'apis/overview';
 import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
 
-const queryCompanyOverviewGql = /* GraphQL */ `
+const queryJobTitleOverviewGql = /* GraphQL */ `
   query(
-    $companyName: String!
+    $jobTitle: String!
     $interviewExperiencesLimit: Int!
     $workExperiencesLimit: Int!
     $salaryWorkTimesLimit: Int!
   ) {
-    company(name: $companyName) {
+    job_title(name: $jobTitle) {
       name
       interviewExperiencesResult(start: 0, limit: $interviewExperiencesLimit) {
         count
@@ -46,9 +46,9 @@ const queryCompanyOverviewGql = /* GraphQL */ `
   ${fragmentSalaryWorkTimeFields}
 `;
 
-type QueryCompanyOverviewData = {
-  company:
-    | (Company & {
+type QueryJobTitleOverviewData = {
+  job_title:
+    | (JobTitle & {
         salaryWorkTimesResult: {
           count: number;
           salaryWorkTimes: SalaryWorkTime[];
@@ -65,25 +65,25 @@ type QueryCompanyOverviewData = {
     | null;
 };
 
-const queryCompanyOverview = ({
-  companyName,
+const queryJobTitleOverview = ({
+  jobTitle,
   interviewExperiencesLimit,
   workExperiencesLimit,
   salaryWorkTimesLimit,
 }: {
-  companyName: string;
+  jobTitle: string;
   interviewExperiencesLimit: number;
   workExperiencesLimit: number;
   salaryWorkTimesLimit: number;
-}): Promise<QueryCompanyOverviewData['company']> =>
-  graphqlClient<QueryCompanyOverviewData>({
-    query: queryCompanyOverviewGql,
+}): Promise<QueryJobTitleOverviewData['job_title']> =>
+  graphqlClient<QueryJobTitleOverviewData>({
+    query: queryJobTitleOverviewGql,
     variables: {
-      companyName,
+      jobTitle,
       interviewExperiencesLimit,
       workExperiencesLimit,
       salaryWorkTimesLimit,
     },
-  }).then(R.prop('company'));
+  }).then(R.prop('job_title'));
 
-export default queryCompanyOverview;
+export default queryJobTitleOverview;

@@ -39,5 +39,6 @@ module.exports = {
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-var-requires': 'warn',
     '@typescript-eslint/ban-ts-ignore': 'warn',
+    '@typescript-eslint/no-explicit-any': 'warn',
   },
 };
