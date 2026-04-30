@@ -8,7 +8,7 @@ import FormBuilder, {
 } from 'common/FormBuilder';
 import ConfirmModal from 'common/FormBuilder/Modals/ConfirmModal';
 import Footer from './TypeFormFooter';
-import { useExperienceCount, useSalaryWorkTimeCount } from 'hooks/useCount';
+import { useTotalCount } from 'hooks/useCount';
 import rollbar from 'utils/rollbar';
 import { ER0018, ERROR_CODE_MSG } from 'constants/errorCodeMsg';
 
@@ -51,8 +51,7 @@ const SubmittableTypeForm = ({
     [onSubmit, onSubmitError, submitStatus],
   );
 
-  const experienceCount = useExperienceCount();
-  const salaryCount = useSalaryWorkTimeCount();
+  const totalCount = useTotalCount();
 
   const onTryClosing = useCallback(() => {
     setSubmitStatus('quitting');
@@ -90,7 +89,7 @@ const SubmittableTypeForm = ({
         onClose={onTryClosing}
         questions={questions}
         header={header}
-        footer={<Footer dataNum={salaryCount + experienceCount} />}
+        footer={<Footer dataNum={totalCount} />}
         onSubmit={handleSubmit}
         hideProgressBar={hideProgressBar}
       />
