@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import OvertimeBlock from '../../TimeAndSalary/common/OvertimeBlock';
 
-import styles from '../../TimeAndSalary/common/WorkingHourBlock.module.css';
+import styles from './WorkingHourBlock.module.css';
 
 const OvertimeSection = ({ statistics }) => {
   return (

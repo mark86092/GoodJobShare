@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import WorkingHourTable from './WorkingHourTable';
 
-import styles from '../../TimeAndSalary/common/WorkingHourBlock.module.css';
+import styles from './WorkingHourBlock.module.css';
 
 const WorkingHourBlock = ({ data, pageType, onCloseReport }) => {
   return (
