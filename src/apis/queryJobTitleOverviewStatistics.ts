@@ -32,17 +32,15 @@ const queryJobTitleOverviewStatisticsGql = /* GraphQL */ `
 `;
 
 type QueryJobTitleOverviewStatisticsData = {
-  job_title:
-    | ({
-        salary_work_time_statistics: {
-          average_week_work_time: number | null;
-          overtime_frequency_count: OvertimeFrequencyCount | null;
-        };
-        salary_distribution: {
-          bins: SalaryDistributionBin[] | null;
-        };
-      })
-    | null;
+  job_title: {
+    salary_work_time_statistics: {
+      average_week_work_time: number | null;
+      overtime_frequency_count: OvertimeFrequencyCount | null;
+    };
+    salary_distribution: {
+      bins: SalaryDistributionBin[] | null;
+    };
+  } | null;
 };
 
 const queryJobTitleOverviewStatistics = ({
