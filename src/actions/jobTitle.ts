@@ -234,7 +234,7 @@ export const queryJobTitleSalaryWorkTime = (
     return;
   }
 
-  dispatch(setSalaryWorkTime(jobTitle, toFetching()));
+  dispatch(setSalaryWorkTime(jobTitle, toFetching(box)));
 
   try {
     const data = await queryJobTitleSalaryWorkTimeApi({
@@ -288,7 +288,7 @@ export const queryJobTitleSalaryWorkTimeStatistics = ({
     return;
   }
 
-  dispatch(setSalaryWorkTimeStatistics(jobTitle, toFetching()));
+  dispatch(setSalaryWorkTimeStatistics(jobTitle, toFetching(box)));
 
   try {
     const data = await queryJobTitleSalaryWorkTimeStatisticsApi({
@@ -334,7 +334,7 @@ export const queryJobTitleInterviewExperiences = ({
     return;
   }
 
-  dispatch(setInterviewExperiences(jobTitle, toFetching()));
+  dispatch(setInterviewExperiences(jobTitle, toFetching(box)));
 
   try {
     const data = await getJobTitleInterviewExperiences({
@@ -408,7 +408,7 @@ export const queryJobTitleWorkExperiences = ({
     return;
   }
 
-  dispatch(setWorkExperiences(jobTitle, toFetching()));
+  dispatch(setWorkExperiences(jobTitle, toFetching(box)));
 
   try {
     const data = await getJobTitleWorkExperiences({
