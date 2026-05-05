@@ -1,33 +1,23 @@
-<<<<<<< HEAD
 import DataResultSortOption from 'apis/dataResultSortOption';
-=======
->>>>>>> upstream/master
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
   workExperiencesPartialGql,
 } from './experience';
-<<<<<<< HEAD
 import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
 
-=======
-
 // TODO: 暫時放在這裡，之後搬回 api/
->>>>>>> upstream/master
 export interface JobTitle {
   name: string;
 }
 
-<<<<<<< HEAD
 export type QueryJobTitlesData = {
   job_titles: JobTitle[];
 };
 
-=======
->>>>>>> upstream/master
 export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
     job_titles(query: $key, page: 0) {
@@ -36,7 +26,6 @@ export const queryJobTitles = /* GraphQL */ `
   }
 `;
 
-<<<<<<< HEAD
 export type QueryJobTitleSalaryWorkTimeData = {
   job_title:
     | (JobTitle & {
@@ -49,9 +38,6 @@ export type QueryJobTitleSalaryWorkTimeData = {
 };
 
 export const queryJobTitleSalaryWorkTimeGql = /* GraphQL */ `
-=======
-export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
->>>>>>> upstream/master
   query($jobTitle: String!, $companyName: String, $start: Int!, $limit: Int!) {
     job_title(name: $jobTitle) {
       name
@@ -62,9 +48,7 @@ export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
       ) {
         count
         salaryWorkTimes {
-<<<<<<< HEAD
           ...salaryWorkTimeFields
-=======
           id
           week_work_time
           salary {
@@ -96,12 +80,10 @@ export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
             reason
             createdAt
           }
->>>>>>> upstream/master
         }
       }
     }
   }
-<<<<<<< HEAD
   ${fragmentSalaryWorkTimeFields}
 `;
 
@@ -127,9 +109,7 @@ export type QueryJobTitleInterviewExperiencesData = {
     | null;
 };
 
-export const queryJobTitleInterviewExperiencesGql = /* GraphQL */ `
-=======
-`;
+export const queryJobTitleInterviewExperiencesGql = /* GraphQL */ ``;
 
 export const getJobTitleTimeAndSalaryStatisticsQuery = /* GraphQL */ `
   query($jobTitle: String!) {
@@ -158,7 +138,6 @@ export const getJobTitleTimeAndSalaryStatisticsQuery = /* GraphQL */ `
 `;
 
 export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
->>>>>>> upstream/master
   query(
     $jobTitle: String!
     $companyName: String
@@ -184,7 +163,6 @@ export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
   }
 `;
 
-<<<<<<< HEAD
 // TODO
 export type JobTitleWorkExperience = {};
 
@@ -199,8 +177,6 @@ export type QueryJobTitleWorkExperiencesData = {
     | null;
 };
 
-=======
->>>>>>> upstream/master
 export const getJobTitleWorkExperiencesQuery = /* GraphQL */ `
   query(
     $jobTitle: String!
@@ -227,14 +203,11 @@ export const getJobTitleWorkExperiencesQuery = /* GraphQL */ `
   }
 `;
 
-<<<<<<< HEAD
 export type QueryJobTitlesHavingDataData = {
   jobTitlesHavingData: JobTitle[];
   jobTitlesHavingDataCount: number;
 };
 
-=======
->>>>>>> upstream/master
 export const queryJobTitlesHavingDataGql = /* GraphQL */ `
   query($start: Int!, $limit: Int!) {
     jobTitlesHavingData(start: $start, limit: $limit) {
