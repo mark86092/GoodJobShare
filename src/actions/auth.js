@@ -4,11 +4,7 @@ import {
   postAuthGoogle as postAuthGoogleApi,
 } from 'apis/auth';
 import queryMeApi from 'apis/queryMe';
-<<<<<<< HEAD
-import authStatus from 'constants/authStatus';
-=======
 import AuthStatus from 'constants/authStatus';
->>>>>>> upstream/master
 import { pushErrorNotificationAndRollbarAndThrowError } from 'actions/toastNotification';
 import { GraphqlError } from 'utils/errors';
 import {
