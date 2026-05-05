@@ -294,7 +294,11 @@ export const queryCompanySalaryWorkTime = (
     return;
   }
 
+<<<<<<< HEAD:src/actions/company.ts
   dispatch(setSalaryWorkTime(companyName, toFetching()));
+=======
+  dispatch(setTimeAndSalary(companyName, toFetching(box)));
+>>>>>>> upstream/master:src/actions/company.js
 
   try {
     const data = await queryCompanySalaryWorkTimeApi({
@@ -348,7 +352,11 @@ export const queryCompanySalaryWorkTimeStatistics = ({
     return;
   }
 
+<<<<<<< HEAD:src/actions/company.ts
   dispatch(setSalaryWorkTimeStatistics(companyName, toFetching()));
+=======
+  dispatch(setTimeAndSalaryStatistics(companyName, toFetching(box)));
+>>>>>>> upstream/master:src/actions/company.js
 
   try {
     const data = await queryCompanySalaryWorkTimeStatisticsApi({
@@ -465,7 +473,7 @@ export const queryCompanyInterviewExperiences = ({
     return;
   }
 
-  dispatch(setInterviewExperiences(companyName, toFetching()));
+  dispatch(setInterviewExperiences(companyName, toFetching(box)));
 
   try {
     const data = await queryCompanyInterviewExperiencesApi({
@@ -543,7 +551,7 @@ export const queryCompanyWorkExperiences = ({
     return;
   }
 
-  dispatch(setWorkExperiences(companyName, toFetching()));
+  dispatch(setWorkExperiences(companyName, toFetching(box)));
 
   try {
     const data = await queryCompanyWorkExperiencesApi({

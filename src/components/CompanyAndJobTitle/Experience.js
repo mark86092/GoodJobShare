@@ -89,6 +89,7 @@ const Experience = ({ experience, pageType, tabType, subTitleTag }) => {
         originalLink={`/experiences/${experience.id}`}
         subTitleTag={subTitleTag}
       />
+
       {messageExpanded && (
         <Wrapper size="s">
           <MessageBoard experienceId={experience.id} />

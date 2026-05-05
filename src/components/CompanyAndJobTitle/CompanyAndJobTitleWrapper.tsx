@@ -15,6 +15,15 @@ import TabLinkGroup from 'common/TabLinkGroup';
 import styles from './CompanyAndJobTitleWrapper.module.css';
 import SubscribeNotificationButton from 'components/CompanyAndJobTitle/SubscribeNotificationButton';
 import StatisticsCard from 'components/CompanyAndJobTitle/StatisticsCard';
+<<<<<<< HEAD:src/components/CompanyAndJobTitle/CompanyAndJobTitleWrapper.tsx
+=======
+import {
+  pageType as PAGE_TYPE,
+  tabType as TAB_TYPE,
+  tabTypeDetailTranslation as TAB_TYPE_DETAIL_TRANSLATION,
+} from 'constants/companyJobTitle';
+import { Wrapper } from 'common/base';
+>>>>>>> upstream/master:src/components/CompanyAndJobTitle/CompanyAndJobTitleWrapper.js
 
 type CompanyAndJobTitleWrapperProps = {
   pageType: PageType;
@@ -54,6 +63,7 @@ const CompanyAndJobTitleWrapper: React.FC<
 
   return (
     <div>
+<<<<<<< HEAD:src/components/CompanyAndJobTitle/CompanyAndJobTitleWrapper.tsx
       <div style={{ marginBottom: '20px' }}>
         <BreadCrumb
           data={generateBreadCrumbData({ pageType, pageName, tabType })}
@@ -65,17 +75,34 @@ const CompanyAndJobTitleWrapper: React.FC<
           {pageType === PageType.COMPANY && (
             <SubscribeNotificationButton companyName={pageName} />
           )}
+=======
+      <Wrapper size="l">
+        <div style={{ marginBottom: '20px' }}>
+          <BreadCrumb
+            data={generateBreadCrumbData({ pageType, pageName, tabType })}
+          />
+>>>>>>> upstream/master:src/components/CompanyAndJobTitle/CompanyAndJobTitleWrapper.js
         </div>
-        <StatisticsCard pageType={pageType} pageName={pageName} />
-      </div>
-      <TabLinkGroup
-        options={tabLinkOptions}
-        style={{
-          marginBottom: '24px',
-        }}
-      />
+        <div>
+          <div className={styles.titleContainer}>
+            <Heading className={styles.title}>{pageH1}</Heading>
+            {pageType === PAGE_TYPE.COMPANY && (
+              <SubscribeNotificationButton companyName={pageName} />
+            )}
+          </div>
+          <StatisticsCard pageType={pageType} pageName={pageName} />
+        </div>
+        <TabLinkGroup
+          options={tabLinkOptions}
+          style={{
+            marginBottom: '24px',
+          }}
+        />
+      </Wrapper>
       {children}
-      <FanPageBlock className={styles.fanPageBlock} />
+      <Wrapper size="l">
+        <FanPageBlock className={styles.fanPageBlock} />
+      </Wrapper>
     </div>
   );
 };

@@ -7,7 +7,10 @@ const queryMeGql = /* GraphQL */ `
       _id
       name
       email
+<<<<<<< HEAD
       email_status
+=======
+>>>>>>> upstream/master
     }
   }
 `;

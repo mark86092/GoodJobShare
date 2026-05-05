@@ -23,7 +23,12 @@ import { popularExperiencesBoxSelector } from 'selectors/experienceSelector';
 import { popularCompanyAverageSalaryBoxSelector } from 'selectors/popularCompanyAverageSalary';
 import { popularJobTitleSalaryDistributionBoxSelector } from 'selectors/popularJobTitleSalaryDistribution';
 import { menuBoxSelector } from 'selectors/laborRightsSelector';
+<<<<<<< HEAD
 import SearchBar from 'components/SearchBar/SearchBar';
+=======
+import SearchBar from 'components/TimeAndSalary/SearchBar';
+import BoxRenderer from 'components/CompanyAndJobTitle/StatusRenderer';
+>>>>>>> upstream/master
 
 const entryToProps = ({ id, title, coverUrl }) => ({
   link: `/labor-rights/${id}`,
@@ -70,17 +75,18 @@ const LandingPage = () => {
       <Banner />
       <Section padding>
         <Wrapper size="l">
-          {isFetched(popularCompanyAverageSalaryBox) &&
-            isFetched(popularJobTitleSalaryDistributionBox) && (
+          <BoxRenderer
+            box={[
+              popularCompanyAverageSalaryBox,
+              popularJobTitleSalaryDistributionBox,
+            ]}
+            render={([companyData, jobTitleData]) => (
               <SummarySection
-                popularCompanyAverageSalary={
-                  popularCompanyAverageSalaryBox.data
-                }
-                popularJobTitleSalaryDistribution={
-                  popularJobTitleSalaryDistributionBox.data
-                }
+                popularCompanyAverageSalary={companyData}
+                popularJobTitleSalaryDistribution={jobTitleData}
               />
             )}
+          />
         </Wrapper>
       </Section>
       <Section padding>

@@ -6,8 +6,12 @@ import AuthStatus from 'constants/authStatus';
 export type User = {
   _id: string;
   name: string;
+<<<<<<< HEAD
   email: string;
   email_status: unknown;
+=======
+  email: string | null;
+>>>>>>> upstream/master
 };
 
 const preloadedState: {
@@ -25,7 +29,11 @@ const auth = createReducer(preloadedState, {
     state,
     { status, token }: { status: AuthStatus; token?: string },
   ) => ({ ...state, status, token }),
+<<<<<<< HEAD
   [SET_USER]: (state, { user }: { user: User | undefined }) => ({
+=======
+  [SET_USER]: (state, { user }: { user?: User }) => ({
+>>>>>>> upstream/master
     ...state,
     user,
   }),

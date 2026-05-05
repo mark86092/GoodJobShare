@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import qs from 'qs';
+
 import Pagination from 'common/Pagination';
 import { Section } from 'common/base';
 import NotFoundStatus from 'common/routing/NotFound';
 import usePermission from 'hooks/usePermission';
+
 import EmptyView from '../EmptyView';
 import WorkingHourBlock from './WorkingHourBlock';
 import ViewLog from './ViewLog';
-import { useQuery } from 'hooks/routing';
 
 const SalaryWorkTimeSection = ({
   salaryWorkTimes,
@@ -19,13 +19,12 @@ const SalaryWorkTimeSection = ({
   pageSize,
   totalCount,
   onCloseReport,
+  createPageLinkTo,
 }) => {
   const [, fetchPermission] = usePermission();
   useEffect(() => {
     fetchPermission();
   }, [fetchPermission]);
-
-  const queryParams = useQuery();
 
   return (
     <Section Tag="main" paddingBottom>
@@ -40,12 +39,7 @@ const SalaryWorkTimeSection = ({
             totalCount={totalCount}
             unit={pageSize}
             currentPage={page}
-            createPageLinkTo={toPage =>
-              qs.stringify(
-                { ...queryParams, p: toPage },
-                { addQueryPrefix: true },
-              )
-            }
+            createPageLinkTo={createPageLinkTo}
           />
         </React.Fragment>
       )) || (
@@ -62,7 +56,12 @@ const SalaryWorkTimeSection = ({
   );
 };
 
+<<<<<<< HEAD:src/components/CompanyAndJobTitle/TimeAndSalary/SalaryWorkTimeSection.js
 SalaryWorkTimeSection.propTypes = {
+=======
+TimeAndSalary.propTypes = {
+  createPageLinkTo: PropTypes.func.isRequired,
+>>>>>>> upstream/master:src/components/CompanyAndJobTitle/TimeAndSalary/TimeAndSalary.js
   onCloseReport: PropTypes.func.isRequired,
   page: PropTypes.number,
   pageName: PropTypes.string,
