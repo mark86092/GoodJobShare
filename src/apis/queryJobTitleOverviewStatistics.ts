@@ -32,19 +32,6 @@ const queryJobTitleOverviewStatisticsGql = /* GraphQL */ `
 `;
 
 type QueryJobTitleOverviewStatisticsData = {
-<<<<<<< HEAD
-  job_title:
-    | ({
-        salary_work_time_statistics: {
-          average_week_work_time: number | null;
-          overtime_frequency_count: OvertimeFrequencyCount | null;
-        };
-        salary_distribution: {
-          bins: SalaryDistributionBin[] | null;
-        };
-      })
-    | null;
-=======
   job_title: {
     salary_work_time_statistics: {
       average_week_work_time: number | null;
@@ -54,7 +41,6 @@ type QueryJobTitleOverviewStatisticsData = {
       bins: SalaryDistributionBin[] | null;
     };
   } | null;
->>>>>>> rewrite-to-ts
 };
 
 const queryJobTitleOverviewStatistics = ({
