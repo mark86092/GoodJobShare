@@ -24,9 +24,13 @@ import { popularCompanyAverageSalaryBoxSelector } from 'selectors/popularCompany
 import { popularJobTitleSalaryDistributionBoxSelector } from 'selectors/popularJobTitleSalaryDistribution';
 import { menuBoxSelector } from 'selectors/laborRightsSelector';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import SearchBar from 'components/SearchBar/SearchBar';
 =======
 import SearchBar from 'components/TimeAndSalary/SearchBar';
+=======
+import SearchBar from 'components/SearchBar/SearchBar';
+>>>>>>> rewrite-to-ts
 import BoxRenderer from 'components/CompanyAndJobTitle/StatusRenderer';
 >>>>>>> upstream/master
 

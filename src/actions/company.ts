@@ -294,11 +294,15 @@ export const queryCompanySalaryWorkTime = (
     return;
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD:src/actions/company.ts
   dispatch(setSalaryWorkTime(companyName, toFetching()));
 =======
   dispatch(setTimeAndSalary(companyName, toFetching(box)));
 >>>>>>> upstream/master:src/actions/company.js
+=======
+  dispatch(setSalaryWorkTime(companyName, toFetching(box)));
+>>>>>>> rewrite-to-ts
 
   try {
     const data = await queryCompanySalaryWorkTimeApi({
@@ -352,11 +356,15 @@ export const queryCompanySalaryWorkTimeStatistics = ({
     return;
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD:src/actions/company.ts
   dispatch(setSalaryWorkTimeStatistics(companyName, toFetching()));
 =======
   dispatch(setTimeAndSalaryStatistics(companyName, toFetching(box)));
 >>>>>>> upstream/master:src/actions/company.js
+=======
+  dispatch(setSalaryWorkTimeStatistics(companyName, toFetching(box)));
+>>>>>>> rewrite-to-ts
 
   try {
     const data = await queryCompanySalaryWorkTimeStatisticsApi({

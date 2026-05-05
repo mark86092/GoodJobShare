@@ -56,10 +56,14 @@ const SalaryWorkTimeSection = ({
   );
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD:src/components/CompanyAndJobTitle/TimeAndSalary/SalaryWorkTimeSection.js
 SalaryWorkTimeSection.propTypes = {
 =======
 TimeAndSalary.propTypes = {
+=======
+SalaryWorkTimeSection.propTypes = {
+>>>>>>> rewrite-to-ts
   createPageLinkTo: PropTypes.func.isRequired,
 >>>>>>> upstream/master:src/components/CompanyAndJobTitle/TimeAndSalary/TimeAndSalary.js
   onCloseReport: PropTypes.func.isRequired,

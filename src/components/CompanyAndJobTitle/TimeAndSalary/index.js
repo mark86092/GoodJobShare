@@ -142,7 +142,7 @@ const SalaryWorkTime = ({
                   page={page}
                   topNJobTitles={topNJobTitles}
                 />
-                <TimeAndSalarySection
+                <SalaryWorkTimeSection
                   pageType={pageType}
                   pageName={pageName}
                   tabType={tabType}

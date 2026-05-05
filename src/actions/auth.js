@@ -1,8 +1,6 @@
 import ReactGA from 'react-ga4';
-import {
-  postAuthFacebook as postAuthFacebookApi,
-  postAuthGoogle as postAuthGoogleApi,
-} from 'apis/auth';
+import facebookLoginApi from 'apis/facebookLogin';
+import googleLoginApi from 'apis/googleLogin';
 import queryMeApi from 'apis/queryMe';
 import AuthStatus from 'constants/authStatus';
 import { pushErrorNotificationAndRollbarAndThrowError } from 'actions/toastNotification';
@@ -114,7 +112,7 @@ export const loginWithFB = FBSDK => async (dispatch, getState) => {
     case AuthStatus.CONNECTED:
       try {
         // call GoodJob GraphQL API to get JWT token issued by GoodJob
-        const { token } = await postAuthFacebookApi({
+        const { token } = await facebookLoginApi({
           accessToken: fbLoginResponse.authResponse.accessToken,
         });
         await dispatch(loginWithToken(token));
@@ -159,7 +157,7 @@ export const loginWithGoogle = credentialResponse => async (
   }
   const idToken = credentialResponse.credential;
   try {
-    const response = await postAuthGoogleApi({ idToken });
+    const response = await googleLoginApi({ idToken });
     if (response && response.token) {
       await dispatch(loginWithToken(response.token));
     } else {
