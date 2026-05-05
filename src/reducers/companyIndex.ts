@@ -179,10 +179,7 @@ const reducer = createReducer(preloadedState, {
     {
       companyName,
       box,
-    }: {
-      companyName: string;
-      box: FetchBox<CompanyOverviewStatistics | null>;
-    },
+    }: { companyName: string; box: FetchBox<CompanyOverviewStatistics | null> },
   ) => {
     return {
       ...state,
