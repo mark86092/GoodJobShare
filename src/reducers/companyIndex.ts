@@ -70,7 +70,7 @@ export type CompanyWorkExperienceResult = {
   workExperiencesCount: number;
 } & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
 
-const preloadedState: {
+type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
   indexCountBox: FetchBox<number>;
   ratingStatisticsByName: Record<string, FetchBox<RatingStatistics | null>>;
@@ -104,7 +104,9 @@ const preloadedState: {
   >;
   topNJobTitlesByName: Record<string, FetchBox<TopNJobTitles | null>>;
   esgSalaryData: Record<string, FetchBox<ESGSalaryData | null>>;
-} = {
+};
+
+const preloadedState: State = {
   indexesByPage: {},
   indexCountBox: getUnfetched(),
   ratingStatisticsByName: {},
