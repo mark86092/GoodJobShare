@@ -24,8 +24,15 @@ import {
   jobTitleWorkExperiencesBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
+import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
+import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
 import {
+<<<<<<< HEAD:src/actions/jobTitle.ts
   queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
+=======
+  getJobTitleTimeAndSalary,
+  getJobTitleTimeAndSalaryStatistics,
+>>>>>>> upstream/master:src/actions/jobTitle.js
   getJobTitleInterviewExperiences,
   getJobTitleWorkExperiences,
   queryJobTitlesApi,
