@@ -33,8 +33,6 @@ import {
   queryJobTitlesApi,
 } from 'apis/jobTitle';
 import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
-import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
-import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
 import queryJobTitleSalaryWorkTimeStatisticsApi, {
   JobTitleSalaryWorkTimeStatistics,
 } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
