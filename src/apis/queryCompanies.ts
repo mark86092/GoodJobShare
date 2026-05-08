@@ -1,5 +1,5 @@
 import graphqlClient from 'utils/graphqlClient';
-import { Company } from 'apis/company';
+import { Company } from 'graphql/company';
 
 const queryCompaniesHavingDataGql = /* GraphQL */ `
   query($start: Int!, $limit: Int!) {

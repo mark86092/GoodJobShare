@@ -1,16 +1,16 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
-import { JobTitle } from 'graphql/jobTitle';
 import {
+  WorkExperienceInOverview,
+  InterviewExperienceInOverview,
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
-  InterviewExperienceInOverview,
-  WorkExperienceInOverview,
 } from 'apis/overview';
 import {
   fragmentSalaryWorkTimeFields,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
+import { JobTitle } from 'graphql/jobTitle';
 
 const queryJobTitleOverviewGql = /* GraphQL */ `
   query(

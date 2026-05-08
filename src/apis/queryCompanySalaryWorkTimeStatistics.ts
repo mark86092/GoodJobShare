@@ -1,6 +1,6 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
-import { Company } from 'apis/company';
+import { Company } from 'graphql/company';
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 
 export type CompanySalaryWorkTimeStatistics = Company & {

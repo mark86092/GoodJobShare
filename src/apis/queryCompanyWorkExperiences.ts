@@ -1,6 +1,7 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
-import { Company, CompanyExperiencesPaginationInput } from 'apis/company';
+import { CompanyExperiencesPaginationInput } from 'apis/company';
+import { Company } from 'graphql/company';
 import {
   experiencePartialGql,
   workExperiencesPartialGql,
