@@ -15,14 +15,6 @@ import TabLinkGroup from 'common/TabLinkGroup';
 import styles from './CompanyAndJobTitleWrapper.module.css';
 import SubscribeNotificationButton from 'components/CompanyAndJobTitle/SubscribeNotificationButton';
 import StatisticsCard from 'components/CompanyAndJobTitle/StatisticsCard';
-<<<<<<< HEAD:src/components/CompanyAndJobTitle/CompanyAndJobTitleWrapper.tsx
-=======
-import {
-  PageType,
-  TabType,
-  tabTypeDetailTranslation as TAB_TYPE_DETAIL_TRANSLATION,
-} from 'constants/companyJobTitle';
->>>>>>> origin/rewrite-to-ts:src/components/CompanyAndJobTitle/CompanyAndJobTitleWrapper.js
 import { Wrapper } from 'common/base';
 
 type CompanyAndJobTitleWrapperProps = {
