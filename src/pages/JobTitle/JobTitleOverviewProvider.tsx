@@ -5,7 +5,11 @@ import { RootState } from 'reducers';
 import { JobTitleOverview } from 'reducers/jobTitleIndex';
 import Overview from 'components/CompanyAndJobTitle/Overview';
 import usePermission from 'hooks/usePermission';
+<<<<<<< HEAD:src/pages/JobTitle/JobTitleOverviewProvider.tsx
 import { PageType, TabType } from 'constants/companyJobTitle';
+=======
+import { TabType, PageType } from 'constants/companyJobTitle';
+>>>>>>> origin/rewrite-to-ts:src/pages/JobTitle/JobTitleOverviewProvider.js
 import {
   queryJobTitleOverview,
   queryJobTitleOverviewStatistics,

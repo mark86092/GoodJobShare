@@ -3,11 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
 import usePermission from 'hooks/usePermission';
 import { usePage } from 'hooks/routing/page';
-import {
-  tabType as TAB_TYPE,
-  pageType as PAGE_TYPE,
-  PAGE_SIZE,
-} from 'constants/companyJobTitle';
+import { TabType, PageType, PAGE_SIZE } from 'constants/companyJobTitle';
 import {
   queryCompanyEsgSalaryData,
   queryCompanyOverviewStatistics,
@@ -76,7 +72,7 @@ const useEsgSalaryDataBox = companyName => {
 
 const CompanySalaryWorkTimeProvider = () => {
   const dispatch = useDispatch();
-  const pageType = PAGE_TYPE.COMPANY;
+  const pageType = PageType.COMPANY;
   const companyName = useCompanyName();
   const [jobTitle] = useSearchTextFromQuery();
   const page = usePage();
@@ -156,7 +152,7 @@ const CompanySalaryWorkTimeProvider = () => {
       pageSize={PAGE_SIZE}
       topNJobTitles={topNJobTitles.salary}
       esgSalaryDataBox={esgSalaryDataBox}
-      tabType={TAB_TYPE.TIME_AND_SALARY}
+      tabType={TabType.TIME_AND_SALARY}
       salaryWorkTimeStatistics={salaryWorkTimeStatistics}
       boxSelector={boxSelector}
       statisticsBox={statisticsBox}

@@ -1,7 +1,7 @@
 import {
   pageTypeTranslation,
   tabTypeTranslation,
-  tabType as TAG_TYPE,
+  TabType,
   generateIndexURL,
   generatePageURL,
   generateTabURL,
@@ -72,7 +72,7 @@ export const generateBreadCrumbData = ({
   ];
 
   // TODO: adhoc solution if the page is OVERVIEW
-  if (tabType === TAG_TYPE.OVERVIEW) {
+  if (tabType === TabType.OVERVIEW) {
     return data;
   }
 
