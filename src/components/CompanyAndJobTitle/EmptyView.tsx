@@ -3,12 +3,12 @@ import { Section, P } from 'common/base';
 import styles from './EmptyView.module.css';
 import { TabType, tabTypeTranslation } from 'constants/companyJobTitle';
 
-type EmptyViewProps = {
+type Props = {
   pageName: string;
   tabType?: TabType;
 };
 
-const EmptyView: React.FC<EmptyViewProps> = ({ pageName, tabType }) => (
+const EmptyView: React.FC<Props> = ({ pageName, tabType }) => (
   <Section Tag="main" paddingBottom>
     <P size="l" bold className={styles.searchNoResult}>
       尚未有「
