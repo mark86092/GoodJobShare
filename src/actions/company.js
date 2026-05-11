@@ -647,6 +647,7 @@ export const queryCompanyWorkExperiencesAspectExperiences = ({
       );
     }
 
+    /** @type {import('components/CompanyAndJobTitle/WorkExperiences/Aspects').AspectExperiencesData} */
     const workExperiencesAspectExperiencesData = {
       name: companyName,
       aspect,

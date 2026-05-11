@@ -20,6 +20,10 @@ import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
 
 export type AspectExperiencesData = {
   name: string;
+  aspect: Aspect;
+  rating: number | null;
+  start: number;
+  limit: number;
   workExperiences: unknown[];
   workExperiencesCount: number;
 };
