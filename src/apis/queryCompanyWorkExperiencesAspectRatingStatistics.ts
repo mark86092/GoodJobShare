@@ -20,15 +20,17 @@ const queryCompanyWorkExperiencesAspectRatingStatisticsGql = /* GraphQL */ `
   }
 `;
 
+export type RatingDistribution = {
+  count: number;
+  rating: number;
+};
+
 export type CompanyAspectRatingStatistic = {
   aspect: string;
   averageRating: number;
   ratingCount: number;
   type: ExperienceType;
-  ratingDistribution: {
-    count: number;
-    rating: number;
-  }[];
+  ratingDistribution: RatingDistribution[];
 };
 
 type QueryCompanyWorkExperiencesAspectRatingStatisticsData = {

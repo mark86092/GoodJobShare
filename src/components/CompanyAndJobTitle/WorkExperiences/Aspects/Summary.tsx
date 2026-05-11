@@ -2,24 +2,21 @@ import React from 'react';
 
 import OverallRating from 'common/OverallRating';
 import Card from 'common/Card';
-import Pen from 'common/icons/Pen';
 
 import styles from './styles.module.css';
 import ScoreDistributionChart from './ScoreDistributionChart';
-import { RatingDistribution } from '.';
+import { RatingDistribution } from 'apis/queryCompanyWorkExperiencesAspectRatingStatistics';
 
 type SummaryProps = {
   averageRating: number;
   ratingDistribution: RatingDistribution[];
   ratingCount: number;
-  summary: string;
 };
 
 const Summary: React.FC<SummaryProps> = ({
   averageRating,
   ratingDistribution,
   ratingCount,
-  summary,
 }) => {
   const distributionMap = new Map<number, number>(
     ratingDistribution.map((item: RatingDistribution) => [
@@ -52,14 +49,6 @@ const Summary: React.FC<SummaryProps> = ({
           </div>
         </div>
       </div>
-      {summary && (
-        <>
-          <p className={styles.summaryText}>{summary}</p>
-          <p className={styles.summaryNote}>
-            <Pen /> 本段評論由 ChatGPT 總結共 {totalCount} 篇評論內容
-          </p>
-        </>
-      )}
     </Card>
   );
 };

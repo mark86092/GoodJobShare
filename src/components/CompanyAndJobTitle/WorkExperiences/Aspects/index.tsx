@@ -16,23 +16,11 @@ import {
   TabType,
   generateTabURL,
 } from 'constants/companyJobTitle';
-
-export type RatingDistribution = {
-  rating: number;
-  count: number;
-};
-
-export type AspectStatistics = {
-  aspect: Aspect;
-  averageRating: number;
-  ratingDistribution: RatingDistribution[];
-  ratingCount: number;
-  summary: string;
-};
+import { CompanyAspectRatingStatistic } from 'apis/queryCompanyWorkExperiencesAspectRatingStatistics';
 
 export type AspectStatisticsData = {
   name: string;
-  companyAspectRatingStatistics: AspectStatistics[];
+  companyAspectRatingStatistics: CompanyAspectRatingStatistic[];
 };
 
 export type AspectExperiencesData = {
@@ -84,19 +72,13 @@ const AspectSection: React.FC<AspectProps> = ({
             const item = items.find(item => item.aspect === aspect);
             if (!item) return null;
 
-            const {
-              averageRating,
-              ratingDistribution,
-              ratingCount,
-              summary,
-            } = item;
+            const { averageRating, ratingDistribution, ratingCount } = item;
 
             return (
               <Summary
                 averageRating={averageRating}
                 ratingDistribution={ratingDistribution}
                 ratingCount={ratingCount}
-                summary={summary}
               />
             );
           }}
