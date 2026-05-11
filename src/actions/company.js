@@ -29,7 +29,7 @@ import {
   getCompanyTimeAndSalaryStatistics,
   getCompanyTopNJobTitles,
 } from 'apis/company';
-import queryCompanyWorkExperiencesAspectRatingStatistics from 'apis/queryCompanyWorkExperiencesAspectRatingStatistics';
+import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
 import queryCompanyEsgSalaryDataApi from 'apis/queryCompanyEsgSalaryData';
 import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
@@ -570,7 +570,7 @@ export const queryCompanyWorkExperiencesAspectStatistics = ({
   dispatch(setWorkExperiencesAspectStatistics(companyName, toFetching()));
 
   try {
-    const data = await queryCompanyWorkExperiencesAspectRatingStatistics({
+    const data = await queryCompanyAspectRatingStatisticsApi({
       companyName,
     });
 

@@ -3,7 +3,7 @@ import graphqlClient from 'utils/graphqlClient';
 import { Company } from 'graphql/company';
 import { AspectRatingStatistics } from './aspectRatingStatistics';
 
-const queryCompanyWorkExperiencesAspectRatingStatisticsGql = /* GraphQL */ `
+const queryCompanyAspectRatingStatisticsGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {
       companyAspectRatingStatistics {
@@ -20,7 +20,7 @@ const queryCompanyWorkExperiencesAspectRatingStatisticsGql = /* GraphQL */ `
   }
 `;
 
-type QueryCompanyWorkExperiencesAspectRatingStatisticsData = {
+type QueryCompanyAspectRatingStatisticsData = {
   company:
     | (Company & {
         companyAspectRatingStatistics: AspectRatingStatistics[];
@@ -28,14 +28,14 @@ type QueryCompanyWorkExperiencesAspectRatingStatisticsData = {
     | null;
 };
 
-const queryCompanyWorkExperiencesAspectRatingStatistics = ({
+const queryCompanyAspectRatingStatistics = ({
   companyName,
 }: {
   companyName: string;
-}): Promise<QueryCompanyWorkExperiencesAspectRatingStatisticsData['company']> =>
-  graphqlClient<QueryCompanyWorkExperiencesAspectRatingStatisticsData>({
-    query: queryCompanyWorkExperiencesAspectRatingStatisticsGql,
+}): Promise<QueryCompanyAspectRatingStatisticsData['company']> =>
+  graphqlClient<QueryCompanyAspectRatingStatisticsData>({
+    query: queryCompanyAspectRatingStatisticsGql,
     variables: { companyName },
   }).then(R.prop('company'));
 
-export default queryCompanyWorkExperiencesAspectRatingStatistics;
+export default queryCompanyAspectRatingStatistics;
