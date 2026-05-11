@@ -5,7 +5,7 @@ import Card from 'common/Card';
 
 import styles from './styles.module.css';
 import ScoreDistributionChart from './ScoreDistributionChart';
-import { RatingDistribution } from 'apis/queryCompanyWorkExperiencesAspectRatingStatistics';
+import { RatingDistribution } from 'apis/aspectRatingStatistics';
 
 type SummaryProps = {
   averageRating: number;

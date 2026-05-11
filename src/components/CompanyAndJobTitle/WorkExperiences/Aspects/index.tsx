@@ -16,12 +16,7 @@ import {
   TabType,
   generateTabURL,
 } from 'constants/companyJobTitle';
-import { CompanyAspectRatingStatistic } from 'apis/queryCompanyWorkExperiencesAspectRatingStatistics';
-
-export type AspectStatisticsData = {
-  name: string;
-  companyAspectRatingStatistics: CompanyAspectRatingStatistic[];
-};
+import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
 
 export type AspectExperiencesData = {
   name: string;

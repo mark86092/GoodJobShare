@@ -1,7 +1,7 @@
 import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import { Company } from 'graphql/company';
-import { ExperienceType } from './experience';
+import { AspectRatingStatistics } from './aspectRatingStatistics';
 
 const queryCompanyWorkExperiencesAspectRatingStatisticsGql = /* GraphQL */ `
   query($companyName: String!) {
@@ -20,23 +20,10 @@ const queryCompanyWorkExperiencesAspectRatingStatisticsGql = /* GraphQL */ `
   }
 `;
 
-export type RatingDistribution = {
-  count: number;
-  rating: number;
-};
-
-export type CompanyAspectRatingStatistic = {
-  aspect: string;
-  averageRating: number;
-  ratingCount: number;
-  type: ExperienceType;
-  ratingDistribution: RatingDistribution[];
-};
-
 type QueryCompanyWorkExperiencesAspectRatingStatisticsData = {
   company:
     | (Company & {
-        companyAspectRatingStatistics: CompanyAspectRatingStatistic[];
+        companyAspectRatingStatistics: AspectRatingStatistics[];
       })
     | null;
 };
