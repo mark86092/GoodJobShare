@@ -11,7 +11,7 @@ import useUnlockedDescriptionBySubmission from './useUnlockedDescriptionBySubmis
 
 const LoginToUnlock = ({ to, onAuthenticatedClick }) => {
   const experienceCount = useExperienceCount();
-  const salaryWorkTimeCount = useSalaryWorkTimeCount();
+  const timeAndSalaryCount = useSalaryWorkTimeCount();
   const [isLoggedIn, login] = useLogin();
   const unlockedDescription = useUnlockedDescriptionBySubmission();
 
@@ -23,7 +23,7 @@ const LoginToUnlock = ({ to, onAuthenticatedClick }) => {
         </P>
       </div>
       <P size="l" className={styles.ctaText}>
-        解鎖全站共 {salaryWorkTimeCount + experienceCount} 筆薪資、面試資料
+        解鎖全站共 {timeAndSalaryCount + experienceCount} 筆薪資、面試資料
       </P>
       {!isLoggedIn && (
         <P
