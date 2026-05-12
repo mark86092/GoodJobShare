@@ -19,7 +19,11 @@ import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
+<<<<<<< HEAD
 import { CompanyInIndex } from 'apis/queryCompanies';
+=======
+import { WorkExperience } from 'apis/experience';
+>>>>>>> upstream/master
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
@@ -75,10 +79,28 @@ export type CompanySalaryWorkTimeResult = {
 // TODO: replace with proper CompanyTimeAndSalaryStatistics type
 export type CompanyTimeAndSalaryStatistics = unknown;
 
+<<<<<<< HEAD
 export type CompanyIsSubscribed = {
   isSubscribed: boolean;
   companyId: string | null;
 };
+=======
+// TODO: replace with proper CompanyInterviewExperienceResult type
+export type CompanyInterviewExperienceResult = unknown;
+
+export type CompanyWorkExperienceResult = {
+  name: string;
+  jobTitle: string | undefined;
+  start: number;
+  limit: number;
+  sortBy: string | undefined;
+  workExperiences: WorkExperience[];
+  workExperiencesCount: number;
+};
+
+// TODO: replace with proper CompanyIsSubscribed type
+export type CompanyIsSubscribed = unknown;
+>>>>>>> upstream/master
 
 // TODO: replace with proper TopNJobTitles type
 export type TopNJobTitles = unknown;

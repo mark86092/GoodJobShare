@@ -28,11 +28,23 @@ import {
   companyEsgSalaryDataBoxSelectorByName,
   companyIsSubscribedBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
+<<<<<<< HEAD:src/actions/company.ts
 import { CompanyExperiencesPaginationInput } from 'apis/company';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
 } from 'apis/queryCompanyEsgSalaryData';
+=======
+import {
+  getCompanyTimeAndSalary,
+  getCompanyInterviewExperiences,
+  queryCompaniesApi,
+  getCompanyTimeAndSalaryStatistics,
+  getCompanyTopNJobTitles,
+} from 'apis/company';
+import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
+import queryCompanyEsgSalaryDataApi from 'apis/queryCompanyEsgSalaryData';
+>>>>>>> upstream/master:src/actions/company.js
 import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
@@ -555,6 +567,7 @@ export const queryCompanyWorkExperiences = ({
       return dispatch(setWorkExperiences(companyName, getFetched(data)));
     }
 
+    /** @type {import('reducers/companyIndex').CompanyWorkExperienceResult} */
     const workExperiencesData = {
       name: data.name,
       jobTitle,

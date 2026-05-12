@@ -29,13 +29,16 @@ import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatis
 import {
   queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
   getJobTitleInterviewExperiences,
-  getJobTitleWorkExperiences,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
+<<<<<<< HEAD:src/actions/jobTitle.ts
 import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
 import queryJobTitleSalaryWorkTimeStatisticsApi, {
   JobTitleSalaryWorkTimeStatistics,
 } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+=======
+import queryJobTitleWorkExperiencesApi from 'apis/queryJobTitleWorkExperiences';
+>>>>>>> upstream/master:src/actions/jobTitle.js
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';
@@ -408,7 +411,7 @@ export const queryJobTitleWorkExperiences = ({
   dispatch(setWorkExperiences(jobTitle, toFetching(box)));
 
   try {
-    const data = await getJobTitleWorkExperiences({
+    const data = await queryJobTitleWorkExperiencesApi({
       jobTitle,
       companyName,
       start,
@@ -421,6 +424,7 @@ export const queryJobTitleWorkExperiences = ({
       return dispatch(setWorkExperiences(jobTitle, getFetched(data)));
     }
 
+    /** @type {import('reducers/jobTitleIndex').JobTitleWorkExperienceResult} */
     const workExperiencesData = {
       name: data.name,
       companyName,

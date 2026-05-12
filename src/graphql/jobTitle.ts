@@ -2,7 +2,6 @@ import DataResultSortOption from 'apis/dataResultSortOption';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
-  workExperiencesPartialGql,
 } from './experience';
 import {
   fragmentSalaryWorkTimeFields,
@@ -163,6 +162,7 @@ export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
   }
 `;
 
+<<<<<<< HEAD
 // TODO
 export type JobTitleWorkExperience = {};
 
@@ -208,6 +208,8 @@ export type QueryJobTitlesHavingDataData = {
   jobTitlesHavingDataCount: number;
 };
 
+=======
+>>>>>>> upstream/master
 export const queryJobTitlesHavingDataGql = /* GraphQL */ `
   query($start: Int!, $limit: Int!) {
     jobTitlesHavingData(start: $start, limit: $limit) {

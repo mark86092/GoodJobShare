@@ -36,12 +36,16 @@ import {
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
 
 =======
+=======
+import { WorkExperience } from 'apis/experience';
+>>>>>>> upstream/master
 
 // TODO: replace with proper JobTitleInIndex type
 export type JobTitleInIndex = unknown;
@@ -103,8 +107,15 @@ export type JobTitleTimeAndSalaryStatistics = unknown;
 // TODO: replace with proper JobTitleInterviewExperienceResult type
 export type JobTitleInterviewExperienceResult = unknown;
 
-// TODO: replace with proper JobTitleWorkExperienceResult type
-export type JobTitleWorkExperienceResult = unknown;
+export type JobTitleWorkExperienceResult = {
+  name: string;
+  companyName?: string;
+  start: number;
+  limit: number;
+  sortBy?: string;
+  workExperiences: WorkExperience[];
+  workExperiencesCount: number;
+};
 
 type State = {
   indexesByPage: Record<number, FetchBox<JobTitleInIndex[]>>;
