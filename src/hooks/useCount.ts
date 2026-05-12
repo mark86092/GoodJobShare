@@ -28,7 +28,7 @@ export const useSalaryWorkTimeCount = (): number => {
 
 export const useTotalCount = (): number => {
   const experienceCount = useExperienceCount();
-  const salaryWorkTimeCount = useSalaryWorkTimeCount();
+  const timeAndSalaryCount = useSalaryWorkTimeCount();
 
-  return experienceCount + salaryWorkTimeCount;
+  return experienceCount + timeAndSalaryCount;
 };

@@ -19,17 +19,13 @@ import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
-<<<<<<< HEAD
 import { CompanyInIndex } from 'apis/queryCompanies';
-=======
 import { WorkExperience } from 'apis/experience';
->>>>>>> upstream/master
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
-import { CompanyWorkExperience } from 'apis/queryCompanyWorkExperiences';
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
@@ -62,7 +58,7 @@ export type CompanyInterviewExperienceResult = {
 
 export type CompanyWorkExperienceResult = {
   name: string;
-  workExperiences: CompanyWorkExperience[];
+  workExperiences: WorkExperience[];
   workExperiencesCount: number;
 } & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
 
@@ -76,34 +72,11 @@ export type CompanySalaryWorkTimeResult = {
   limit: number;
 };
 
-// TODO: replace with proper CompanyTimeAndSalaryStatistics type
-export type CompanyTimeAndSalaryStatistics = unknown;
-
-<<<<<<< HEAD
+// TODO: replace with proper CompanyIsSubscribed type
 export type CompanyIsSubscribed = {
   isSubscribed: boolean;
   companyId: string | null;
 };
-=======
-// TODO: replace with proper CompanyInterviewExperienceResult type
-export type CompanyInterviewExperienceResult = unknown;
-
-export type CompanyWorkExperienceResult = {
-  name: string;
-  jobTitle: string | undefined;
-  start: number;
-  limit: number;
-  sortBy: string | undefined;
-  workExperiences: WorkExperience[];
-  workExperiencesCount: number;
-};
-
-// TODO: replace with proper CompanyIsSubscribed type
-export type CompanyIsSubscribed = unknown;
->>>>>>> upstream/master
-
-// TODO: replace with proper TopNJobTitles type
-export type TopNJobTitles = unknown;
 
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;

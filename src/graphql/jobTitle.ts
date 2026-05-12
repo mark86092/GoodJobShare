@@ -162,54 +162,11 @@ export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
   }
 `;
 
-<<<<<<< HEAD
-// TODO
-export type JobTitleWorkExperience = {};
-
-export type QueryJobTitleWorkExperiencesData = {
-  job_title:
-    | (JobTitle & {
-        workExperiencesResult: {
-          count: number;
-          workExperiences: JobTitleWorkExperience[];
-        };
-      })
-    | null;
-};
-
-export const getJobTitleWorkExperiencesQuery = /* GraphQL */ `
-  query(
-    $jobTitle: String!
-    $companyName: String
-    $start: Int!
-    $limit: Int!
-    $sortBy: DataResultSortOption
-  ) {
-    job_title(name: $jobTitle) {
-      name
-      workExperiencesResult(
-        companyQuery: $companyName
-        start: $start
-        limit: $limit
-        sortBy: $sortBy
-      ) {
-        count
-        workExperiences {
-          ${experiencePartialGql}
-          ${workExperiencesPartialGql()}
-        }
-      }
-    }
-  }
-`;
-
 export type QueryJobTitlesHavingDataData = {
   jobTitlesHavingData: JobTitle[];
   jobTitlesHavingDataCount: number;
 };
 
-=======
->>>>>>> upstream/master
 export const queryJobTitlesHavingDataGql = /* GraphQL */ `
   query($start: Int!, $limit: Int!) {
     jobTitlesHavingData(start: $start, limit: $limit) {
