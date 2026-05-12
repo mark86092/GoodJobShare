@@ -60,12 +60,12 @@ export const companyOverviewStatisticsBoxSelectorByName = (
 ) => (state: RootState): FetchBox<CompanyOverviewStatistics | null> =>
   state.companyIndex.overviewStatisticsByName[companyName] || getUnfetched();
 
-export const companySalaryWorkTimeBoxSelectorByName = (companyName: string) => (
+export const companyTimeAndSalaryBoxSelectorByName = (companyName: string) => (
   state: RootState,
 ): FetchBox<CompanySalaryWorkTimeResult | null> =>
   state.companyIndex.timeAndSalaryByName[companyName] || getUnfetched();
 
-export const companySalaryWorkTimeStatisticsBoxSelectorByName = (
+export const companyTimeAndSalaryStatisticsBoxSelectorByName = (
   companyName: string,
 ) => (state: RootState): FetchBox<CompanySalaryWorkTimeStatistics | null> =>
   state.companyIndex.timeAndSalaryStatisticsByName[companyName] ||

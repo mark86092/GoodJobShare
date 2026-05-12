@@ -19,8 +19,8 @@ import {
   companyIndexesBoxSelectorAtPage,
   companyOverviewBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
-  companySalaryWorkTimeBoxSelectorByName,
-  companySalaryWorkTimeStatisticsBoxSelectorByName,
+  companyTimeAndSalaryBoxSelectorByName,
+  companyTimeAndSalaryStatisticsBoxSelectorByName,
   companyInterviewExperiencesBoxSelectorByName,
   companyWorkExperiencesBoxSelectorByName,
   companyRatingStatisticsBoxSelectorByName,
@@ -276,7 +276,7 @@ export const queryCompanySalaryWorkTime = (
   },
   { force = false } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = companySalaryWorkTimeBoxSelectorByName(companyName)(getState());
+  const box = companyTimeAndSalaryBoxSelectorByName(companyName)(getState());
   if (
     !force &&
     (isFetching(box) ||
@@ -334,7 +334,7 @@ export const queryCompanySalaryWorkTimeStatistics = ({
 }: {
   companyName: string;
 }): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = companySalaryWorkTimeStatisticsBoxSelectorByName(companyName)(
+  const box = companyTimeAndSalaryStatisticsBoxSelectorByName(companyName)(
     getState(),
   );
   if (

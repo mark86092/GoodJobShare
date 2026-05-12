@@ -14,8 +14,8 @@ import {
 } from 'actions/company';
 import {
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
-  companySalaryWorkTimeBoxSelectorByName,
-  companySalaryWorkTimeStatisticsBoxSelectorByName,
+  companyTimeAndSalaryBoxSelectorByName,
+  companyTimeAndSalaryStatisticsBoxSelectorByName,
   companyEsgSalaryDataBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
@@ -39,9 +39,9 @@ const useOverviewStatisticsBox = pageName => {
 const useSalaryWorkTimeStatisticsBox = pageName => {
   const selector = useCallback(
     state => {
-      const company = companySalaryWorkTimeStatisticsBoxSelectorByName(
-        pageName,
-      )(state);
+      const company = companyTimeAndSalaryStatisticsBoxSelectorByName(pageName)(
+        state,
+      );
       return salaryWorkTimeStatisticsSelector(company);
     },
     [pageName],
@@ -52,9 +52,7 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
 const useSalaryWorkTimeBoxSelector = companyName => {
   return useCallback(
     state => {
-      const company = companySalaryWorkTimeBoxSelectorByName(companyName)(
-        state,
-      );
+      const company = companyTimeAndSalaryBoxSelectorByName(companyName)(state);
       return company;
     },
     [companyName],
