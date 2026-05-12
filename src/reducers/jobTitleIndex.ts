@@ -47,7 +47,7 @@ export type JobTitleOverviewStatistics = {
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
-export type JobTitleSalaryWorkTimeResult = {
+export type JobTitleTimeAndSalaryResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
@@ -79,7 +79,7 @@ type State = {
   >;
   timeAndSalaryByName: Record<
     string,
-    FetchBox<JobTitleSalaryWorkTimeResult | null>
+    FetchBox<JobTitleTimeAndSalaryResult | null>
   >;
   timeAndSalaryStatisticsByName: Record<
     string,
@@ -165,7 +165,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       jobTitle: string;
-      box: FetchBox<JobTitleSalaryWorkTimeResult | null>;
+      box: FetchBox<JobTitleTimeAndSalaryResult | null>;
     },
   ) => {
     return {

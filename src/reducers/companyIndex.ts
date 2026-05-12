@@ -62,7 +62,7 @@ export type CompanyWorkExperienceResult = {
   workExperiencesCount: number;
 } & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
 
-export type CompanySalaryWorkTimeResult = {
+export type CompanyTimeAndSalaryResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
@@ -88,7 +88,7 @@ type State = {
   >;
   timeAndSalaryByName: Record<
     string,
-    FetchBox<CompanySalaryWorkTimeResult | null>
+    FetchBox<CompanyTimeAndSalaryResult | null>
   >;
   timeAndSalaryStatisticsByName: Record<
     string,
@@ -195,7 +195,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       companyName: string;
-      box: FetchBox<CompanySalaryWorkTimeResult | null>;
+      box: FetchBox<CompanyTimeAndSalaryResult | null>;
     },
   ) => {
     return {

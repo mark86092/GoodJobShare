@@ -5,8 +5,6 @@ import {
   QueryJobTitleInterviewExperiencesData,
   queryJobTitleSalaryWorkTimeGql,
   QueryJobTitleSalaryWorkTimeData,
-  getJobTitleWorkExperiencesQuery,
-  QueryJobTitleWorkExperiencesData,
   queryJobTitlesHavingDataGql,
   QueryJobTitlesHavingDataData,
   JobTitleExperiencesPaginationInput,
@@ -39,20 +37,6 @@ export const getJobTitleInterviewExperiences = ({
 > =>
   graphqlClient<QueryJobTitleInterviewExperiencesData>({
     query: queryJobTitleInterviewExperiencesGql,
-    variables: { jobTitle, companyName, start, limit, sortBy },
-  }).then(R.prop('job_title'));
-
-export const getJobTitleWorkExperiences = ({
-  jobTitle,
-  companyName,
-  start,
-  limit,
-  sortBy,
-}: JobTitleExperiencesPaginationInput): Promise<
-  QueryJobTitleWorkExperiencesData['job_title']
-> =>
-  graphqlClient<QueryJobTitleWorkExperiencesData>({
-    query: getJobTitleWorkExperiencesQuery,
     variables: { jobTitle, companyName, start, limit, sortBy },
   }).then(R.prop('job_title'));
 

@@ -3,7 +3,7 @@ import { Thunk } from 'reducers';
 import {
   JobTitleOverview,
   JobTitleOverviewStatistics,
-  JobTitleSalaryWorkTimeResult,
+  JobTitleTimeAndSalaryResult,
   JobTitleInterviewExperienceResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
@@ -18,8 +18,8 @@ import FetchBox, {
 import {
   jobTitleIndexesBoxSelectorAtPage,
   jobTitleOverviewBoxSelectorByName,
-  jobTitleSalaryWorkTimeBoxSelectorByName,
-  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName,
+  jobTitleTimeAndSalaryBoxSelectorByName,
+  jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
   jobTitleInterviewExperiencesBoxSelectorByName,
   jobTitleWorkExperiencesBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName,
@@ -31,14 +31,11 @@ import {
   getJobTitleInterviewExperiences,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
-<<<<<<< HEAD:src/actions/jobTitle.ts
 import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
 import queryJobTitleSalaryWorkTimeStatisticsApi, {
   JobTitleSalaryWorkTimeStatistics,
 } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
-=======
 import queryJobTitleWorkExperiencesApi from 'apis/queryJobTitleWorkExperiences';
->>>>>>> upstream/master:src/actions/jobTitle.js
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';
@@ -199,7 +196,7 @@ export const queryJobTitleOverviewStatistics = (
 
 const setSalaryWorkTime = (
   jobTitle: string,
-  box: FetchBox<JobTitleSalaryWorkTimeResult | null>,
+  box: FetchBox<JobTitleTimeAndSalaryResult | null>,
 ): AnyAction => ({
   type: SET_SALARY_WORK_TIME,
   jobTitle,
@@ -220,7 +217,7 @@ export const queryJobTitleSalaryWorkTime = (
   },
   { force = false } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = jobTitleSalaryWorkTimeBoxSelectorByName(jobTitle)(getState());
+  const box = jobTitleTimeAndSalaryBoxSelectorByName(jobTitle)(getState());
   if (
     !force &&
     (isFetching(box) ||
@@ -278,7 +275,7 @@ export const queryJobTitleSalaryWorkTimeStatistics = ({
 }: {
   jobTitle: string;
 }): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = jobTitleSalaryWorkTimeStatisticsBoxSelectorByName(jobTitle)(
+  const box = jobTitleTimeAndSalaryStatisticsBoxSelectorByName(jobTitle)(
     getState(),
   );
   if (

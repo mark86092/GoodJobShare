@@ -3,7 +3,7 @@ import { Thunk } from 'reducers';
 import {
   CompanyOverview,
   CompanyOverviewStatistics,
-  CompanySalaryWorkTimeResult,
+  CompanyTimeAndSalaryResult,
   CompanyInterviewExperienceResult,
   CompanyWorkExperienceResult,
 } from 'reducers/companyIndex';
@@ -255,7 +255,7 @@ export const queryCompanyOverviewStatistics = (
 
 const setSalaryWorkTime = (
   companyName: string,
-  box: FetchBox<CompanySalaryWorkTimeResult | null>,
+  box: FetchBox<CompanyTimeAndSalaryResult | null>,
 ): AnyAction => ({
   type: SET_SALARY_WORK_TIME,
   companyName,

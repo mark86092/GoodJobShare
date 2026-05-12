@@ -11,8 +11,8 @@ import {
 } from 'actions/jobTitle';
 import {
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
-  jobTitleSalaryWorkTimeBoxSelectorByName,
-  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName,
+  jobTitleTimeAndSalaryBoxSelectorByName,
+  jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
@@ -34,7 +34,7 @@ const useOverviewStatisticsBox = pageName => {
 const useSalaryWorkTimeStatistics = pageName => {
   const selector = useCallback(
     state => {
-      const jobTitle = jobTitleSalaryWorkTimeStatisticsBoxSelectorByName(
+      const jobTitle = jobTitleTimeAndSalaryStatisticsBoxSelectorByName(
         pageName,
       )(state);
       return salaryWorkTimeStatisticsSelector(jobTitle);
@@ -48,7 +48,7 @@ const useSalaryWorkTimeStatistics = pageName => {
 const useSalaryWorkTimeBoxSelector = pageName => {
   return useCallback(
     state => {
-      const jobTitle = jobTitleSalaryWorkTimeBoxSelectorByName(pageName)(state);
+      const jobTitle = jobTitleTimeAndSalaryBoxSelectorByName(pageName)(state);
       return jobTitle;
     },
     [pageName],
