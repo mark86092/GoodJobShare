@@ -7,7 +7,7 @@ import {
   CompanyInterviewExperienceResult,
   CompanyWorkExperienceResult,
 } from 'reducers/companyIndex';
-import { GraphqlError, isGraphqlError } from 'utils/errors';
+import { GraphqlError } from 'utils/errors';
 import FetchBox, {
   isFetching,
   isFetched,
@@ -246,8 +246,7 @@ export const queryCompanyOverviewStatistics = (
 
     dispatch(setOverviewStatistics(companyName, getFetched(model)));
   } catch (error) {
-    // @ts-ignore
-    if (isGraphqlError(error)) {
+    if (error instanceof GraphqlError) {
       dispatch(setOverviewStatistics(companyName, getError(error)));
     }
     throw error;

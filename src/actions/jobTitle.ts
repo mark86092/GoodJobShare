@@ -7,7 +7,7 @@ import {
   JobTitleInterviewExperienceResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
-import { isGraphqlError } from 'utils/errors';
+import { GraphqlError } from 'utils/errors';
 import FetchBox, {
   isFetching,
   isFetched,
@@ -83,8 +83,7 @@ export const fetchJobTitles = ({
     dispatch(setIndex(page, getFetched(data.jobTitlesHavingData)));
     dispatch(setIndexCount(getFetched(data.jobTitlesHavingDataCount)));
   } catch (error) {
-    // @ts-ignore
-    if (isGraphqlError(error)) {
+    if (error instanceof GraphqlError) {
       return dispatch(setIndex(page, getError(error)));
     }
     throw error;
@@ -95,24 +94,10 @@ const SALARY_WORK_TIMES_LIMIT = 5;
 const WORK_EXPERIENCES_LIMIT = 3;
 const INTERVIEW_EXPERIENCES_LIMIT = 3;
 
-<<<<<<< HEAD:src/actions/jobTitle.ts
 const setOverview = (
   jobTitle: string,
   box: FetchBox<JobTitleOverview | null>,
 ): AnyAction => ({
-=======
-/**
- * @type {(
- *   jobTitle: string,
- *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverview | null>
- * ) => {
- *   type: string;
- *   jobTitle: string;
- *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverview | null>
- * }}
- */
-const setOverview = (jobTitle, box) => ({
->>>>>>> upstream/master:src/actions/jobTitle.js
   type: SET_OVERVIEW,
   jobTitle,
   box,
@@ -155,32 +140,17 @@ export const queryJobTitleOverview = (
 
     dispatch(setOverview(jobTitle, getFetched(overviewData)));
   } catch (error) {
-    // @ts-ignore
-    if (isGraphqlError(error)) {
+    if (error instanceof GraphqlError) {
       dispatch(setOverview(jobTitle, getError(error)));
     }
     throw error;
   }
 };
 
-<<<<<<< HEAD:src/actions/jobTitle.ts
 const setOverviewStatistics = (
   jobTitle: string,
   box: FetchBox<JobTitleOverviewStatistics | null>,
 ): AnyAction => ({
-=======
-/**
- * @type {(
- *   jobTitle: string,
- *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverviewStatistics | null>
- * ) => {
- *   type: string;
- *   jobTitle: string;
- *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverviewStatistics | null>
- * }}
- */
-const setOverviewStatistics = (jobTitle, box) => ({
->>>>>>> upstream/master:src/actions/jobTitle.js
   type: SET_OVERVIEW_STATISTICS,
   jobTitle,
   box,
@@ -217,8 +187,7 @@ export const queryJobTitleOverviewStatistics = (
 
     dispatch(setOverviewStatistics(jobTitle, getFetched(model)));
   } catch (error) {
-    // @ts-ignore
-    if (isGraphqlError(error)) {
+    if (error instanceof GraphqlError) {
       dispatch(setOverviewStatistics(jobTitle, getError(error)));
     }
     throw error;
