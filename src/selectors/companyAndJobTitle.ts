@@ -47,40 +47,29 @@ export const companiesCountSelector = (state: RootState): number => {
 
 export const companyRatingStatisticsBoxSelectorByName = (
   companyName: string,
-) => (state: RootState): FetchBox<RatingStatistics | null> => {
-  return (
-    state.companyIndex.ratingStatisticsByName[companyName] || getUnfetched()
-  );
-};
+) => (state: RootState): FetchBox<RatingStatistics | null> =>
+  state.companyIndex.ratingStatisticsByName[companyName] || getUnfetched();
 
 export const companyOverviewBoxSelectorByName = (companyName: string) => (
   state: RootState,
-): FetchBox<CompanyOverview | null> => {
-  return state.companyIndex.overviewByName[companyName] || getUnfetched();
-};
+): FetchBox<CompanyOverview | null> =>
+  state.companyIndex.overviewByName[companyName] || getUnfetched();
 
 export const companyOverviewStatisticsBoxSelectorByName = (
   companyName: string,
-) => (state: RootState): FetchBox<CompanyOverviewStatistics | null> => {
-  return (
-    state.companyIndex.overviewStatisticsByName[companyName] || getUnfetched()
-  );
-};
+) => (state: RootState): FetchBox<CompanyOverviewStatistics | null> =>
+  state.companyIndex.overviewStatisticsByName[companyName] || getUnfetched();
 
 export const companySalaryWorkTimeBoxSelectorByName = (companyName: string) => (
   state: RootState,
-): FetchBox<CompanySalaryWorkTimeResult | null> => {
-  return state.companyIndex.timeAndSalaryByName[companyName] || getUnfetched();
-};
+): FetchBox<CompanySalaryWorkTimeResult | null> =>
+  state.companyIndex.timeAndSalaryByName[companyName] || getUnfetched();
 
 export const companySalaryWorkTimeStatisticsBoxSelectorByName = (
   companyName: string,
-) => (state: RootState): FetchBox<CompanySalaryWorkTimeStatistics | null> => {
-  return (
-    state.companyIndex.timeAndSalaryStatisticsByName[companyName] ||
-    getUnfetched()
-  );
-};
+) => (state: RootState): FetchBox<CompanySalaryWorkTimeStatistics | null> =>
+  state.companyIndex.timeAndSalaryStatisticsByName[companyName] ||
+  getUnfetched();
 
 export const companyTopNJobTitlesBoxSelectorByName = (companyName: string) => (
   state: RootState,
