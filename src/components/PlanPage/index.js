@@ -6,7 +6,7 @@ import Heading from 'common/base/Heading';
 import { useSubscriptionPlans } from 'hooks/payment/usePayment';
 import { isUnfetched, isFetched } from 'utils/fetchBox';
 import Loading from 'common/Loader';
-import { subscriptionType } from 'constants/subscription';
+import { SubscriptionType } from 'constants/subscription';
 
 import { fetchSubscriptionPlans } from 'actions/payment';
 import styles from './PlanPage.module.css';
@@ -31,7 +31,7 @@ const PlanPage = () => {
 
   let plans = subscriptionPlansBox.data;
   if (Array.isArray(plans)) {
-    const planTypes = R.values(subscriptionType);
+    const planTypes = R.values(SubscriptionType);
     plans = plans.filter(plan => planTypes.includes(plan.type));
   }
 

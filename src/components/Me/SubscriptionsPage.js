@@ -39,7 +39,7 @@ const formatStatus = (status, d) => {
   if (
     status === SubscriptionStatus.FAILED &&
     d.paymentRecord &&
-    d.paymentRecord.status === PaymentRecordStatus.refunded
+    d.paymentRecord.status === PaymentRecordStatus.REFUNDED
   ) {
     text = WordingRefunded;
   }

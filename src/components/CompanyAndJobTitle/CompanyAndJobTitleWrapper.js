@@ -4,13 +4,14 @@ import { toPairs, compose, map } from 'ramda';
 import Heading from 'common/base/Heading';
 import FanPageBlock from 'common/FanPageBlock';
 import BreadCrumb from 'common/BreadCrumb';
-import { tabTypeTranslation, generateTabURL } from 'constants/companyJobTitle';
 import { generateBreadCrumbData } from './utils';
 import TabLinkGroup from 'common/TabLinkGroup';
 import styles from './CompanyAndJobTitleWrapper.module.css';
 import SubscribeNotificationButton from 'components/CompanyAndJobTitle/SubscribeNotificationButton';
 import StatisticsCard from 'components/CompanyAndJobTitle/StatisticsCard';
 import {
+  tabTypeTranslation,
+  generateTabURL,
   PageType,
   TabType,
   tabTypeDetailTranslation as TAB_TYPE_DETAIL_TRANSLATION,

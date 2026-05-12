@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PlanCard from '../../PlanPage/PlanCard';
-import { subscriptionTypes } from 'constants/subscription';
+import { SubscriptionType } from 'constants/subscription';
 
 const SubscriptionPlan = ({
   className,
@@ -37,7 +37,7 @@ SubscriptionPlan.propTypes = {
   description: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(subscriptionTypes).isRequired,
+  type: PropTypes.oneOf(Object.values(SubscriptionType)).isRequired,
 };
 
 export default SubscriptionPlan;

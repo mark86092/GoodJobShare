@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSubscriptionPlans } from 'hooks/payment/usePayment';
 import { fetchSubscriptionPlans } from 'actions/payment';
-import { subscriptionType } from 'constants/subscription';
+import { SubscriptionType } from 'constants/subscription';
 import { isFetched } from 'utils/fetchBox';
 
 const useUnlockedDescriptionBySubmission = () => {
@@ -21,7 +21,7 @@ const useUnlockedDescriptionBySubmission = () => {
   }
 
   const plans = subscriptionPlansBox.data;
-  const plan = plans.find(plan => plan.type === subscriptionType.submitData);
+  const plan = plans.find(plan => plan.type === SubscriptionType.SubmitData);
   if (!plan) {
     return '解鎖全站 7 天';
   }

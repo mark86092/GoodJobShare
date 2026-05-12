@@ -10,7 +10,7 @@ import { useSubscriptionPlans } from 'hooks/payment/usePayment';
 import { useQuery } from 'hooks/routing';
 import { isFetched } from 'utils/fetchBox';
 import Loading from 'common/Loader';
-import { subscriptionType } from 'constants/subscription';
+import { SubscriptionType } from 'constants/subscription';
 import { fetchSubscriptionPlans } from 'actions/payment';
 
 const sanitizeSkuId = plans => skuId => {
@@ -30,7 +30,7 @@ const Buy = () => {
       return [];
     }
     return plansBox.data.filter(
-      d => d.type === subscriptionType.buySubscription,
+      d => d.type === SubscriptionType.BuySubscription,
     );
   }, [plansBox.data, ready]);
   const [selectedId, setSelectedId] = useState(null);

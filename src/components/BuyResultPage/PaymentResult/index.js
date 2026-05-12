@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { buyStatus as buyStatusMap } from 'constants/payment';
+import { BuyStatus } from 'constants/payment';
 import { fetchBoxPropType } from 'utils/fetchBox';
 
 import { paymentRecordToBuyStatus } from './helpers';
@@ -15,14 +15,14 @@ const PaymentResult = ({ paymentRecordBox, paymentRecordId }) => {
   const paymentRecordData = paymentRecordBox.data;
   const fetchingStatus = paymentRecordBox.status;
 
-  if (buyStatus === buyStatusMap.successful) {
+  if (buyStatus === BuyStatus.successful) {
     const {
       subscription: { expiredAt },
     } = paymentRecordData;
 
     return <Success expiredAt={new Date(expiredAt)} />;
   }
-  if (buyStatus === buyStatusMap.inProgress) {
+  if (buyStatus === BuyStatus.inProgress) {
     return (
       <InProgress
         paymentRecordId={paymentRecordId}
@@ -43,7 +43,7 @@ PaymentResult.propTypes = {
 
 PaymentResult.defaultProps = {
   publicId: '',
-  buyStatus: buyStatusMap.failed,
+  buyStatus: BuyStatus.failed,
 };
 
 export default PaymentResult;

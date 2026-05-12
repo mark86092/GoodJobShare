@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './SubscriptionsSection.module.css';
 import SubscriptionPlan from './SubscriptionPlan';
-import { subscriptionTypes } from 'constants/subscription';
+import { SubscriptionType } from 'constants/subscription';
 
 const SubscriptionPlanCollection = ({ plans, selectedId, setSelectedId }) => (
   <div className={styles.plans}>
@@ -28,7 +28,7 @@ SubscriptionPlanCollection.propTypes = {
       description: PropTypes.string.isRequired,
       skuId: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(subscriptionTypes).isRequired,
+      type: PropTypes.oneOf(Object.values(SubscriptionType)).isRequired,
     }),
   ),
   selectedId: PropTypes.string,
