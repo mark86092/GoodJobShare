@@ -7,7 +7,7 @@ import {
   CompanyInterviewExperienceResult,
   CompanyWorkExperienceResult,
 } from 'reducers/companyIndex';
-import { isGraphqlError } from 'utils/errors';
+import { GraphqlError, isGraphqlError } from 'utils/errors';
 import FetchBox, {
   isFetching,
   isFetched,
@@ -106,8 +106,7 @@ export const fetchCompanyNames = ({
     dispatch(setIndex(page, getFetched(data.companiesHavingData)));
     dispatch(setIndexCount(getFetched(data.companiesHavingDataCount)));
   } catch (error) {
-    // @ts-ignore
-    if (isGraphqlError(error)) {
+    if (error instanceof GraphqlError) {
       return dispatch(setIndex(page, getError(error)));
     }
     throw error;
@@ -140,8 +139,7 @@ export const queryRatingStatistics = (companyName: string): Thunk => async (
     });
     dispatch(setRatingStatistcs(companyName, getFetched(data)));
   } catch (error) {
-    // @ts-ignore
-    if (isGraphqlError(error)) {
+    if (error instanceof GraphqlError) {
       dispatch(setRatingStatistcs(companyName, getError(error)));
     }
     throw error;
@@ -152,24 +150,10 @@ const SALARY_WORK_TIMES_LIMIT = 5;
 const WORK_EXPERIENCES_LIMIT = 3;
 const INTERVIEW_EXPERIENCES_LIMIT = 3;
 
-<<<<<<< HEAD:src/actions/company.ts
 const setOverview = (
   companyName: string,
   box: FetchBox<CompanyOverview | null>,
 ): AnyAction => ({
-=======
-/**
- * @type {(
- *   companyName: string,
- *   box: import('utils/fetchBox').default<import('reducers/companyIndex').CompanyOverview | null>
- * ) => {
- *   type: string;
- *   companyName: string;
- *   box: import('utils/fetchBox').default<import('reducers/companyIndex').CompanyOverview | null>
- * }}
- */
-const setOverview = (companyName, box) => ({
->>>>>>> upstream/master:src/actions/company.js
   type: SET_OVERVIEW,
   companyName,
   box,
@@ -212,32 +196,17 @@ export const queryCompanyOverview = (
 
     dispatch(setOverview(companyName, getFetched(overviewData)));
   } catch (error) {
-    // @ts-ignore
-    if (isGraphqlError(error)) {
+    if (error instanceof GraphqlError) {
       dispatch(setOverview(companyName, getError(error)));
     }
     throw error;
   }
 };
 
-<<<<<<< HEAD:src/actions/company.ts
 const setOverviewStatistics = (
   companyName: string,
   box: FetchBox<CompanyOverviewStatistics | null>,
 ): AnyAction => ({
-=======
-/**
- * @type {(
- *   companyName: string,
- *   box: import('utils/fetchBox').default<import('reducers/companyIndex').CompanyOverviewStatistics | null>
- * ) => {
- *   type: string;
- *   companyName: string;
- *   box: import('utils/fetchBox').default<import('reducers/companyIndex').CompanyOverviewStatistics | null>
- * }}
- */
-const setOverviewStatistics = (companyName, box) => ({
->>>>>>> upstream/master:src/actions/company.js
   type: SET_OVERVIEW_STATISTICS,
   companyName,
   box,
@@ -770,8 +739,7 @@ export const queryCompanyIsSubscribed = ({
     const data = await queryCompanyIsSubscribedApi({ companyName, token });
     dispatch(setIsSubscribed(companyName, getFetched(data)));
   } catch (error) {
-    // @ts-ignore
-    if (isGraphqlError(error)) {
+    if (error instanceof GraphqlError) {
       dispatch(setIsSubscribed(companyName, getError(error)));
     }
     throw error;
