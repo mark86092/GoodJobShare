@@ -4,6 +4,7 @@ import {
   SET_INDEX_COUNT,
   SET_INDEX,
   SET_OVERVIEW,
+<<<<<<< HEAD
   SET_SALARY_WORK_TIME,
   SET_INTERVIEW_EXPERIENCES,
   SET_WORK_EXPERIENCES,
@@ -17,16 +18,36 @@ import {
   JobTitleWorkExperience,
 } from 'graphql/jobTitle';
 import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+=======
+  SET_TIME_AND_SALARY,
+  SET_INTERVIEW_EXPERIENCES,
+  SET_WORK_EXPERIENCES,
+  SET_TIME_AND_SALARY_STATISTICS,
+  SET_OVERVIEW_STATISTICS,
+} from 'actions/jobTitle';
+import {
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
+} from 'apis/overview';
+>>>>>>> upstream/master
 import {
   SalaryDistributionBin,
   OvertimeFrequencyCount,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
+<<<<<<< HEAD
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
 
+=======
+
+// TODO: replace with proper JobTitleInIndex type
+export type JobTitleInIndex = unknown;
+
+// Flattened from QueryJobTitleOverviewData, so a type is defined here
+>>>>>>> upstream/master
 export type JobTitleOverview = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
@@ -37,12 +58,17 @@ export type JobTitleOverview = {
   workExperiencesCount: number;
 };
 
+<<<<<<< HEAD
+=======
+// Flattened from QueryJobTitleOverviewStatisticsData, so a type is defined here
+>>>>>>> upstream/master
 export type JobTitleOverviewStatistics = {
   salaryDistribution: SalaryDistributionBin[];
   averageWeekWorkTime: number;
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
+<<<<<<< HEAD
 export type JobTitleSalaryWorkTimeResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
@@ -67,6 +93,22 @@ export type JobTitleWorkExperienceResult = {
 
 const preloadedState: {
   indexesByPage: Record<number, FetchBox<JobTitle[]>>;
+=======
+// TODO: replace with proper JobTitleTimeAndSalaryResult type
+export type JobTitleTimeAndSalaryResult = unknown;
+
+// TODO: replace with proper JobTitleTimeAndSalaryStatistics type
+export type JobTitleTimeAndSalaryStatistics = unknown;
+
+// TODO: replace with proper JobTitleInterviewExperienceResult type
+export type JobTitleInterviewExperienceResult = unknown;
+
+// TODO: replace with proper JobTitleWorkExperienceResult type
+export type JobTitleWorkExperienceResult = unknown;
+
+type State = {
+  indexesByPage: Record<number, FetchBox<JobTitleInIndex[]>>;
+>>>>>>> upstream/master
   indexCountBox: FetchBox<number>;
   overviewByName: Record<string, FetchBox<JobTitleOverview | null>>;
   overviewStatisticsByName: Record<
@@ -75,11 +117,19 @@ const preloadedState: {
   >;
   timeAndSalaryByName: Record<
     string,
+<<<<<<< HEAD
     FetchBox<JobTitleSalaryWorkTimeResult | null>
   >;
   timeAndSalaryStatisticsByName: Record<
     string,
     FetchBox<JobTitleSalaryWorkTimeStatistics | null>
+=======
+    FetchBox<JobTitleTimeAndSalaryResult | null>
+  >;
+  timeAndSalaryStatisticsByName: Record<
+    string,
+    FetchBox<JobTitleTimeAndSalaryStatistics | null>
+>>>>>>> upstream/master
   >;
   interviewExperiencesByName: Record<
     string,
@@ -89,9 +139,19 @@ const preloadedState: {
     string,
     FetchBox<JobTitleWorkExperienceResult | null>
   >;
+<<<<<<< HEAD
 } = {
   indexesByPage: {},
   indexCountBox: getUnfetched(),
+=======
+};
+
+const preloadedState: State = {
+  // page --> indexBox
+  indexesByPage: {},
+  indexCountBox: getUnfetched(),
+  // jobTitle --> overviewBox
+>>>>>>> upstream/master
   overviewByName: {},
   overviewStatisticsByName: {},
   timeAndSalaryByName: {},
@@ -107,7 +167,11 @@ const reducer = createReducer(preloadedState, {
   }),
   [SET_INDEX]: (
     state,
+<<<<<<< HEAD
     { page, box }: { page: number; box: FetchBox<JobTitle[]> },
+=======
+    { page, box }: { page: number; box: FetchBox<JobTitleInIndex[]> },
+>>>>>>> upstream/master
   ) => {
     return {
       ...state,
@@ -150,14 +214,22 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
+<<<<<<< HEAD
   [SET_SALARY_WORK_TIME]: (
+=======
+  [SET_TIME_AND_SALARY]: (
+>>>>>>> upstream/master
     state,
     {
       jobTitle,
       box,
     }: {
       jobTitle: string;
+<<<<<<< HEAD
       box: FetchBox<JobTitleSalaryWorkTimeResult | null>;
+=======
+      box: FetchBox<JobTitleTimeAndSalaryResult | null>;
+>>>>>>> upstream/master
     },
   ) => {
     return {
@@ -168,14 +240,22 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
+<<<<<<< HEAD
   [SET_SALARY_WORK_TIME_STATISTICS]: (
+=======
+  [SET_TIME_AND_SALARY_STATISTICS]: (
+>>>>>>> upstream/master
     state,
     {
       jobTitle,
       box,
     }: {
       jobTitle: string;
+<<<<<<< HEAD
       box: FetchBox<JobTitleSalaryWorkTimeStatistics | null>;
+=======
+      box: FetchBox<JobTitleTimeAndSalaryStatistics | null>;
+>>>>>>> upstream/master
     },
   ) => {
     return {

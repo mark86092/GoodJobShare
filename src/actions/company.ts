@@ -152,10 +152,24 @@ const SALARY_WORK_TIMES_LIMIT = 5;
 const WORK_EXPERIENCES_LIMIT = 3;
 const INTERVIEW_EXPERIENCES_LIMIT = 3;
 
+<<<<<<< HEAD:src/actions/company.ts
 const setOverview = (
   companyName: string,
   box: FetchBox<CompanyOverview | null>,
 ): AnyAction => ({
+=======
+/**
+ * @type {(
+ *   companyName: string,
+ *   box: import('utils/fetchBox').default<import('reducers/companyIndex').CompanyOverview | null>
+ * ) => {
+ *   type: string;
+ *   companyName: string;
+ *   box: import('utils/fetchBox').default<import('reducers/companyIndex').CompanyOverview | null>
+ * }}
+ */
+const setOverview = (companyName, box) => ({
+>>>>>>> upstream/master:src/actions/company.js
   type: SET_OVERVIEW,
   companyName,
   box,
@@ -206,10 +220,24 @@ export const queryCompanyOverview = (
   }
 };
 
+<<<<<<< HEAD:src/actions/company.ts
 const setOverviewStatistics = (
   companyName: string,
   box: FetchBox<CompanyOverviewStatistics | null>,
 ): AnyAction => ({
+=======
+/**
+ * @type {(
+ *   companyName: string,
+ *   box: import('utils/fetchBox').default<import('reducers/companyIndex').CompanyOverviewStatistics | null>
+ * ) => {
+ *   type: string;
+ *   companyName: string;
+ *   box: import('utils/fetchBox').default<import('reducers/companyIndex').CompanyOverviewStatistics | null>
+ * }}
+ */
+const setOverviewStatistics = (companyName, box) => ({
+>>>>>>> upstream/master:src/actions/company.js
   type: SET_OVERVIEW_STATISTICS,
   companyName,
   box,

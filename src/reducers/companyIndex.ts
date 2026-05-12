@@ -5,20 +5,31 @@ import {
   SET_INDEX,
   SET_OVERVIEW,
   SET_OVERVIEW_STATISTICS,
+<<<<<<< HEAD
   SET_SALARY_WORK_TIME,
   SET_INTERVIEW_EXPERIENCES,
   SET_WORK_EXPERIENCES,
   SET_SALARY_WORK_TIME_STATISTICS,
+=======
+  SET_TIME_AND_SALARY,
+  SET_INTERVIEW_EXPERIENCES,
+  SET_WORK_EXPERIENCES,
+  SET_TIME_AND_SALARY_STATISTICS,
+>>>>>>> upstream/master
   SET_RATING_STATISTICS,
   SET_COMPANY_TOP_N_JOB_TITLES,
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
+<<<<<<< HEAD
 import { CompanyExperiencesPaginationInput } from 'apis/company';
+=======
+>>>>>>> upstream/master
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
+<<<<<<< HEAD
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
@@ -26,12 +37,23 @@ import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import { CompanyWorkExperience } from 'apis/queryCompanyWorkExperiences';
+=======
+import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
+import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
+>>>>>>> upstream/master
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
 
+<<<<<<< HEAD
+=======
+// TODO: replace with proper CompanyInIndex type
+export type CompanyInIndex = unknown;
+
+// Flattened from QueryCompanyOverviewData, so a type is defined here
+>>>>>>> upstream/master
 export type CompanyOverview = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
@@ -42,12 +64,17 @@ export type CompanyOverview = {
   workExperiencesCount: number;
 };
 
+<<<<<<< HEAD
+=======
+// Flattened from QueryCompanyOverviewStatisticsData, so a type is defined here
+>>>>>>> upstream/master
 export type CompanyOverviewStatistics = {
   jobAverageSalaries: JobAverageSalary[];
   averageWeekWorkTime: number;
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
+<<<<<<< HEAD
 export type CompanySalaryWorkTimeResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
@@ -69,6 +96,25 @@ export type CompanyWorkExperienceResult = {
   workExperiences: CompanyWorkExperience[];
   workExperiencesCount: number;
 } & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
+=======
+// TODO: replace with proper CompanyTimeAndSalaryResult type
+export type CompanyTimeAndSalaryResult = unknown;
+
+// TODO: replace with proper CompanyTimeAndSalaryStatistics type
+export type CompanyTimeAndSalaryStatistics = unknown;
+
+// TODO: replace with proper CompanyInterviewExperienceResult type
+export type CompanyInterviewExperienceResult = unknown;
+
+// TODO: replace with proper CompanyWorkExperienceResult type
+export type CompanyWorkExperienceResult = unknown;
+
+// TODO: replace with proper CompanyIsSubscribed type
+export type CompanyIsSubscribed = unknown;
+
+// TODO: replace with proper TopNJobTitles type
+export type TopNJobTitles = unknown;
+>>>>>>> upstream/master
 
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
@@ -81,11 +127,19 @@ type State = {
   >;
   timeAndSalaryByName: Record<
     string,
+<<<<<<< HEAD
     FetchBox<CompanySalaryWorkTimeResult | null>
   >;
   timeAndSalaryStatisticsByName: Record<
     string,
     FetchBox<CompanySalaryWorkTimeStatistics | null>
+=======
+    FetchBox<CompanyTimeAndSalaryResult | null>
+  >;
+  timeAndSalaryStatisticsByName: Record<
+    string,
+    FetchBox<CompanyTimeAndSalaryStatistics | null>
+>>>>>>> upstream/master
   >;
   interviewExperiencesByName: Record<
     string,
@@ -95,6 +149,7 @@ type State = {
     string,
     FetchBox<CompanyWorkExperienceResult | null>
   >;
+<<<<<<< HEAD
   isSubscribedByName: Record<
     string,
     FetchBox<{
@@ -102,13 +157,23 @@ type State = {
       companyId: string | null;
     }>
   >;
+=======
+  isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed | null>>;
+>>>>>>> upstream/master
   topNJobTitlesByName: Record<string, FetchBox<TopNJobTitles | null>>;
   esgSalaryData: Record<string, FetchBox<ESGSalaryData | null>>;
 };
 
 const preloadedState: State = {
+<<<<<<< HEAD
   indexesByPage: {},
   indexCountBox: getUnfetched(),
+=======
+  // page --> indexBox
+  indexesByPage: {},
+  indexCountBox: getUnfetched(),
+  // companyName --> box
+>>>>>>> upstream/master
   ratingStatisticsByName: {},
   overviewByName: {},
   overviewStatisticsByName: {},
@@ -117,6 +182,11 @@ const preloadedState: State = {
   interviewExperiencesByName: {},
   workExperiencesByName: {},
   isSubscribedByName: {},
+<<<<<<< HEAD
+=======
+  // companyName --> box
+  // box.data: null | {all, interview, work, salary}
+>>>>>>> upstream/master
   topNJobTitlesByName: {},
   esgSalaryData: {},
 };
@@ -128,6 +198,7 @@ const reducer = createReducer(preloadedState, {
   }),
   [SET_INDEX]: (
     state,
+<<<<<<< HEAD
     {
       page,
       box,
@@ -135,6 +206,9 @@ const reducer = createReducer(preloadedState, {
       page: number;
       box: FetchBox<CompanyInIndex[]>;
     },
+=======
+    { page, box }: { page: number; box: FetchBox<CompanyInIndex[]> },
+>>>>>>> upstream/master
   ) => {
     return {
       ...state,
@@ -189,14 +263,22 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
+<<<<<<< HEAD
   [SET_SALARY_WORK_TIME]: (
+=======
+  [SET_TIME_AND_SALARY]: (
+>>>>>>> upstream/master
     state,
     {
       companyName,
       box,
     }: {
       companyName: string;
+<<<<<<< HEAD
       box: FetchBox<CompanySalaryWorkTimeResult | null>;
+=======
+      box: FetchBox<CompanyTimeAndSalaryResult | null>;
+>>>>>>> upstream/master
     },
   ) => {
     return {
@@ -207,14 +289,22 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
+<<<<<<< HEAD
   [SET_SALARY_WORK_TIME_STATISTICS]: (
+=======
+  [SET_TIME_AND_SALARY_STATISTICS]: (
+>>>>>>> upstream/master
     state,
     {
       companyName,
       box,
     }: {
       companyName: string;
+<<<<<<< HEAD
       box: FetchBox<CompanySalaryWorkTimeStatistics | null>;
+=======
+      box: FetchBox<CompanyTimeAndSalaryStatistics | null>;
+>>>>>>> upstream/master
     },
   ) => {
     return {
@@ -296,6 +386,7 @@ const reducer = createReducer(preloadedState, {
     {
       companyName,
       box,
+<<<<<<< HEAD
     }: {
       companyName: string;
       box: FetchBox<{
@@ -303,6 +394,9 @@ const reducer = createReducer(preloadedState, {
         companyId: string | null;
       }>;
     },
+=======
+    }: { companyName: string; box: FetchBox<CompanyIsSubscribed | null> },
+>>>>>>> upstream/master
   ) => {
     return {
       ...state,

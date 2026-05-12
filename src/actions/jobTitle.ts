@@ -95,10 +95,24 @@ const SALARY_WORK_TIMES_LIMIT = 5;
 const WORK_EXPERIENCES_LIMIT = 3;
 const INTERVIEW_EXPERIENCES_LIMIT = 3;
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
 const setOverview = (
   jobTitle: string,
   box: FetchBox<JobTitleOverview | null>,
 ): AnyAction => ({
+=======
+/**
+ * @type {(
+ *   jobTitle: string,
+ *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverview | null>
+ * ) => {
+ *   type: string;
+ *   jobTitle: string;
+ *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverview | null>
+ * }}
+ */
+const setOverview = (jobTitle, box) => ({
+>>>>>>> upstream/master:src/actions/jobTitle.js
   type: SET_OVERVIEW,
   jobTitle,
   box,
@@ -149,10 +163,24 @@ export const queryJobTitleOverview = (
   }
 };
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
 const setOverviewStatistics = (
   jobTitle: string,
   box: FetchBox<JobTitleOverviewStatistics | null>,
 ): AnyAction => ({
+=======
+/**
+ * @type {(
+ *   jobTitle: string,
+ *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverviewStatistics | null>
+ * ) => {
+ *   type: string;
+ *   jobTitle: string;
+ *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverviewStatistics | null>
+ * }}
+ */
+const setOverviewStatistics = (jobTitle, box) => ({
+>>>>>>> upstream/master:src/actions/jobTitle.js
   type: SET_OVERVIEW_STATISTICS,
   jobTitle,
   box,
