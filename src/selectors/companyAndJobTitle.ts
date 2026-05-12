@@ -2,16 +2,17 @@ import R from 'ramda';
 import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
 import { RootState } from 'reducers';
 import {
-  CompanyInterviewExperienceResult,
   CompanyOverview,
   CompanyOverviewStatistics,
+  CompanyInterviewExperienceResult,
   CompanySalaryWorkTimeResult,
   CompanyWorkExperienceResult,
+  CompanyIsSubscribed,
 } from 'reducers/companyIndex';
 import {
-  JobTitleInterviewExperienceResult,
   JobTitleOverview,
   JobTitleOverviewStatistics,
+  JobTitleInterviewExperienceResult,
   JobTitleSalaryWorkTimeResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
@@ -24,30 +25,20 @@ import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTi
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 import { JobTitle } from 'graphql/jobTitle';
 
-const data = <
-  T extends
-    | CompanySalaryWorkTimeStatistics
-    | JobTitleSalaryWorkTimeStatistics
-    | null
->(
-  state: FetchBox<T>,
-): T | undefined => state.data;
-
 export const salaryWorkTimeStatistics: (
   arg0:
     | FetchBox<CompanySalaryWorkTimeStatistics | null>
     | FetchBox<JobTitleSalaryWorkTimeStatistics | null>,
 ) => SalaryWorkTimeStatistics | {} = R.pipe(
-  data,
+  state => state.data,
   R.when(R.is(Object), R.prop('salary_work_time_statistics')),
   R.defaultTo({}),
 );
 
 export const companyIndexesBoxSelectorAtPage = (page: number) => (
   state: RootState,
-): FetchBox<CompanyInIndex[]> => {
-  return state.companyIndex.indexesByPage[page] || getUnfetched();
-};
+): FetchBox<CompanyInIndex[]> =>
+  state.companyIndex.indexesByPage[page] || getUnfetched();
 
 export const companiesCountSelector = (state: RootState): number => {
   const indexCountBox = state.companyIndex.indexCountBox;
@@ -119,11 +110,16 @@ export const companyWorkExperiencesBoxSelectorByName = (
   );
 };
 
+export const companyIsSubscribedBoxSelectorByName = (companyName: string) => (
+  state: RootState,
+): FetchBox<CompanyIsSubscribed> => {
+  return state.companyIndex.isSubscribedByName[companyName] || getUnfetched();
+};
+
 export const jobTitleIndexesBoxSelectorAtPage = (page: number) => (
   state: RootState,
-): FetchBox<JobTitle[]> => {
-  return state.jobTitleIndex.indexesByPage[page] || getUnfetched();
-};
+): FetchBox<JobTitle[]> =>
+  state.jobTitleIndex.indexesByPage[page] || getUnfetched();
 
 export const jobTitlesCountSelector = (state: RootState): number => {
   const indexCountBox = state.jobTitleIndex.indexCountBox;
@@ -171,13 +167,4 @@ export const jobTitleWorkExperiencesBoxSelectorByName = (jobTitle: string) => (
   state: RootState,
 ): FetchBox<JobTitleWorkExperienceResult | null> => {
   return state.jobTitleIndex.workExperiencesByName[jobTitle] || getUnfetched();
-};
-
-export const companyIsSubscribedBoxSelectorByName = (companyName: string) => (
-  state: RootState,
-): FetchBox<{
-  isSubscribed: boolean;
-  companyId: string | null;
-}> => {
-  return state.companyIndex.isSubscribedByName[companyName] || getUnfetched();
 };

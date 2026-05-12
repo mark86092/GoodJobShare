@@ -27,6 +27,8 @@ import {
 } from 'apis/overview';
 import { WorkExperience } from 'apis/experience';
 
+export type JobTitleInIndex = JobTitle;
+
 // Flattened from QueryJobTitleOverviewData, so a type is defined here
 export type JobTitleOverview = {
   name: string;

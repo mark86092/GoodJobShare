@@ -72,7 +72,6 @@ export type CompanySalaryWorkTimeResult = {
   limit: number;
 };
 
-// TODO: replace with proper CompanyIsSubscribed type
 export type CompanyIsSubscribed = {
   isSubscribed: boolean;
   companyId: string | null;
