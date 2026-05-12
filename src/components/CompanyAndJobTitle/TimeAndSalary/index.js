@@ -36,6 +36,35 @@ const SalaryWorkTime = ({
       pageType={pageType}
       pageName={pageName}
       tabType={tabType}
+<<<<<<< HEAD
+      boxSelector={boxSelector}
+      render={({ salaryWorkTimes, salaryWorkTimesCount: totalCount }) => {
+        return (
+          <Fragment>
+            <Helmet
+              pageType={pageType}
+              pageName={pageName}
+              totalCount={totalCount}
+              page={page}
+              topNJobTitles={topNJobTitles}
+            />
+            <SalaryWorkTimeSection
+              pageType={pageType}
+              pageName={pageName}
+              tabType={tabType}
+              salaryWorkTimes={salaryWorkTimes}
+              page={page}
+              pageSize={pageSize}
+              totalCount={totalCount}
+              onCloseReport={onCloseReport}
+            />
+          </Fragment>
+        );
+      }}
+    />
+  </CompanyAndJobTitleWrapper>
+);
+=======
     >
       {pageType === PageType.COMPANY && (
         <BoxRenderer
@@ -133,6 +162,7 @@ const SalaryWorkTime = ({
     </CompanyAndJobTitleWrapper>
   );
 };
+>>>>>>> upstream/master
 
 SalaryWorkTime.propTypes = {
   boxSelector: PropTypes.func.isRequired,

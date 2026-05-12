@@ -43,7 +43,7 @@ export const querySalaryWorkTimeCountIfUnfetched = (): Thunk => async (
 export const createSalaryWorkTime = ({
   body,
 }: {
-  body: any; // TODO: fix me
+  body: unknown;
 }): Thunk => async (dispatch, getState): Promise<unknown> => {
   const state = getState();
   const token = tokenSelector(state);

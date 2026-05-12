@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import FetchBox from 'utils/fetchBox';
+import { RootState } from 'reducers';
+import { CompanyOverview } from 'reducers/companyIndex';
 import Overview from 'components/CompanyAndJobTitle/Overview';
 import usePermission from 'hooks/usePermission';
 import { TabType, PageType } from 'constants/companyJobTitle';
@@ -13,21 +16,17 @@ import {
   companyOverviewBoxSelectorByName as overviewBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-import { paramsSelector } from 'common/routing/selectors';
-import useCompanyName, { companyNameSelector } from './useCompanyName';
+import { ServerSideRender } from 'types/serverSideRender';
+import useCompanyName, { Params, companyNameSelector } from './useCompanyName';
 import { useTopNJobTitles } from './useTopNJobTitles';
 
-const useOverviewBoxSelector = pageName => {
-  return useCallback(
-    state => {
-      const box = overviewBoxSelectorByName(pageName)(state);
-      return box;
-    },
-    [pageName],
-  );
+const useOverviewBoxSelector = (
+  pageName: string,
+): ((state: RootState) => FetchBox<CompanyOverview | null>) => {
+  return useMemo(() => overviewBoxSelectorByName(pageName), [pageName]);
 };
 
-const useOverviewStatisticsBox = pageName => {
+const useOverviewStatisticsBox = (pageName: string) => {
   const selector = useMemo(
     () => companyOverviewStatisticsBoxSelectorByName(pageName),
     [pageName],
@@ -35,7 +34,7 @@ const useOverviewStatisticsBox = pageName => {
   return useSelector(selector);
 };
 
-const CompanyOverviewProvider = () => {
+const CompanyOverviewProvider: React.FC & ServerSideRender<Params> = () => {
   const dispatch = useDispatch();
   const pageType = PageType.COMPANY;
   const companyName = useCompanyName();
@@ -69,6 +68,7 @@ const CompanyOverviewProvider = () => {
 
   const [, fetchPermission] = usePermission();
   useEffect(() => {
+    // @ts-ignore
     fetchPermission();
   }, [pageType, companyName, fetchPermission]);
 
@@ -90,8 +90,10 @@ const CompanyOverviewProvider = () => {
   );
 };
 
-CompanyOverviewProvider.fetchData = ({ store: { dispatch }, ...props }) => {
-  const params = paramsSelector(props);
+CompanyOverviewProvider.fetchData = ({
+  store: { dispatch },
+  match: { params },
+}): Promise<unknown> => {
   const companyName = companyNameSelector(params);
   return Promise.all([
     dispatch(queryCompanyOverview(companyName)),

@@ -1,0 +1,196 @@
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
+import { useDispatch } from 'react-redux';
+import { useWindowScroll, useRafState } from 'react-use';
+import PropTypes from 'prop-types';
+import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
+import cn from 'classnames';
+import ReactGA from 'react-ga4';
+import { Wrapper } from 'common/base';
+import GjLogo from 'common/icons/GjLogo.svg';
+import Glike from 'common/icons/Glike.svg';
+import PopoverToggle from 'common/PopoverToggle';
+import useShareLink from 'hooks/experiments/useShareLink';
+import usePermission from 'hooks/usePermission';
+import useMobile from 'hooks/useMobile';
+import { useAuthUser, useIsLoggedIn } from 'hooks/auth';
+import { useLogin, useLogout } from 'hooks/login';
+import { fetchInbox } from 'actions/inbox';
+
+import styles from './Header.module.css';
+import inboxIconStyles from './InboxIcon.module.css';
+import SiteMenu from './SiteMenu';
+import Top from './Top';
+import ProgressTop from './Top/ProgressTop';
+import Searchbar from './Searchbar';
+import { GA_CATEGORY, GA_ACTION } from 'constants/gaConstants';
+import HeaderButton from './HeaderButton';
+import InboxIcon from './InboxIcon';
+import InboxPopoverContainer from './InboxPopoverContainer';
+import usePolling from 'hooks/usePolling';
+
+const HeaderTop: React.FC = () => {
+  const location = useLocation();
+  const isLoggedIn = useIsLoggedIn();
+  const shareLink = useShareLink();
+
+  if (!isLoggedIn && location.pathname === '/') {
+    return null;
+  }
+
+  if (isLoggedIn && !isEmailVerified) {
+    return (
+      <Top>
+        <EmailVerificationTop
+          isSentVerificationEmail={
+            emailStatus === emailStatusMap.SENT_VERIFICATION_LINK
+          }
+        />
+      </Top>
+    );
+  }
+
+  return (
+    <Top to={shareLink}>
+      <ProgressTop />
+    </Top>
+  );
+};
+
+const Link: React.FC<{
+  to: string;
+  title?: string;
+  className?: string;
+  children: JSX.Element | string;
+}> = ({ ...props }) => {
+  return (
+    // @ts-ignore
+    <RouterLink {...props}></RouterLink>
+  );
+};
+
+const Header: React.FC = () => {
+  const history = useHistory();
+  const [isNavOpen, setNavOpen] = useState(false);
+  const [isLoggedIn, login] = useLogin();
+  const [, fetchPermission] = usePermission();
+
+  const showsHeader = useShowsHeader();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchPermission();
+    }
+  }, [isLoggedIn, fetchPermission]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const toggleNav = useCallback(() => setNavOpen(!isNavOpen), [isNavOpen]);
+
+  const closeNav = useCallback(() => setNavOpen(false), []);
+
+  useEffect(() => history.listen(closeNav), [closeNav, history]);
+
+  return (
+    <div className={styles.root}>
+      <HeaderTop />
+      <header
+        className={cn(styles.header, {
+          [styles.headerHidden]: !showsHeader,
+        })}
+      >
+        <Wrapper size="l" className={styles.inner}>
+          <HeaderButton isNavOpen={isNavOpen} toggle={toggleNav} />
+          <div className={styles.logo}>
+            <Link to="/" title="GoodJob 職場透明化運動">
+              <img src={GjLogo} alt="Goodjob" />
+            </Link>
+          </div>
+          <div className={styles.logoSm}>
+            <Link to="/" title="GoodJob 職場透明化運動">
+              <img src={Glike} alt="Goodjob" />
+            </Link>
+          </div>
+          <div className={styles.searchbarWrapper}>
+            <Searchbar
+              className={styles.searchbar}
+              placeholder="搜全站薪水/面試/評價"
+            />
+          </div>
+          <div className={cn(styles.searchbarWrapper, styles.mobile)}>
+            <Searchbar
+              className={styles.searchbar}
+              placeholder="搜全站薪水/面試/評價"
+            />
+          </div>
+          <nav
+            className={cn(styles.nav, {
+              [styles.isNavOpen]: isNavOpen,
+            })}
+          >
+            <Link to="/" className={styles.logo} title="GoodJob 職場透明化運動">
+              <img src={GjLogo} alt="Goodjob" />
+            </Link>
+            <SiteMenu isLogin={isLoggedIn} />
+            <div className={styles.buttonsArea}>
+              <Link to="/plans" className={styles.plansLink}>
+                解鎖方式
+              </Link>
+              <Link
+                to="/share"
+                className={styles.leaveDataBtn}
+                onClick={(): void => {
+                  ReactGA.event({
+                    category: GA_CATEGORY.HEADER,
+                    action: GA_ACTION.CLICK_SHARE_DATA,
+                  });
+                }}
+              >
+                分享經驗
+              </Link>
+              <div style={{ position: 'relative' }}>
+                {!isLoggedIn && (
+                  <button
+                    className={styles.loginBtn}
+                    onClick={(): void => {
+                      login();
+                    }}
+                  >
+                    登入
+                  </button>
+                )}
+                {isLoggedIn && (
+                  <PopoverToggle
+                    popoverClassName={styles.popover}
+                    popoverContent={
+                      <ul className={styles.popoverItem}>
+                        <li>
+                          <Link to="/me/subscriptions/current">我的方案</Link>
+                        </li>
+                        <li>
+                          <Link to="/me">管理我的資料</Link>
+                        </li>
+                        <li>
+                          <button onClick={logout}>登出</button>
+                        </li>
+                      </ul>
+                    }
+                  >
+                    <div className={styles.userNameBtn}>
+                      {user && user.name}
+                    </div>
+                  </PopoverToggle>
+                )}
+              </div>
+            </div>
+          </nav>
+        </Wrapper>
+      </header>
+    </div>
+  );
+};
+
+export default Header;
