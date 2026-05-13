@@ -1,30 +1,21 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useRef,
-} from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useWindowScroll, useRafState } from 'react-use';
 import PropTypes from 'prop-types';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import cn from 'classnames';
 import ReactGA from 'react-ga4';
 import { Wrapper } from 'common/base';
 import GjLogo from 'common/icons/GjLogo.svg';
 import Glike from 'common/icons/Glike.svg';
-import useShareLink from 'hooks/experiments/useShareLink';
 import usePermission from 'hooks/usePermission';
 import useMobile from 'hooks/useMobile';
-import { useIsLoggedIn } from 'hooks/auth';
 import { useLogin } from 'hooks/login';
 import { fetchInbox } from 'actions/inbox';
 
 import styles from './Header.module.css';
+import HeaderTop from './HeaderTop';
 import SiteMenu from './SiteMenu';
-import Top from './Top';
-import ProgressTop from './Top/ProgressTop';
 import Searchbar from './Searchbar';
 import { GA_CATEGORY, GA_ACTION } from 'constants/gaConstants';
 import InboxPopoverContainer from './InboxPopoverContainer';
@@ -37,24 +28,6 @@ const onClickShareData = () => {
     category: GA_CATEGORY.HEADER,
     action: GA_ACTION.CLICK_SHARE_DATA,
   });
-};
-
-const HeaderTop = () => {
-  const location = useLocation();
-  const isLoggedIn = useIsLoggedIn();
-  const shareLink = useShareLink();
-
-  return useMemo(() => {
-    if (!isLoggedIn && location.pathname === '/') {
-      return null;
-    }
-
-    return (
-      <Top to={shareLink}>
-        <ProgressTop />
-      </Top>
-    );
-  }, [isLoggedIn, location.pathname, shareLink]);
 };
 
 const Logo = ({ forceDesktop }) => {
