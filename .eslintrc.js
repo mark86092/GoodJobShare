@@ -41,11 +41,13 @@ module.exports = {
     'react/prop-types': 'error',
     'react/no-unused-prop-types': 'error',
     'react/sort-prop-types': ['error', { sortShapeProp: true }],
-    '@typescript-eslint/camelcase': 'off',
+    // requires ESLint 7.1.0+, disabled until ESLint is upgraded
+    '@typescript-eslint/no-loss-of-precision': 'off',
     '@typescript-eslint/no-var-requires': 'warn',
-    '@typescript-eslint/ban-ts-ignore': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'warn',
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
   overrides: [
     {
@@ -53,6 +55,7 @@ module.exports = {
       files: ['*.ts', '*.tsx'],
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'error',
+        '@typescript-eslint/explicit-module-boundary-types': 'error',
       },
     },
   ],
