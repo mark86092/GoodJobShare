@@ -5,30 +5,32 @@ import {
   SET_INDEX,
   SET_OVERVIEW,
   SET_OVERVIEW_STATISTICS,
-  SET_TIME_AND_SALARY,
+  SET_SALARY_WORK_TIME,
   SET_INTERVIEW_EXPERIENCES,
   SET_WORK_EXPERIENCES,
-  SET_TIME_AND_SALARY_STATISTICS,
+  SET_SALARY_WORK_TIME_STATISTICS,
   SET_RATING_STATISTICS,
   SET_COMPANY_TOP_N_JOB_TITLES,
   SET_COMPANY_ESG_SALARY_DATA,
   SET_IS_SUBSCRIBED,
 } from 'actions/company';
+import { CompanyExperiencesPaginationInput } from 'apis/company';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
+import { CompanyInIndex } from 'apis/queryCompanies';
 import { WorkExperience } from 'apis/experience';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
+import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
+import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
+import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
-
-// TODO: replace with proper CompanyInIndex type
-export type CompanyInIndex = unknown;
 
 // Flattened from QueryCompanyOverviewData, so a type is defined here
 export type CompanyOverview = {
@@ -48,30 +50,32 @@ export type CompanyOverviewStatistics = {
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
-// TODO: replace with proper CompanyTimeAndSalaryResult type
-export type CompanyTimeAndSalaryResult = unknown;
-
-// TODO: replace with proper CompanyTimeAndSalaryStatistics type
-export type CompanyTimeAndSalaryStatistics = unknown;
-
-// TODO: replace with proper CompanyInterviewExperienceResult type
-export type CompanyInterviewExperienceResult = unknown;
+export type CompanyInterviewExperienceResult = {
+  name: string;
+  interviewExperiences: CompanyInterviewExperience[];
+  interviewExperiencesCount: number;
+} & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
 
 export type CompanyWorkExperienceResult = {
   name: string;
-  jobTitle: string | undefined;
-  start: number;
-  limit: number;
-  sortBy: string | undefined;
   workExperiences: WorkExperience[];
   workExperiencesCount: number;
+} & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
+
+export type CompanyTimeAndSalaryResult = {
+  name: string;
+  salaryWorkTimes: SalaryWorkTime[];
+  salaryWorkTimesCount: number;
+  // params
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
 };
 
-// TODO: replace with proper CompanyIsSubscribed type
-export type CompanyIsSubscribed = unknown;
-
-// TODO: replace with proper TopNJobTitles type
-export type TopNJobTitles = unknown;
+export type CompanyIsSubscribed = {
+  isSubscribed: boolean;
+  companyId: string | null;
+};
 
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
@@ -88,7 +92,7 @@ type State = {
   >;
   timeAndSalaryStatisticsByName: Record<
     string,
-    FetchBox<CompanyTimeAndSalaryStatistics | null>
+    FetchBox<CompanySalaryWorkTimeStatistics | null>
   >;
   interviewExperiencesByName: Record<
     string,
@@ -98,7 +102,7 @@ type State = {
     string,
     FetchBox<CompanyWorkExperienceResult | null>
   >;
-  isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed | null>>;
+  isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed>>;
   topNJobTitlesByName: Record<string, FetchBox<TopNJobTitles | null>>;
   esgSalaryData: Record<string, FetchBox<ESGSalaryData | null>>;
 };
@@ -184,7 +188,7 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY]: (
+  [SET_SALARY_WORK_TIME]: (
     state,
     {
       companyName,
@@ -202,14 +206,14 @@ const reducer = createReducer(preloadedState, {
       },
     };
   },
-  [SET_TIME_AND_SALARY_STATISTICS]: (
+  [SET_SALARY_WORK_TIME_STATISTICS]: (
     state,
     {
       companyName,
       box,
     }: {
       companyName: string;
-      box: FetchBox<CompanyTimeAndSalaryStatistics | null>;
+      box: FetchBox<CompanySalaryWorkTimeStatistics | null>;
     },
   ) => {
     return {
@@ -291,7 +295,7 @@ const reducer = createReducer(preloadedState, {
     {
       companyName,
       box,
-    }: { companyName: string; box: FetchBox<CompanyIsSubscribed | null> },
+    }: { companyName: string; box: FetchBox<CompanyIsSubscribed> },
   ) => {
     return {
       ...state,

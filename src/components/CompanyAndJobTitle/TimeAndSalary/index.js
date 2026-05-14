@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
 import BoxRenderer from 'common/StatusRenderer';
 import PageBoxRenderer from '../PageBoxRenderer';
-import TimeAndSalarySection from './TimeAndSalary';
+import SalaryWorkTimeSection from './SalaryWorkTimeSection';
 import Helmet from './Helmet';
 import OvertimeSection from './OvertimeSection';
 import Searchbar from '../Searchbar';
@@ -16,7 +16,7 @@ import { Wrapper } from 'common/base';
 import { useCreatePageLinkTo } from 'common/Pagination/Pagination';
 import styles from './TimeAndSalary.module.css';
 
-const TimeAndSalary = ({
+const SalaryWorkTime = ({
   pageType,
   pageName,
   tabType,
@@ -114,7 +114,7 @@ const TimeAndSalary = ({
                   page={page}
                   topNJobTitles={topNJobTitles}
                 />
-                <TimeAndSalarySection
+                <SalaryWorkTimeSection
                   pageType={pageType}
                   pageName={pageName}
                   tabType={tabType}
@@ -134,7 +134,7 @@ const TimeAndSalary = ({
   );
 };
 
-TimeAndSalary.propTypes = {
+SalaryWorkTime.propTypes = {
   boxSelector: PropTypes.func.isRequired,
   esgSalaryDataBox: PropTypes.object.isRequired,
   onCloseReport: PropTypes.func.isRequired,
@@ -152,4 +152,4 @@ TimeAndSalary.propTypes = {
   ),
 };
 
-export default TimeAndSalary;
+export default SalaryWorkTime;

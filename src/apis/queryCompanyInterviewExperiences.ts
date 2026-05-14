@@ -2,13 +2,26 @@ import R from 'ramda';
 import graphqlClient from 'utils/graphqlClient';
 import { CompanyExperiencesPaginationInput } from 'apis/company';
 import { Company } from 'graphql/company';
-import { WorkExperience } from 'apis/experience';
 import {
   experiencePartialGql,
-  workExperiencesPartialGql,
+  interviewExperiencePartialGql,
 } from 'graphql/experience';
 
-const queryCompanyWorkExperiencesGql = /* GraphQL */ `
+// TODO
+export type CompanyInterviewExperience = {};
+
+type QueryCompanyInterviewExperiencesData = {
+  company:
+    | (Company & {
+        interviewExperiencesResult: {
+          count: number;
+          interviewExperiences: CompanyInterviewExperience[];
+        };
+      })
+    | null;
+};
+
+const queryCompanyInterviewExperiencesGql = /* GraphQL */ `
   query(
     $companyName: String!
     $jobTitle: String
@@ -18,45 +31,34 @@ const queryCompanyWorkExperiencesGql = /* GraphQL */ `
   ) {
     company(name: $companyName) {
       name
-      workExperiencesResult(
+      interviewExperiencesResult(
         jobTitle: $jobTitle
         start: $start
         limit: $limit
         sortBy: $sortBy
       ) {
         count
-        workExperiences {
+        interviewExperiences {
           ${experiencePartialGql}
-          ${workExperiencesPartialGql()}
+          ${interviewExperiencePartialGql()}
         }
       }
     }
   }
 `;
 
-type QueryCompanyWorkExperiencesData = {
-  company:
-    | (Company & {
-        workExperiencesResult: {
-          count: number;
-          workExperiences: WorkExperience[];
-        };
-      })
-    | null;
-};
-
-const queryCompanyWorkExperiences = ({
+const queryCompanyInterviewExperiences = ({
   companyName,
   jobTitle,
   start,
   limit,
   sortBy,
 }: CompanyExperiencesPaginationInput): Promise<
-  QueryCompanyWorkExperiencesData['company']
+  QueryCompanyInterviewExperiencesData['company']
 > =>
-  graphqlClient<QueryCompanyWorkExperiencesData>({
-    query: queryCompanyWorkExperiencesGql,
+  graphqlClient<QueryCompanyInterviewExperiencesData>({
+    query: queryCompanyInterviewExperiencesGql,
     variables: { companyName, jobTitle, start, limit, sortBy },
   }).then(R.prop('company'));
 
-export default queryCompanyWorkExperiences;
+export default queryCompanyInterviewExperiences;

@@ -1,7 +1,7 @@
 import { combineReducers, Action, AnyAction } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { PERSIST_KEY } from '../config';
+import { PERSIST_KEY } from 'config';
 
 // sort by reducers a-z
 import auth from './auth';
