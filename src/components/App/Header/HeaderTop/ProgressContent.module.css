@@ -1,5 +1,12 @@
 @value main-yellow from '../../../common/variables.module.css';
 
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
 .heading {
   color: main-yellow;
   margin-right: 16px;

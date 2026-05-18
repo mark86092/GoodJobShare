@@ -1,13 +1,19 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import cn from 'classnames';
 import styles from './Popover.module.css';
 
-const Popover = ({ active, className, children }) => (
+type IsOpenState = { isOpen: boolean };
+
+type PopoverProps = React.PropsWithChildren<{
+  active?: boolean;
+  className?: string;
+}>;
+
+const Popover: React.FC<PopoverProps> = ({ active, className, children }) => (
   <div
     className={cn(styles.popover, { [styles.active]: active }, className)}
-    onClick={e => {
+    onClick={(e: React.MouseEvent<HTMLDivElement>): void => {
       e.stopPropagation();
     }}
   >
@@ -15,34 +21,29 @@ const Popover = ({ active, className, children }) => (
   </div>
 );
 
-Popover.propTypes = {
-  active: PropTypes.bool,
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-};
+type PopoverToggleProps = React.PropsWithChildren<{
+  className?: string;
+  popoverClassName?: string;
+  popoverContent?: React.ReactNode | ((state: IsOpenState) => React.ReactNode);
+}>;
 
-Popover.defaultProps = {
-  className: '',
-  active: false,
-};
-
-const PopoverToggle = ({
+const PopoverToggle: React.FC<PopoverToggleProps> = ({
   className,
   popoverClassName,
   popoverContent,
   children,
-  ...props
 }) => {
   const history = useHistory();
-  const dropdown = useRef();
+  const dropdown = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const close = useCallback(() => setIsOpen(false), []);
 
-  // close when click outside of dropdown
   const outsideHandler = useCallback(
-    e => {
-      if (!dropdown.current.contains(e.target)) {
+    (e: MouseEvent) => {
+      // dropdown.current is always set here (handler only runs post-mount via useEffect),
+      // but TypeScript can't infer that from useRef(null)'s nullable type
+      if (dropdown.current && !dropdown.current.contains(e.target as Node)) {
         if (isOpen) {
           close();
         }
@@ -52,7 +53,7 @@ const PopoverToggle = ({
   );
   useEffect(() => {
     document.addEventListener('click', outsideHandler);
-    return () => {
+    return (): void => {
       document.removeEventListener('click', outsideHandler);
     };
   }, [outsideHandler]);
@@ -66,30 +67,16 @@ const PopoverToggle = ({
     <div
       ref={dropdown}
       className={cn(className, styles.popoverToggle)}
-      onClick={() => setIsOpen(isOpen => !isOpen)}
-      {...props}
+      onClick={(): void => setIsOpen(isOpen => !isOpen)}
     >
       <Popover className={popoverClassName} active={isOpen}>
         {typeof popoverContent === 'function'
           ? popoverContent({ isOpen })
           : popoverContent}
       </Popover>
-      {typeof children === 'function' ? children({ isOpen }) : children}
+      {children}
     </div>
   );
-};
-
-PopoverToggle.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-  className: PropTypes.string,
-  popoverClassName: PropTypes.string,
-  popoverContent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-};
-
-PopoverToggle.defaultProps = {
-  className: '',
-  popoverClassName: '',
-  popoverContent: '',
 };
 
 export default PopoverToggle;
