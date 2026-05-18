@@ -15,7 +15,7 @@ import { ServerSideRender } from 'types/serverSideRender';
 import useEntry, { useNeighborEntry } from './useEntry';
 import Body from './Body';
 import Footer from './Footer';
-import Helmet from './Helmet';
+import EntryHelmet from './EntryHelmet';
 import styles from './LaborRightsSingle.module.css';
 
 type Params = { id: string };
@@ -41,7 +41,7 @@ const LaborRightsSingle: React.FC & ServerSideRender<Params> = () => {
       {(isFetching(entryBox) || isUnfetched(entryBox)) && <Loader />}
       {isFetched(entryBox) && entryBox.data ? (
         <Fragment>
-          <Helmet entry={entryBox.data} />
+          <EntryHelmet entry={entryBox.data} />
           <div>
             <Body
               title={entryBox.data.title}

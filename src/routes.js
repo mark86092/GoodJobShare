@@ -2,7 +2,7 @@ import React from 'react';
 import { generatePath } from 'react-router';
 import LandingPage from './components/LandingPage';
 import LaborRightsMenu from './components/LaborRightsMenu';
-import LaborRightsSingle from './components/LaborRightsSingle';
+import LaborRightsSingle from './pages/LaborRightsSingle';
 import SearchPage from 'pages/SearchPage';
 import ExperienceDetail from './components/ExperienceDetail';
 import NotFound from './components/common/NotFound';
