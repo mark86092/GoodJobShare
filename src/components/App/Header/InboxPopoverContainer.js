@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import PopoverToggle from 'common/PopoverToggle';
 import { messagesSelector } from 'selectors/inbox';
 import popoverStyles from './Header.module.css';
 import styles from './InboxIcon.module.css';
 import InboxContent from './InboxContent';
+import InboxIcon from './InboxIcon';
 
-const InboxPopoverContainer = ({ children }) => {
+const InboxPopoverContainer = () => {
   const messages = useSelector(messagesSelector);
 
   return (
@@ -23,13 +23,9 @@ const InboxPopoverContainer = ({ children }) => {
         />
       )}
     >
-      {children}
+      <InboxIcon className={styles.topNavIcon} />
     </PopoverToggle>
   );
-};
-
-InboxPopoverContainer.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default InboxPopoverContainer;

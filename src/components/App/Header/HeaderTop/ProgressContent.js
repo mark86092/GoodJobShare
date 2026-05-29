@@ -3,11 +3,10 @@ import React from 'react';
 import { Wrapper } from 'common/base';
 import ProgressBarWithDataCount from 'common/ProgressBarWithDataCount';
 
-import topStyles from './Top.module.css';
-import styles from './ProgressTop.module.css';
+import styles from './ProgressContent.module.css';
 
-const ProgressTop = () => (
-  <Wrapper size="l" className={topStyles.inner}>
+const ProgressContent = () => (
+  <Wrapper size="l" className={styles.wrapper}>
     <div className={styles.heading}>\ 「職場透明化運動」進行中 /</div>
     <ProgressBarWithDataCount size="s" theme="black" />
     <div className={styles.subheading}>
@@ -17,4 +16,4 @@ const ProgressTop = () => (
   </Wrapper>
 );
 
-export default ProgressTop;
+export default ProgressContent;

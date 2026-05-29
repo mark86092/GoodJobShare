@@ -1,36 +1,26 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useRef,
-} from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useWindowScroll, useRafState } from 'react-use';
 import PropTypes from 'prop-types';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import cn from 'classnames';
 import ReactGA from 'react-ga4';
 import { Wrapper } from 'common/base';
 import GjLogo from 'common/icons/GjLogo.svg';
 import Glike from 'common/icons/Glike.svg';
-import PopoverToggle from 'common/PopoverToggle';
-import useShareLink from 'hooks/experiments/useShareLink';
 import usePermission from 'hooks/usePermission';
 import useMobile from 'hooks/useMobile';
-import { useAuthUser, useIsLoggedIn } from 'hooks/auth';
-import { useLogin, useLogout } from 'hooks/login';
+import { useLogin } from 'hooks/login';
 import { fetchInbox } from 'actions/inbox';
 
 import styles from './Header.module.css';
-import inboxIconStyles from './InboxIcon.module.css';
+import HeaderTop from './HeaderTop';
 import SiteMenu from './SiteMenu';
-import Top from './Top';
-import ProgressTop from './Top/ProgressTop';
 import Searchbar from './Searchbar';
 import { GA_CATEGORY, GA_ACTION } from 'constants/gaConstants';
-import InboxIcon from './InboxIcon';
 import InboxPopoverContainer from './InboxPopoverContainer';
+import NamePopoverContainer from './NamePopoverContainer';
+import HamburgerButton from './HamburgerButton';
 import usePolling from 'hooks/usePolling';
 
 const onClickShareData = () => {
@@ -38,65 +28,6 @@ const onClickShareData = () => {
     category: GA_CATEGORY.HEADER,
     action: GA_ACTION.CLICK_SHARE_DATA,
   });
-};
-
-const HeaderTop = () => {
-  const location = useLocation();
-  const isLoggedIn = useIsLoggedIn();
-  const shareLink = useShareLink();
-
-  return useMemo(() => {
-    if (!isLoggedIn && location.pathname === '/') {
-      return null;
-    }
-
-    return (
-      <Top to={shareLink}>
-        <ProgressTop />
-      </Top>
-    );
-  }, [isLoggedIn, location.pathname, shareLink]);
-};
-
-const NamePopoverContainer = ({ children }) => {
-  const logout = useLogout();
-
-  return (
-    <PopoverToggle
-      popoverClassName={cn(styles.popover, styles.nameContainer)}
-      popoverContent={
-        <ul className={styles.popoverItems}>
-          <li>
-            <Link className={styles.popoverItem} to="/me/subscriptions/current">
-              我的方案
-            </Link>
-          </li>
-          <li>
-            <Link className={styles.popoverItem} to="/me">
-              管理我的資料
-            </Link>
-          </li>
-          <li>
-            <button className={styles.popoverItem} onClick={logout}>
-              登出
-            </button>
-          </li>
-        </ul>
-      }
-    >
-      {children}
-    </PopoverToggle>
-  );
-};
-
-NamePopoverContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-const NameButton = () => {
-  const user = useAuthUser();
-
-  return <div className={styles.userNameBtn}>{user && user.name}</div>;
 };
 
 const Logo = ({ forceDesktop }) => {
@@ -184,13 +115,8 @@ const Nav = ({ isNavOpen, isLoggedIn, login, onClickShareData }) => {
           )}
           {isLoggedIn && (
             <div className={styles.loggedInButton}>
-              <InboxPopoverContainer>
-                <InboxIcon className={inboxIconStyles.topNavIcon} />
-              </InboxPopoverContainer>
-
-              <NamePopoverContainer>
-                <NameButton />
-              </NamePopoverContainer>
+              <InboxPopoverContainer />
+              <NamePopoverContainer />
             </div>
           )}
         </div>
