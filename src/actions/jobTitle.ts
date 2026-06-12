@@ -29,7 +29,7 @@ import {
   jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
   jobTitleWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-import { GraphqlError } from 'utils/errors';
+import { isGraphqlError } from 'utils/errors';
 import FetchBox, {
   getError,
   getFetched,
@@ -85,7 +85,7 @@ export const fetchJobTitles = ({
     dispatch(setIndex(page, getFetched(data.jobTitlesHavingData)));
     dispatch(setIndexCount(getFetched(data.jobTitlesHavingDataCount)));
   } catch (error) {
-    if (error instanceof GraphqlError) {
+    if (isGraphqlError(error)) {
       return dispatch(setIndex(page, getError(error)));
     }
     throw error;
@@ -142,7 +142,7 @@ export const queryJobTitleOverview = (
 
     dispatch(setOverview(jobTitle, getFetched(overviewData)));
   } catch (error) {
-    if (error instanceof GraphqlError) {
+    if (isGraphqlError(error)) {
       dispatch(setOverview(jobTitle, getError(error)));
     }
     throw error;
@@ -189,7 +189,7 @@ export const queryJobTitleOverviewStatistics = (
 
     dispatch(setOverviewStatistics(jobTitle, getFetched(model)));
   } catch (error) {
-    if (error instanceof GraphqlError) {
+    if (isGraphqlError(error)) {
       dispatch(setOverviewStatistics(jobTitle, getError(error)));
     }
     throw error;

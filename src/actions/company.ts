@@ -44,7 +44,7 @@ import {
   companyTopNJobTitlesBoxSelectorByName,
   companyWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-import { GraphqlError } from 'utils/errors';
+import { isGraphqlError } from 'utils/errors';
 import FetchBox, {
   getError,
   getFetched,
@@ -108,7 +108,7 @@ export const fetchCompanyNames = ({
     dispatch(setIndex(page, getFetched(data.companiesHavingData)));
     dispatch(setIndexCount(getFetched(data.companiesHavingDataCount)));
   } catch (error) {
-    if (error instanceof GraphqlError) {
+    if (isGraphqlError(error)) {
       return dispatch(setIndex(page, getError(error)));
     }
     throw error;
@@ -141,7 +141,7 @@ export const queryRatingStatistics = (companyName: string): Thunk => async (
     });
     dispatch(setRatingStatistcs(companyName, getFetched(data)));
   } catch (error) {
-    if (error instanceof GraphqlError) {
+    if (isGraphqlError(error)) {
       dispatch(setRatingStatistcs(companyName, getError(error)));
     }
     throw error;
@@ -198,7 +198,7 @@ export const queryCompanyOverview = (
 
     dispatch(setOverview(companyName, getFetched(overviewData)));
   } catch (error) {
-    if (error instanceof GraphqlError) {
+    if (isGraphqlError(error)) {
       dispatch(setOverview(companyName, getError(error)));
     }
     throw error;
@@ -248,7 +248,7 @@ export const queryCompanyOverviewStatistics = (
 
     dispatch(setOverviewStatistics(companyName, getFetched(model)));
   } catch (error) {
-    if (error instanceof GraphqlError) {
+    if (isGraphqlError(error)) {
       dispatch(setOverviewStatistics(companyName, getError(error)));
     }
     throw error;
@@ -511,7 +511,6 @@ export const queryCompanyInterviewExperiences = ({
 
     // Update state.experiences which is the source of truth for all experiences
     data.interviewExperiencesResult.interviewExperiences.forEach(e => {
-      // @ts-ignore
       dispatch(setExperience(e.id, getFetched(e)));
     });
   } catch (error) {
@@ -584,7 +583,6 @@ export const queryCompanyWorkExperiences = ({
 
     // Update state.experiences which is the source of truth for all experiences
     data.workExperiencesResult.workExperiences.forEach(e => {
-      // @ts-ignore
       dispatch(setExperience(e.id, getFetched(e)));
     });
   } catch (error) {
@@ -753,7 +751,7 @@ export const queryCompanyIsSubscribed = ({
     const data = await queryCompanyIsSubscribedApi({ companyName, token });
     dispatch(setIsSubscribed(companyName, getFetched(data)));
   } catch (error) {
-    if (error instanceof GraphqlError) {
+    if (isGraphqlError(error)) {
       dispatch(setIsSubscribed(companyName, getError(error)));
     }
     throw error;
