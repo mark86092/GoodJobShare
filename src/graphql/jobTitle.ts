@@ -26,7 +26,6 @@ export const queryJobTitles = /* GraphQL */ `
   }
 `;
 
-<<<<<<< HEAD
 export type QueryJobTitleSalaryWorkTimeData = {
   job_title:
     | (JobTitle & {
@@ -40,19 +39,6 @@ export type QueryJobTitleSalaryWorkTimeData = {
 
 export const queryJobTitleSalaryWorkTimeGql = /* GraphQL */ `
   query($jobTitle: String!, $companyName: String, $start: Int!, $limit: Int!) {
-=======
-export const getJobTitleTimeAndSalaryQuery = /* GraphQL */ `
-  query(
-    $jobTitle: String!
-    $companyName: String
-    $start: Int!
-    $limit: Int!
-    $dataTimeRange: DataTimeRange
-    $experienceInYearRange: ExperienceInYearRange
-    $gender: Gender
-    $sortBy: SalaryResultSortOption
-  ) {
->>>>>>> upstream/master
     job_title(name: $jobTitle) {
       name
       salaryWorkTimesResult(

@@ -264,7 +264,10 @@ const setSalaryWorkTime = (
   box,
 });
 
-const setInterviewExperiences = (companyName, box) => ({
+const setInterviewExperiences = (
+  companyName: string,
+  box: FetchBox<CompanyInterviewExperienceResult | null>,
+): AnyAction => ({
   type: SET_INTERVIEW_EXPERIENCES,
   companyName,
   box,
@@ -460,15 +463,6 @@ export const queryCompanyTopNJobTitles = ({
     dispatch(setCompanyTopNJobTitles(companyName, getError(error)));
   }
 };
-
-const setInterviewExperiences = (
-  companyName: string,
-  box: FetchBox<CompanyInterviewExperienceResult | null>,
-): AnyAction => ({
-  type: SET_INTERVIEW_EXPERIENCES,
-  companyName,
-  box,
-});
 
 export const queryCompanyInterviewExperiences = ({
   companyName,
