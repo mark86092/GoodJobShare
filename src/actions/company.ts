@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/actions/company.ts
 import { AnyAction } from 'redux';
 
 import { CompanyExperiencesPaginationInput } from 'apis/company';
@@ -20,22 +19,6 @@ import queryCompanySalaryWorkTimeStatisticsApi, {
 import queryCompanyTopNJobTitlesApi, {
   TopNJobTitles,
 } from 'apis/queryCompanyTopNJobTitles';
-=======
-import R from 'ramda';
-
-import {
-  getCompanyInterviewExperiences,
-  getCompanyTimeAndSalary,
-  getCompanyTimeAndSalaryStatistics,
-  getCompanyTopNJobTitles,
-  queryCompaniesApi,
-} from 'apis/company';
-import queryCompanyEsgSalaryDataApi from 'apis/queryCompanyEsgSalaryData';
-import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
-import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
-import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
-import queryCompanyRatingStatisticsApi from 'apis/queryCompanyRatingStatistics';
->>>>>>> upstream/master:src/actions/company.js
 import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
@@ -61,13 +44,8 @@ import {
   companyTopNJobTitlesBoxSelectorByName,
   companyWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-<<<<<<< HEAD:src/actions/company.ts
 import { GraphqlError } from 'utils/errors';
 import FetchBox, {
-=======
-import { isGraphqlError } from 'utils/errors';
-import {
->>>>>>> upstream/master:src/actions/company.js
   getError,
   getFetched,
   isFetched,
@@ -286,34 +264,17 @@ const setSalaryWorkTime = (
   box,
 });
 
-<<<<<<< HEAD:src/actions/company.ts
 export const queryCompanySalaryWorkTime = (
-=======
-const setInterviewExperiences = (companyName, box) => ({
-  type: SET_INTERVIEW_EXPERIENCES,
-  companyName,
-  box,
-});
-
-export const queryCompanyTimeAndSalary = (
->>>>>>> upstream/master:src/actions/company.js
   {
     companyName,
     jobTitle,
     start,
     limit,
-<<<<<<< HEAD:src/actions/company.ts
   }: {
     companyName: string;
     jobTitle?: string | null;
     start: number;
     limit: number;
-=======
-    dataTimeRange,
-    experienceInYearRange,
-    gender,
-    sortBy,
->>>>>>> upstream/master:src/actions/company.js
   },
   { force = false } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
