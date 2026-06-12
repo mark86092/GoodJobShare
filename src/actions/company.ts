@@ -458,7 +458,14 @@ export const queryCompanyTopNJobTitles = ({
     const data = await queryCompanyTopNJobTitlesApi({
       companyName,
     });
-    dispatch(setCompanyTopNJobTitles(companyName, getFetched(data)));
+
+    // Not found case
+    if (!data) {
+      return dispatch(setCompanyTopNJobTitles(companyName, getFetched(null)));
+    }
+    dispatch(
+      setCompanyTopNJobTitles(companyName, getFetched(data.topNJobTitles)),
+    );
   } catch (error) {
     dispatch(setCompanyTopNJobTitles(companyName, getError(error)));
   }
