@@ -30,8 +30,13 @@ import usePermission from 'hooks/usePermission';
 import {
   companyEsgSalaryDataBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
+<<<<<<< HEAD:src/pages/Company/CompanyTimeAndSalaryProvider.js
   companyTimeAndSalaryBoxSelectorByName,
   companyTimeAndSalaryStatisticsBoxSelectorByName,
+=======
+  companySalaryWorkTimeBoxSelectorByName as timeAndSalaryBoxSelectorByName,
+  companySalaryWorkTimeStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
+>>>>>>> upstream/master:src/pages/Company/CompanySalaryWorkTimeProvider.js
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
 import {
@@ -209,6 +214,46 @@ CompanySalaryWorkTimeProvider.fetchData = ({
   const jobTitle = queryFromQuerySelector(query) || undefined;
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
+<<<<<<< HEAD:src/pages/Company/CompanyTimeAndSalaryProvider.js
+=======
+  const dataTime = dataTimeFromQuerySelector(query);
+  const experience = experienceFromQuerySelector(query);
+  const gender = genderFromQuerySelector(query);
+  const sortBy = sortByFromQuerySelector(query);
+  const dataTimeRange = getDataTimeRange(dataTime);
+  const experienceInYearRange = getExperienceInYearRange(experience);
+  const dispatchOverviewStatistics = dispatch(
+    queryCompanyOverviewStatistics(companyName),
+  );
+  const dispatchTimeAndSalaryStatistics = dispatch(
+    queryCompanySalaryWorkTimeStatistics({
+      companyName,
+    }),
+  );
+  const dispatchTimeAndSalary = dispatch(
+    queryCompanySalaryWorkTime({
+      companyName,
+      jobTitle,
+      start,
+      limit,
+      dataTimeRange,
+      experienceInYearRange,
+      gender: gender || undefined,
+      sortBy: sortBy || undefined,
+    }),
+  );
+  const dispatchRatingStatistics = dispatch(queryRatingStatistics(companyName));
+  const dispatchTopNJobTitles = dispatch(
+    queryCompanyTopNJobTitles({
+      companyName,
+    }),
+  );
+  const dispatchEsgSalaryData = dispatch(
+    queryCompanyEsgSalaryData({
+      companyName,
+    }),
+  );
+>>>>>>> upstream/master:src/pages/Company/CompanySalaryWorkTimeProvider.js
   return Promise.all([
     dispatch(queryCompanyOverviewStatistics(companyName)),
     dispatch(

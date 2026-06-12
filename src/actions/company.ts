@@ -39,8 +39,8 @@ import {
   companyOverviewBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
   companyRatingStatisticsBoxSelectorByName,
-  companyTimeAndSalaryBoxSelectorByName,
-  companyTimeAndSalaryStatisticsBoxSelectorByName,
+  companySalaryWorkTimeBoxSelectorByName,
+  companySalaryWorkTimeStatisticsBoxSelectorByName,
   companyTopNJobTitlesBoxSelectorByName,
   companyWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
@@ -264,6 +264,15 @@ const setSalaryWorkTime = (
   box,
 });
 
+<<<<<<< HEAD:src/actions/company.ts
+=======
+const setInterviewExperiences = (companyName, box) => ({
+  type: SET_INTERVIEW_EXPERIENCES,
+  companyName,
+  box,
+});
+
+>>>>>>> upstream/master:src/actions/company.js
 export const queryCompanySalaryWorkTime = (
   {
     companyName,
@@ -277,8 +286,13 @@ export const queryCompanySalaryWorkTime = (
     limit: number;
   },
   { force = false } = {},
+<<<<<<< HEAD:src/actions/company.ts
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyTimeAndSalaryBoxSelectorByName(companyName)(getState());
+=======
+) => async (dispatch, getState) => {
+  const box = companySalaryWorkTimeBoxSelectorByName(companyName)(getState());
+>>>>>>> upstream/master:src/actions/company.js
   if (
     !force &&
     (isFetching(box) ||
@@ -345,10 +359,21 @@ const setSalaryWorkTimeStatistics = (
 
 export const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
+<<<<<<< HEAD:src/actions/company.ts
 }: {
   companyName: string;
 }): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyTimeAndSalaryStatisticsBoxSelectorByName(companyName)(
+=======
+  box,
+});
+
+export const queryCompanySalaryWorkTimeStatistics = ({ companyName }) => async (
+  dispatch,
+  getState,
+) => {
+  const box = companySalaryWorkTimeStatisticsBoxSelectorByName(companyName)(
+>>>>>>> upstream/master:src/actions/company.js
     getState(),
   );
   if (

@@ -22,6 +22,7 @@ import {
   CompanyIsSubscribed,
   CompanyOverview,
   CompanyOverviewStatistics,
+<<<<<<< HEAD
   CompanyTimeAndSalaryResult,
 <<<<<<< HEAD
   CompanyWorkExperienceResult,
@@ -29,6 +30,10 @@ import {
 import {
 =======
   CompanyTimeAndSalaryStatistics,
+=======
+  CompanySalaryWorkTimeResult,
+  CompanySalaryWorkTimeStatistics,
+>>>>>>> upstream/master
   CompanyWorkExperienceResult,
   TopNJobTitles,
 } from 'reducers/companyIndex';
@@ -38,10 +43,15 @@ import {
   JobTitleInterviewExperienceResult,
   JobTitleOverview,
   JobTitleOverviewStatistics,
+<<<<<<< HEAD
   JobTitleTimeAndSalaryResult,
 <<<<<<< HEAD
 =======
   JobTitleTimeAndSalaryStatistics,
+>>>>>>> upstream/master
+=======
+  JobTitleSalaryWorkTimeResult,
+  JobTitleSalaryWorkTimeStatistics,
 >>>>>>> upstream/master
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
@@ -82,12 +92,12 @@ export const companyOverviewStatisticsBoxSelectorByName = (
 ) => (state: RootState): FetchBox<CompanyOverviewStatistics | null> =>
   state.companyIndex.overviewStatisticsByName[companyName] || getUnfetched();
 
-export const companyTimeAndSalaryBoxSelectorByName = (companyName: string) => (
+export const companySalaryWorkTimeBoxSelectorByName = (companyName: string) => (
   state: RootState,
-): FetchBox<CompanyTimeAndSalaryResult | null> =>
+): FetchBox<CompanySalaryWorkTimeResult | null> =>
   state.companyIndex.timeAndSalaryByName[companyName] || getUnfetched();
 
-export const companyTimeAndSalaryStatisticsBoxSelectorByName = (
+export const companySalaryWorkTimeStatisticsBoxSelectorByName = (
   companyName: string,
 ) => (state: RootState): FetchBox<CompanySalaryWorkTimeStatistics | null> =>
   state.companyIndex.timeAndSalaryStatisticsByName[companyName] ||
@@ -138,12 +148,12 @@ export const jobTitleOverviewStatisticsBoxSelectorByName = (
 ) => (state: RootState): FetchBox<JobTitleOverviewStatistics | null> =>
   state.jobTitleIndex.overviewStatisticsByName[jobTitle] || getUnfetched();
 
-export const jobTitleTimeAndSalaryBoxSelectorByName = (jobTitle: string) => (
+export const jobTitleSalaryWorktimeBoxSelectorByName = (jobTitle: string) => (
   state: RootState,
-): FetchBox<JobTitleTimeAndSalaryResult | null> =>
+): FetchBox<JobTitleSalaryWorkTimeResult | null> =>
   state.jobTitleIndex.timeAndSalaryByName[jobTitle] || getUnfetched();
 
-export const jobTitleTimeAndSalaryStatisticsBoxSelectorByName = (
+export const jobTitleSalaryWorkTimeStatisticsBoxSelectorByName = (
   jobTitle: string,
 ) => (state: RootState): FetchBox<JobTitleSalaryWorkTimeStatistics | null> =>
   state.jobTitleIndex.timeAndSalaryStatisticsByName[jobTitle] || getUnfetched();

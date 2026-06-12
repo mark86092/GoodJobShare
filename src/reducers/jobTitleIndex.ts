@@ -58,6 +58,7 @@ export type JobTitleOverviewStatistics = {
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
+<<<<<<< HEAD
 export type JobTitleTimeAndSalaryResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
@@ -73,6 +74,16 @@ export type JobTitleInterviewExperienceResult = {
   interviewExperiences: JobTitleInterviewExperience[];
   interviewExperiencesCount: number;
 } & Omit<JobTitleExperiencesPaginationInput, 'jobTitle'>;
+=======
+// TODO: replace with proper JobTitleSalaryWorkTimeResult type
+export type JobTitleSalaryWorkTimeResult = unknown;
+
+// TODO: replace with proper JobTitleSalaryWorkTimeStatistics type
+export type JobTitleSalaryWorkTimeStatistics = unknown;
+
+// TODO: replace with proper JobTitleInterviewExperienceResult type
+export type JobTitleInterviewExperienceResult = unknown;
+>>>>>>> upstream/master
 
 export type JobTitleWorkExperienceResult = {
   name: string;
@@ -90,7 +101,7 @@ type State = {
   >;
   timeAndSalaryByName: Record<
     string,
-    FetchBox<JobTitleTimeAndSalaryResult | null>
+    FetchBox<JobTitleSalaryWorkTimeResult | null>
   >;
   timeAndSalaryStatisticsByName: Record<
     string,
@@ -176,7 +187,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       jobTitle: string;
-      box: FetchBox<JobTitleTimeAndSalaryResult | null>;
+      box: FetchBox<JobTitleSalaryWorkTimeResult | null>;
     },
   ) => {
     return {

@@ -26,8 +26,13 @@ import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
 import {
   jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
+<<<<<<< HEAD:src/pages/JobTitle/JobTitleTimeAndSalaryProvider.js
   jobTitleTimeAndSalaryBoxSelectorByName,
   jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
+=======
+  jobTitleSalaryWorktimeBoxSelectorByName as timeAndSalaryBoxSelectorByName,
+  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
+>>>>>>> upstream/master:src/pages/JobTitle/JobTitleSalaryWorkTimeProvider.js
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
 import {

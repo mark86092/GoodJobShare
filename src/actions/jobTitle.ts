@@ -25,8 +25,8 @@ import {
   jobTitleInterviewExperiencesBoxSelectorByName,
   jobTitleOverviewBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName,
-  jobTitleTimeAndSalaryBoxSelectorByName,
-  jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
+  jobTitleSalaryWorktimeBoxSelectorByName,
+  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName,
   jobTitleWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import { isGraphqlError } from 'utils/errors';
@@ -218,8 +218,13 @@ export const queryJobTitleSalaryWorkTime = (
     limit: number;
   },
   { force = false } = {},
+<<<<<<< HEAD:src/actions/jobTitle.ts
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = jobTitleTimeAndSalaryBoxSelectorByName(jobTitle)(getState());
+=======
+) => async (dispatch, getState) => {
+  const box = jobTitleSalaryWorktimeBoxSelectorByName(jobTitle)(getState());
+>>>>>>> upstream/master:src/actions/jobTitle.js
   if (
     !force &&
     (isFetching(box) ||
@@ -284,12 +289,20 @@ const setSalaryWorkTimeStatistics = (
   box,
 });
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
 export const queryJobTitleSalaryWorkTimeStatistics = ({
   jobTitle,
 }: {
   jobTitle: string;
 }): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = jobTitleTimeAndSalaryStatisticsBoxSelectorByName(jobTitle)(
+=======
+export const queryJobTitleTimeAndSalaryStatistics = ({ jobTitle }) => async (
+  dispatch,
+  getState,
+) => {
+  const box = jobTitleSalaryWorkTimeStatisticsBoxSelectorByName(jobTitle)(
+>>>>>>> upstream/master:src/actions/jobTitle.js
     getState(),
   );
   if (
