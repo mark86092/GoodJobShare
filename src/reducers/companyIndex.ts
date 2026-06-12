@@ -50,6 +50,16 @@ export type CompanyOverviewStatistics = {
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
+export type CompanyTimeAndSalaryResult = {
+  name: string;
+  salaryWorkTimes: SalaryWorkTime[];
+  salaryWorkTimesCount: number;
+  // params
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+};
+
 export type CompanyInterviewExperienceResult = {
   name: string;
   interviewExperiences: CompanyInterviewExperience[];
@@ -61,16 +71,6 @@ export type CompanyWorkExperienceResult = {
   workExperiences: WorkExperience[];
   workExperiencesCount: number;
 } & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
-
-export type CompanyTimeAndSalaryResult = {
-  name: string;
-  salaryWorkTimes: SalaryWorkTime[];
-  salaryWorkTimesCount: number;
-  // params
-  jobTitle?: string | null;
-  start: number;
-  limit: number;
-};
 
 export type CompanyIsSubscribed = {
   isSubscribed: boolean;
