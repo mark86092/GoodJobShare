@@ -255,10 +255,14 @@ export const queryCompanyOverviewStatistics = (
   }
 };
 
+<<<<<<< HEAD:src/actions/company.ts
 const setSalaryWorkTime = (
   companyName: string,
   box: FetchBox<CompanyTimeAndSalaryResult | null>,
 ): AnyAction => ({
+=======
+const setSalaryWorkTime = (companyName, box) => ({
+>>>>>>> upstream/master:src/actions/company.js
   type: SET_SALARY_WORK_TIME,
   companyName,
   box,
@@ -272,6 +276,24 @@ const setInterviewExperiences = (companyName, box) => ({
   box,
 });
 
+<<<<<<< HEAD:src/actions/company.ts
+>>>>>>> upstream/master:src/actions/company.js
+=======
+/**
+ * @type {(
+ *   params: {
+ *     companyName: string;
+ *     jobTitle?: string;
+ *     start: number;
+ *     limit: number;
+ *     dataTimeRange?: import('apis/salaryWorkTime').DataTimeRange;
+ *     experienceInYearRange?: import('apis/salaryWorkTime').ExperienceInYearRange;
+ *     gender?: string;
+ *     sortBy?: string;
+ *   },
+ *   options?: { force?: boolean }
+ * ) => (dispatch: any, getState: any) => Promise<void>}
+ */
 >>>>>>> upstream/master:src/actions/company.js
 export const queryCompanySalaryWorkTime = (
   {
@@ -348,10 +370,14 @@ export const queryCompanySalaryWorkTime = (
   }
 };
 
+<<<<<<< HEAD:src/actions/company.ts
 const setSalaryWorkTimeStatistics = (
   companyName: string,
   box: FetchBox<CompanySalaryWorkTimeStatistics | null>,
 ): AnyAction => ({
+=======
+const setSalaryWorkTimeStatistics = (companyName, box) => ({
+>>>>>>> upstream/master:src/actions/company.js
   type: SET_SALARY_WORK_TIME_STATISTICS,
   companyName,
   box,
@@ -389,7 +415,29 @@ export const queryCompanySalaryWorkTimeStatistics = ({ companyName }) => async (
     const data = await queryCompanySalaryWorkTimeStatisticsApi({
       companyName,
     });
+<<<<<<< HEAD:src/actions/company.ts
     dispatch(setSalaryWorkTimeStatistics(companyName, getFetched(data)));
+=======
+
+    // Not found case
+    if (data == null) {
+      return dispatch(
+        setSalaryWorkTimeStatistics(companyName, getFetched(data)),
+      );
+    }
+
+    const salaryWorkTimeStatisticsData = {
+      name: data.name,
+      salary_work_time_statistics: data.salary_work_time_statistics,
+    };
+
+    dispatch(
+      setSalaryWorkTimeStatistics(
+        companyName,
+        getFetched(salaryWorkTimeStatisticsData),
+      ),
+    );
+>>>>>>> upstream/master:src/actions/company.js
   } catch (error) {
     dispatch(setSalaryWorkTimeStatistics(companyName, getError(error)));
   }

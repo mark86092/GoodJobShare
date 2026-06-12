@@ -30,6 +30,7 @@ import usePermission from 'hooks/usePermission';
 import {
   companyEsgSalaryDataBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
+<<<<<<< HEAD
 <<<<<<< HEAD:src/pages/Company/CompanyTimeAndSalaryProvider.js
   companyTimeAndSalaryBoxSelectorByName,
   companyTimeAndSalaryStatisticsBoxSelectorByName,
@@ -37,6 +38,10 @@ import {
   companySalaryWorkTimeBoxSelectorByName as timeAndSalaryBoxSelectorByName,
   companySalaryWorkTimeStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
 >>>>>>> upstream/master:src/pages/Company/CompanySalaryWorkTimeProvider.js
+=======
+  companySalaryWorkTimeBoxSelectorByName,
+  companySalaryWorkTimeStatisticsBoxSelectorByName,
+>>>>>>> upstream/master
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
 import {
@@ -58,9 +63,15 @@ const useOverviewStatisticsBox = pageName => {
 const useSalaryWorkTimeStatisticsBox = pageName => {
   const selector = useCallback(
     state => {
+<<<<<<< HEAD
       const company = companyTimeAndSalaryStatisticsBoxSelectorByName(pageName)(
         state,
       );
+=======
+      const company = companySalaryWorkTimeStatisticsBoxSelectorByName(
+        pageName,
+      )(state);
+>>>>>>> upstream/master
       return salaryWorkTimeStatisticsSelector(company);
     },
     [pageName],
@@ -71,7 +82,13 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
 const useSalaryWorkTimeBoxSelector = companyName => {
   return useCallback(
     state => {
+<<<<<<< HEAD
       const company = companyTimeAndSalaryBoxSelectorByName(companyName)(state);
+=======
+      const company = companySalaryWorkTimeBoxSelectorByName(companyName)(
+        state,
+      );
+>>>>>>> upstream/master
       return company;
     },
     [companyName],
@@ -222,6 +239,7 @@ CompanySalaryWorkTimeProvider.fetchData = ({
   const sortBy = sortByFromQuerySelector(query);
   const dataTimeRange = getDataTimeRange(dataTime);
   const experienceInYearRange = getExperienceInYearRange(experience);
+<<<<<<< HEAD
   const dispatchOverviewStatistics = dispatch(
     queryCompanyOverviewStatistics(companyName),
   );
@@ -256,12 +274,22 @@ CompanySalaryWorkTimeProvider.fetchData = ({
 >>>>>>> upstream/master:src/pages/Company/CompanySalaryWorkTimeProvider.js
   return Promise.all([
     dispatch(queryCompanyOverviewStatistics(companyName)),
+=======
+  return Promise.all([
+>>>>>>> upstream/master
     dispatch(
       queryCompanySalaryWorkTime({
         companyName,
         jobTitle,
         start,
         limit,
+<<<<<<< HEAD
+=======
+        dataTimeRange,
+        experienceInYearRange,
+        gender: gender || undefined,
+        sortBy: sortBy || undefined,
+>>>>>>> upstream/master
       }),
     ),
     dispatch(
@@ -269,6 +297,10 @@ CompanySalaryWorkTimeProvider.fetchData = ({
         companyName,
       }),
     ),
+<<<<<<< HEAD
+=======
+    dispatch(queryCompanyOverviewStatistics(companyName)),
+>>>>>>> upstream/master
     dispatch(queryRatingStatistics(companyName)),
     dispatch(
       queryCompanyTopNJobTitles({

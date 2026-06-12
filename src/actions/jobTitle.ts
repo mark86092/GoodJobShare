@@ -196,15 +196,37 @@ export const queryJobTitleOverviewStatistics = (
   }
 };
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
 const setSalaryWorkTime = (
   jobTitle: string,
   box: FetchBox<JobTitleSalaryWorkTimeResult | null>,
 ): AnyAction => ({
+=======
+const setSalaryWorkTime = (jobTitle, box) => ({
+>>>>>>> upstream/master:src/actions/jobTitle.js
   type: SET_SALARY_WORK_TIME,
   jobTitle,
   box,
 });
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
+=======
+/**
+ * @type {(
+ *   params: {
+ *     companyName?: string;
+ *     jobTitle: string;
+ *     start: number;
+ *     limit: number;
+ *     dataTimeRange?: import('apis/salaryWorkTime').DataTimeRange;
+ *     experienceInYearRange?: import('apis/salaryWorkTime').ExperienceInYearRange;
+ *     gender?: string;
+ *     sortBy?: string;
+ *   },
+ *   options?: { force?: boolean }
+ * ) => (dispatch: any, getState: any) => Promise<void>}
+ */
+>>>>>>> upstream/master:src/actions/jobTitle.js
 export const queryJobTitleSalaryWorkTime = (
   {
     jobTitle,
@@ -275,15 +297,20 @@ export const queryJobTitleSalaryWorkTime = (
   }
 };
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
 const setSalaryWorkTimeStatistics = (
   jobTitle: string,
   box: FetchBox<JobTitleSalaryWorkTimeStatistics | null>,
 ): AnyAction => ({
+=======
+const setSalaryWorkTimeStatistics = (jobTitle, box) => ({
+>>>>>>> upstream/master:src/actions/jobTitle.js
   type: SET_SALARY_WORK_TIME_STATISTICS,
   jobTitle,
   box,
 });
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
 <<<<<<< HEAD:src/actions/jobTitle.ts
 export const queryJobTitleSalaryWorkTimeStatistics = ({
   jobTitle,
@@ -293,6 +320,9 @@ export const queryJobTitleSalaryWorkTimeStatistics = ({
   const box = jobTitleTimeAndSalaryStatisticsBoxSelectorByName(jobTitle)(
 =======
 export const queryJobTitleTimeAndSalaryStatistics = ({ jobTitle }) => async (
+=======
+export const queryJobTitleSalaryWorkTimeStatistics = ({ jobTitle }) => async (
+>>>>>>> upstream/master:src/actions/jobTitle.js
   dispatch,
   getState,
 ) => {
@@ -313,7 +343,27 @@ export const queryJobTitleTimeAndSalaryStatistics = ({ jobTitle }) => async (
     const data = await queryJobTitleSalaryWorkTimeStatisticsApi({
       jobTitle,
     });
+<<<<<<< HEAD:src/actions/jobTitle.ts
     dispatch(setSalaryWorkTimeStatistics(jobTitle, getFetched(data)));
+=======
+
+    // Not found case
+    if (data == null) {
+      return dispatch(setSalaryWorkTimeStatistics(jobTitle, getFetched(data)));
+    }
+
+    const salaryWorkTimeStatisticsData = {
+      name: data.name,
+      salary_work_time_statistics: data.salary_work_time_statistics,
+    };
+
+    dispatch(
+      setSalaryWorkTimeStatistics(
+        jobTitle,
+        getFetched(salaryWorkTimeStatisticsData),
+      ),
+    );
+>>>>>>> upstream/master:src/actions/jobTitle.js
   } catch (error) {
     dispatch(setSalaryWorkTimeStatistics(jobTitle, getError(error)));
   }

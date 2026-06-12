@@ -60,11 +60,19 @@ export type CompanySalaryWorkTimeResult = {
   limit: number;
 };
 
+<<<<<<< HEAD
 export type CompanyInterviewExperienceResult = {
   name: string;
   interviewExperiences: CompanyInterviewExperience[];
   interviewExperiencesCount: number;
 } & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
+=======
+// TODO: replace with proper CompanySalaryWorkTimeStatistics type
+export type CompanySalaryWorkTimeStatistics = unknown;
+
+// TODO: replace with proper CompanyInterviewExperienceResult type
+export type CompanyInterviewExperienceResult = unknown;
+>>>>>>> upstream/master
 
 export type CompanyWorkExperienceResult = {
   name: string;
