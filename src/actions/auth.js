@@ -1,15 +1,8 @@
 import ReactGA from 'react-ga4';
 
 import { pushErrorNotificationAndRollbarAndThrowError } from 'actions/toastNotification';
-<<<<<<< HEAD
 import facebookLoginApi from 'apis/facebookLogin';
 import googleLoginApi from 'apis/googleLogin';
-=======
-import {
-  postAuthFacebook as postAuthFacebookApi,
-  postAuthGoogle as postAuthGoogleApi,
-} from 'apis/auth';
->>>>>>> upstream/master
 import queryMeApi from 'apis/queryMe';
 import AuthStatus from 'constants/authStatus';
 import {
