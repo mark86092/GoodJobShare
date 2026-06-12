@@ -111,7 +111,7 @@ CompanyInterviewExperiencesProvider.fetchData = ({
   const query = querySelector(props);
   const page = pageFromQuerySelector(query);
   const sortBy = sortByFromQuerySelector(query);
-  const jobTitle = queryFromQuerySelector(query) || undefined;
+  const jobTitle = queryFromQuerySelector(query);
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
   return Promise.all([
