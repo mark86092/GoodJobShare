@@ -7,17 +7,14 @@ import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTime
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
-import { JobTitle } from 'graphql/jobTitle';
 import { RootState } from 'reducers';
 import {
   CompanyInterviewExperienceResult,
   CompanyIsSubscribed,
   CompanyOverview,
   CompanyOverviewStatistics,
-  CompanyWorkExperienceResult,
   CompanySalaryWorkTimeResult,
-  CompanySalaryWorkTimeStatistics,
-  TopNJobTitles,
+  CompanyWorkExperienceResult,
 } from 'reducers/companyIndex';
 import {
   JobTitleInIndex,
@@ -102,7 +99,7 @@ export const companyIsSubscribedBoxSelectorByName = (companyName: string) => (
 
 export const jobTitleIndexesBoxSelectorAtPage = (page: number) => (
   state: RootState,
-): FetchBox<JobTitle[]> =>
+): FetchBox<JobTitleInIndex[]> =>
   state.jobTitleIndex.indexesByPage[page] || getUnfetched();
 
 export const jobTitlesCountSelector = (state: RootState): number => {

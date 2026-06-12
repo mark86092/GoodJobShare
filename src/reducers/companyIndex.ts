@@ -50,8 +50,7 @@ export type CompanyOverviewStatistics = {
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
-<<<<<<< HEAD
-export type CompanyTimeAndSalaryResult = {
+export type CompanySalaryWorkTimeResult = {
   name: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
@@ -66,16 +65,6 @@ export type CompanyInterviewExperienceResult = {
   interviewExperiences: CompanyInterviewExperience[];
   interviewExperiencesCount: number;
 } & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
-=======
-// TODO: replace with proper CompanySalaryWorkTimeResult type
-export type CompanySalaryWorkTimeResult = unknown;
-
-// TODO: replace with proper CompanyTimeAndSalaryStatistics type
-export type CompanySalaryWorkTimeStatistics = unknown;
-
-// TODO: replace with proper CompanyInterviewExperienceResult type
-export type CompanyInterviewExperienceResult = unknown;
->>>>>>> upstream/master
 
 export type CompanyWorkExperienceResult = {
   name: string;

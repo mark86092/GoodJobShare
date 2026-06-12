@@ -28,7 +28,7 @@ import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
 
 // TODO: replace with proper JobTitleInIndex type
-export type JobTitleInIndex = {name: string};
+export type JobTitleInIndex = { name: string };
 
 // Flattened from QueryJobTitleOverviewData, so a type is defined here
 export type JobTitleOverview = {
@@ -116,7 +116,7 @@ const reducer = createReducer(preloadedState, {
   }),
   [SET_INDEX]: (
     state,
-    { page, box }: { page: number; box: FetchBox<JobTitle[]> },
+    { page, box }: { page: number; box: FetchBox<JobTitleInIndex[]> },
   ) => {
     return {
       ...state,
