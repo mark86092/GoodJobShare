@@ -13,15 +13,9 @@ import { queryPopularJobTitleSalaryDistribution } from 'actions/popularJobTitleS
 import { Heading, Section, Wrapper } from 'common/base';
 import Columns from 'common/Columns';
 import Loader from 'common/Loader';
-<<<<<<< HEAD
-import StaticHelmet from 'common/StaticHelmet';
-import { BoxesRenderer } from 'common/StatusRenderer';
-import SearchBar from 'components/SearchBar/SearchBar';
-=======
 import SearchBar from 'common/SearchBar';
 import StaticHelmet from 'common/StaticHelmet';
 import { BoxesRenderer } from 'common/StatusRenderer';
->>>>>>> upstream/master
 import { popularExperiencesBoxSelector } from 'selectors/experienceSelector';
 import { menuBoxSelector } from 'selectors/laborRightsSelector';
 import { popularCompanyAverageSalaryBoxSelector } from 'selectors/popularCompanyAverageSalary';
