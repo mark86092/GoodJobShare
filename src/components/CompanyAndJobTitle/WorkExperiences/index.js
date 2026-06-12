@@ -3,23 +3,12 @@ import React, { Fragment } from 'react';
 
 import { Wrapper } from 'common/base';
 import { useCreatePageLinkTo } from 'common/Pagination/Pagination';
-<<<<<<< HEAD
 
 import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
 import PageBoxRenderer from '../PageBoxRenderer';
 import Helmet from './Helmet';
 import WorkExperiencesSection from './WorkExperiences';
 import Searchbar from '../Searchbar';
-import Sorter from '../Sorter';
-import styles from '../styles.module.css';
-=======
->>>>>>> upstream/master
-
-import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
-import PageBoxRenderer from '../PageBoxRenderer';
-import Helmet from './Helmet';
-import WorkExperiencesSection from './WorkExperiences';
-import SearchBar from '../SearchBar';
 import Sorter from '../Sorter';
 import styles from '../styles.module.css';
 
@@ -41,7 +30,7 @@ const WorkExperiences = ({
     >
       <Wrapper ref={handleSectionRef} size="m">
         <div className={styles.interactive}>
-          <SearchBar pageType={pageType} tabType={tabType} />
+          <Searchbar pageType={pageType} tabType={tabType} />
           <Sorter />
         </div>
       </Wrapper>
