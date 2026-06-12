@@ -5,7 +5,7 @@ import {
   experiencePartialGql,
   workExperiencesPartialGql,
 } from 'graphql/experience';
-import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
+import { JobTitle } from 'graphql/jobTitle';
 import graphqlClient from 'utils/graphqlClient';
 
 const queryJobTitleWorkExperiencesGql = /* GraphQL */ `
@@ -51,9 +51,13 @@ const queryJobTitleWorkExperiences = ({
   start,
   limit,
   sortBy,
-}: JobTitleExperiencesPaginationInput): Promise<
-  QueryGetJobTitleWorkExperiencesData['job_title']
-> =>
+}: {
+  jobTitle: string;
+  companyName?: string;
+  start: number;
+  limit: number;
+  sortBy?: string;
+}): Promise<QueryGetJobTitleWorkExperiencesData['job_title']> =>
   graphqlClient<QueryGetJobTitleWorkExperiencesData>({
     query: queryJobTitleWorkExperiencesGql,
     variables: { jobTitle, companyName, start, limit, sortBy },

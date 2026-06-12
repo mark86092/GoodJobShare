@@ -1,6 +1,5 @@
 import R from 'ramda';
 
-import { CompanyExperiencesPaginationInput } from 'apis/company';
 import { Company } from 'graphql/company';
 import {
   experiencePartialGql,
@@ -54,9 +53,13 @@ const queryCompanyInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}: CompanyExperiencesPaginationInput): Promise<
-  QueryCompanyInterviewExperiencesData['company']
-> =>
+}: {
+  companyName: string;
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: string;
+}): Promise<QueryCompanyInterviewExperiencesData['company']> =>
   graphqlClient<QueryCompanyInterviewExperiencesData>({
     query: queryCompanyInterviewExperiencesGql,
     variables: { companyName, jobTitle, start, limit, sortBy },

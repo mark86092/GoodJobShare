@@ -12,7 +12,6 @@ import {
   SET_SALARY_WORK_TIME_STATISTICS,
   SET_WORK_EXPERIENCES,
 } from 'actions/company';
-import { CompanyExperiencesPaginationInput } from 'apis/company';
 import { WorkExperience } from 'apis/experience';
 import {
   InterviewExperienceInOverview,
@@ -22,10 +21,7 @@ import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
-<<<<<<< HEAD
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
-=======
->>>>>>> upstream/master
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   JobAverageSalary,
@@ -65,27 +61,29 @@ export type CompanySalaryWorkTimeResult = {
 
 export type CompanyInterviewExperienceResult = {
   name: string;
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: string;
   interviewExperiences: CompanyInterviewExperience[];
   interviewExperiencesCount: number;
-} & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
+};
 
 export type CompanyWorkExperienceResult = {
   name: string;
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: string;
   workExperiences: WorkExperience[];
   workExperiencesCount: number;
-} & Omit<CompanyExperiencesPaginationInput, 'companyName'>;
+};
 
 export type CompanyIsSubscribed = {
   isSubscribed: boolean;
   companyId: string | null;
 };
 
-<<<<<<< HEAD
-=======
-// TODO: replace with proper CompanyIsSubscribed type
-export type CompanyIsSubscribed = unknown;
-
->>>>>>> upstream/master
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
   indexCountBox: FetchBox<number>;

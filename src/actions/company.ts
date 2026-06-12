@@ -1,6 +1,5 @@
 import { AnyAction } from 'redux';
 
-import { CompanyExperiencesPaginationInput } from 'apis/company';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
@@ -477,10 +476,13 @@ export const queryCompanyInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}: CompanyExperiencesPaginationInput): Thunk => async (
-  dispatch,
-  getState,
-): Promise<unknown> => {
+}: {
+  companyName: string;
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyInterviewExperiencesBoxSelectorByName(companyName)(
     getState(),
   );
@@ -556,10 +558,13 @@ export const queryCompanyWorkExperiences = ({
   start,
   limit,
   sortBy,
-}: CompanyExperiencesPaginationInput): Thunk => async (
-  dispatch,
-  getState,
-): Promise<unknown> => {
+}: {
+  companyName: string;
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyWorkExperiencesBoxSelectorByName(companyName)(getState());
   if (
     isFetching(box) ||
