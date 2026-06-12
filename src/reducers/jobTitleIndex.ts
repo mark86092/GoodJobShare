@@ -4,13 +4,8 @@ import {
   SET_INTERVIEW_EXPERIENCES,
   SET_OVERVIEW,
   SET_OVERVIEW_STATISTICS,
-<<<<<<< HEAD
   SET_SALARY_WORK_TIME,
   SET_SALARY_WORK_TIME_STATISTICS,
-=======
-  SET_TIME_AND_SALARY,
-  SET_TIME_AND_SALARY_STATISTICS,
->>>>>>> upstream/master
   SET_WORK_EXPERIENCES,
 } from 'actions/jobTitle';
 import { WorkExperience } from 'apis/experience';
