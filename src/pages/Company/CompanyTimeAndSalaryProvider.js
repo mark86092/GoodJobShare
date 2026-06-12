@@ -10,12 +10,8 @@ import {
   queryRatingStatistics,
 } from 'actions/company';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
-<<<<<<< HEAD
-import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/Searchbar';
-import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
-=======
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
-import TimeAndSalary from 'components/CompanyAndJobTitle/TimeAndSalary';
+import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
 import {
   dataTimeFromQuerySelector,
   experienceFromQuerySelector,
@@ -28,20 +24,14 @@ import {
   useGenderFromQuery,
   useSortByFromQuery,
 } from 'components/CompanyAndJobTitle/TimeAndSalary/SalaryFilter';
->>>>>>> upstream/master
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
 import {
   companyEsgSalaryDataBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
-<<<<<<< HEAD
   companyTimeAndSalaryBoxSelectorByName,
   companyTimeAndSalaryStatisticsBoxSelectorByName,
-=======
-  companyTimeAndSalaryBoxSelectorByName as timeAndSalaryBoxSelectorByName,
-  companyTimeAndSalaryStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
->>>>>>> upstream/master
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
 import {
@@ -101,9 +91,6 @@ const CompanySalaryWorkTimeProvider = () => {
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
 
-<<<<<<< HEAD
-  const handleQueryCompanySalaryWorkTime = useCallback(
-=======
   const [dataTime] = useDataTimeFromQuery();
   const [experience] = useExperienceFromQuery();
   const [gender] = useGenderFromQuery();
@@ -115,8 +102,7 @@ const CompanySalaryWorkTimeProvider = () => {
     [experience],
   );
 
-  const handleQueryCompanyTimeAndSalary = useCallback(
->>>>>>> upstream/master
+  const handleQueryCompanySalaryWorkTime = useCallback(
     ({ force = false } = {}) => {
       dispatch(
         queryCompanySalaryWorkTime(
@@ -223,47 +209,6 @@ CompanySalaryWorkTimeProvider.fetchData = ({
   const jobTitle = queryFromQuerySelector(query) || undefined;
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
-<<<<<<< HEAD
-
-=======
-  const dataTime = dataTimeFromQuerySelector(query);
-  const experience = experienceFromQuerySelector(query);
-  const gender = genderFromQuerySelector(query);
-  const sortBy = sortByFromQuerySelector(query);
-  const dataTimeRange = getDataTimeRange(dataTime);
-  const experienceInYearRange = getExperienceInYearRange(experience);
-  const dispatchOverviewStatistics = dispatch(
-    queryCompanyOverviewStatistics(companyName),
-  );
-  const dispatchTimeAndSalaryStatistics = dispatch(
-    queryCompanyTimeAndSalaryStatistics({
-      companyName,
-    }),
-  );
-  const dispatchTimeAndSalary = dispatch(
-    queryCompanyTimeAndSalary({
-      companyName,
-      jobTitle,
-      start,
-      limit,
-      dataTimeRange,
-      experienceInYearRange,
-      gender: gender || undefined,
-      sortBy: sortBy || undefined,
-    }),
-  );
-  const dispatchRatingStatistics = dispatch(queryRatingStatistics(companyName));
-  const dispatchTopNJobTitles = dispatch(
-    queryCompanyTopNJobTitles({
-      companyName,
-    }),
-  );
-  const dispatchEsgSalaryData = dispatch(
-    queryCompanyEsgSalaryData({
-      companyName,
-    }),
-  );
->>>>>>> upstream/master
   return Promise.all([
     dispatch(queryCompanyOverviewStatistics(companyName)),
     dispatch(
