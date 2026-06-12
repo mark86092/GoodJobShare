@@ -1,7 +1,7 @@
-import R from 'ramda';
-
 class HttpError extends Error {
-  constructor(message, { statusCode }) {
+  statusCode: number;
+
+  constructor(message: string, { statusCode }: { statusCode: number }) {
     super(message);
     this.name = 'HttpError';
     this.statusCode = statusCode;
@@ -12,4 +12,5 @@ class HttpError extends Error {
 }
 
 export default HttpError;
-export const isHttpError = R.propEq('name', 'HttpError');
+export const isHttpError = (error: unknown): error is HttpError =>
+  error instanceof Error && error.name === 'HttpError';
