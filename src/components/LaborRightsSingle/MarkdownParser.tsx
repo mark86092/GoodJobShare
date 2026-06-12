@@ -15,9 +15,7 @@ const MarkdownParser: React.FC<MarkdownParserProps> = ({ content = '' }) => (
   <div
     className={styles.md}
     // eslint-disable-next-line react/no-danger
-    dangerouslySetInnerHTML={{
-      __html: marked.parse(content) as string,
-    }}
+    dangerouslySetInnerHTML={{ __html: marked.parse(content) }}
   />
 );
 
