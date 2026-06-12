@@ -22,7 +22,10 @@ import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
+<<<<<<< HEAD
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
+=======
+>>>>>>> upstream/master
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   JobAverageSalary,
@@ -77,6 +80,12 @@ export type CompanyIsSubscribed = {
   companyId: string | null;
 };
 
+<<<<<<< HEAD
+=======
+// TODO: replace with proper CompanyIsSubscribed type
+export type CompanyIsSubscribed = unknown;
+
+>>>>>>> upstream/master
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
   indexCountBox: FetchBox<number>;

@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 
+<<<<<<< HEAD:src/actions/company.ts
 import { CompanyExperiencesPaginationInput } from 'apis/company';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import queryCompanyEsgSalaryDataApi, {
@@ -19,6 +20,20 @@ import queryCompanySalaryWorkTimeStatisticsApi, {
 import queryCompanyTopNJobTitlesApi, {
   TopNJobTitles,
 } from 'apis/queryCompanyTopNJobTitles';
+=======
+import {
+  getCompanyInterviewExperiences,
+  getCompanyTimeAndSalary,
+  getCompanyTimeAndSalaryStatistics,
+  queryCompaniesApi,
+} from 'apis/company';
+import queryCompanyEsgSalaryDataApi from 'apis/queryCompanyEsgSalaryData';
+import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
+import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
+import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
+import queryCompanyRatingStatisticsApi from 'apis/queryCompanyRatingStatistics';
+import queryCompanyTopNJobTitlesApi from 'apis/queryCompanyTopNJobTitles';
+>>>>>>> upstream/master:src/actions/company.js
 import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
