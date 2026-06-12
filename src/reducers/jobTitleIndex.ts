@@ -4,8 +4,13 @@ import {
   SET_INTERVIEW_EXPERIENCES,
   SET_OVERVIEW,
   SET_OVERVIEW_STATISTICS,
+<<<<<<< HEAD
   SET_SALARY_WORK_TIME,
   SET_SALARY_WORK_TIME_STATISTICS,
+=======
+  SET_TIME_AND_SALARY,
+  SET_TIME_AND_SALARY_STATISTICS,
+>>>>>>> upstream/master
   SET_WORK_EXPERIENCES,
 } from 'actions/jobTitle';
 import { WorkExperience } from 'apis/experience';
@@ -19,6 +24,7 @@ import {
   SalaryDistributionBin,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
+<<<<<<< HEAD
 import {
   JobTitle,
   JobTitleExperiencesPaginationInput,
@@ -26,6 +32,13 @@ import {
 } from 'graphql/jobTitle';
 import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
+=======
+import createReducer from 'utils/createReducer';
+import FetchBox, { getUnfetched } from 'utils/fetchBox';
+
+// TODO: replace with proper JobTitleInIndex type
+export type JobTitleInIndex = unknown;
+>>>>>>> upstream/master
 
 // Flattened from QueryJobTitleOverviewData, so a type is defined here
 export type JobTitleOverview = {

@@ -3,7 +3,11 @@ import { useDispatch } from 'react-redux';
 
 import { queryJobTitleWorkExperiences } from 'actions/jobTitle';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
+<<<<<<< HEAD
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/Searchbar';
+=======
+import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
+>>>>>>> upstream/master
 import {
   sortByFromQuerySelector,
   useSortByFromQuery,

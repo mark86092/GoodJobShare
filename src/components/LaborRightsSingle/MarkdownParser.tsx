@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import marked from 'marked';
+=======
+import { marked } from 'marked';
+>>>>>>> upstream/master
 import React from 'react';
 
 import styles from './MarkdownParser.module.css';
@@ -12,7 +16,7 @@ const MarkdownParser: React.FC<MarkdownParserProps> = ({ content = '' }) => (
     className={styles.md}
     // eslint-disable-next-line react/no-danger
     dangerouslySetInnerHTML={{
-      __html: marked(content),
+      __html: marked.parse(content) as string,
     }}
   />
 );

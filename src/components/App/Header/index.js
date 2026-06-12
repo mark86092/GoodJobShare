@@ -29,7 +29,11 @@ import styles from './Header.module.css';
 import InboxIcon from './InboxIcon';
 import inboxIconStyles from './InboxIcon.module.css';
 import InboxPopoverContainer from './InboxPopoverContainer';
+<<<<<<< HEAD
 import Searchbar from './Searchbar';
+=======
+import SearchBar from './SearchBar';
+>>>>>>> upstream/master
 import SiteMenu from './SiteMenu';
 import Top from './Top';
 import ProgressTop from './Top/ProgressTop';
@@ -119,7 +123,7 @@ Logo.propTypes = {
   forceDesktop: PropTypes.bool,
 };
 
-const ResponsiveSearchbar = ({ className, inputRef }) => {
+const ResponsiveSearchBar = ({ className, inputRef }) => {
   const isMobile = useMobile();
   return (
     <div
@@ -129,7 +133,7 @@ const ResponsiveSearchbar = ({ className, inputRef }) => {
         className,
       )}
     >
-      <Searchbar
+      <SearchBar
         className={styles.searchbar}
         placeholder="搜全站薪水/面試/評價"
         inputRef={inputRef}
@@ -138,7 +142,7 @@ const ResponsiveSearchbar = ({ className, inputRef }) => {
   );
 };
 
-ResponsiveSearchbar.propTypes = {
+ResponsiveSearchBar.propTypes = {
   className: PropTypes.string,
   inputRef: PropTypes.any,
 };
@@ -278,7 +282,7 @@ const Header = ({ searchInputRef }) => {
         <Wrapper size="l" className={styles.inner}>
           <HamburgerButton isNavOpen={isNavOpen} toggle={toggleNav} />
           <Logo />
-          <ResponsiveSearchbar inputRef={searchInputRef} />
+          <ResponsiveSearchBar inputRef={searchInputRef} />
           <Nav
             isNavOpen={isNavOpen}
             isLoggedIn={isLoggedIn}

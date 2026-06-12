@@ -8,17 +8,27 @@ import {
   SET_OVERVIEW,
   SET_OVERVIEW_STATISTICS,
   SET_RATING_STATISTICS,
+<<<<<<< HEAD
   SET_SALARY_WORK_TIME,
   SET_SALARY_WORK_TIME_STATISTICS,
   SET_WORK_EXPERIENCES,
 } from 'actions/company';
 import { CompanyExperiencesPaginationInput } from 'apis/company';
+=======
+  SET_TIME_AND_SALARY,
+  SET_TIME_AND_SALARY_STATISTICS,
+  SET_WORK_EXPERIENCES,
+} from 'actions/company';
+>>>>>>> upstream/master
 import { WorkExperience } from 'apis/experience';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
+<<<<<<< HEAD
 import { CompanyInIndex } from 'apis/queryCompanies';
+=======
+>>>>>>> upstream/master
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
@@ -31,6 +41,12 @@ import {
 } from 'apis/salaryWorkTime';
 import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
+<<<<<<< HEAD
+=======
+
+// TODO: replace with proper CompanyInIndex type
+export type CompanyInIndex = unknown;
+>>>>>>> upstream/master
 
 // Flattened from QueryCompanyOverviewData, so a type is defined here
 export type CompanyOverview = {

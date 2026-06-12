@@ -6,7 +6,11 @@ import {
   queryRatingStatistics,
 } from 'actions/company';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
+<<<<<<< HEAD
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/Searchbar';
+=======
+import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
+>>>>>>> upstream/master
 import {
   sortByFromQuerySelector,
   useSortByFromQuery,

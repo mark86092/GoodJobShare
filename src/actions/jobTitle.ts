@@ -1,12 +1,22 @@
+<<<<<<< HEAD:src/actions/jobTitle.ts
 import { AnyAction } from 'redux';
 
 import {
   getJobTitleInterviewExperiences,
   queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
+=======
+import R from 'ramda';
+
+import {
+  getJobTitleInterviewExperiences,
+  getJobTitleTimeAndSalary,
+  getJobTitleTimeAndSalaryStatistics,
+>>>>>>> upstream/master:src/actions/jobTitle.js
   queryJobTitlesApi,
 } from 'apis/jobTitle';
 import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
 import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
+<<<<<<< HEAD:src/actions/jobTitle.ts
 import queryJobTitleSalaryWorkTimeStatisticsApi, {
   JobTitleSalaryWorkTimeStatistics,
 } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
@@ -20,6 +30,9 @@ import {
   JobTitleTimeAndSalaryResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
+=======
+import queryJobTitleWorkExperiencesApi from 'apis/queryJobTitleWorkExperiences';
+>>>>>>> upstream/master:src/actions/jobTitle.js
 import {
   jobTitleIndexesBoxSelectorAtPage,
   jobTitleInterviewExperiencesBoxSelectorByName,
@@ -29,8 +42,13 @@ import {
   jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
   jobTitleWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
+<<<<<<< HEAD:src/actions/jobTitle.ts
 import { GraphqlError } from 'utils/errors';
 import FetchBox, {
+=======
+import { isGraphqlError } from 'utils/errors';
+import {
+>>>>>>> upstream/master:src/actions/jobTitle.js
   getError,
   getFetched,
   isFetched,
@@ -205,6 +223,7 @@ const setSalaryWorkTime = (
   box,
 });
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
 export const queryJobTitleSalaryWorkTime = (
   {
     jobTitle,
@@ -216,6 +235,18 @@ export const queryJobTitleSalaryWorkTime = (
     companyName?: string | null;
     start: number;
     limit: number;
+=======
+export const queryJobTitleTimeAndSalary = (
+  {
+    companyName,
+    jobTitle,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+>>>>>>> upstream/master:src/actions/jobTitle.js
   },
   { force = false } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
@@ -228,7 +259,11 @@ export const queryJobTitleSalaryWorkTime = (
         box.data.name === jobTitle &&
         box.data.companyName === companyName &&
         box.data.start === start &&
-        box.data.limit === limit))
+        box.data.limit === limit &&
+        R.equals(box.data.dataTimeRange, dataTimeRange) &&
+        R.equals(box.data.experienceInYearRange, experienceInYearRange) &&
+        box.data.gender === gender &&
+        box.data.sortBy === sortBy))
   ) {
     return;
   }
@@ -241,6 +276,10 @@ export const queryJobTitleSalaryWorkTime = (
       companyName,
       start,
       limit,
+      dataTimeRange,
+      experienceInYearRange,
+      gender,
+      sortBy,
     });
 
     // Not found case
@@ -253,6 +292,10 @@ export const queryJobTitleSalaryWorkTime = (
       companyName,
       start,
       limit,
+      dataTimeRange,
+      experienceInYearRange,
+      gender,
+      sortBy,
       salaryWorkTimes: data.salaryWorkTimesResult.salaryWorkTimes,
       salaryWorkTimesCount: data.salaryWorkTimesResult.count,
     };

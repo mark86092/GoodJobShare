@@ -8,7 +8,11 @@ import {
 } from 'actions/company';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
 import InterviewExperiences from 'components/CompanyAndJobTitle/InterviewExperiences';
+<<<<<<< HEAD
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/Searchbar';
+=======
+import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
+>>>>>>> upstream/master
 import {
   sortByFromQuerySelector,
   useSortByFromQuery,

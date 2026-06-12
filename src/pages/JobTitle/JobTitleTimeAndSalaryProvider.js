@@ -7,15 +7,37 @@ import {
   queryJobTitleSalaryWorkTimeStatistics,
 } from 'actions/jobTitle';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
+<<<<<<< HEAD
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/Searchbar';
 import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
+=======
+import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
+import TimeAndSalary from 'components/CompanyAndJobTitle/TimeAndSalary';
+import {
+  dataTimeFromQuerySelector,
+  experienceFromQuerySelector,
+  genderFromQuerySelector,
+  getDataTimeRange,
+  getExperienceInYearRange,
+  sortByFromQuerySelector,
+  useDataTimeFromQuery,
+  useExperienceFromQuery,
+  useGenderFromQuery,
+  useSortByFromQuery,
+} from 'components/CompanyAndJobTitle/TimeAndSalary/SalaryFilter';
+>>>>>>> upstream/master
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
 import {
   jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
+<<<<<<< HEAD
   jobTitleTimeAndSalaryBoxSelectorByName,
   jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
+=======
+  jobTitleTimeAndSalaryBoxSelectorByName as timeAndSalaryBoxSelectorByName,
+  jobTitleTimeAndSalaryStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
+>>>>>>> upstream/master
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
 import {
@@ -66,7 +88,22 @@ const JobTitleSalaryWorkTimeProvider = () => {
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
 
+<<<<<<< HEAD
   const handleQueryJobTitleSalaryWorkTime = useCallback(
+=======
+  const [dataTime] = useDataTimeFromQuery();
+  const [experience] = useExperienceFromQuery();
+  const [gender] = useGenderFromQuery();
+  const [sortBy] = useSortByFromQuery();
+
+  const dataTimeRange = useMemo(() => getDataTimeRange(dataTime), [dataTime]);
+  const experienceInYearRange = useMemo(
+    () => getExperienceInYearRange(experience),
+    [experience],
+  );
+
+  const handleQueryJobTitleTimeAndSalary = useCallback(
+>>>>>>> upstream/master
     ({ force = false } = {}) => {
       dispatch(
         queryJobTitleSalaryWorkTime(
@@ -75,12 +112,26 @@ const JobTitleSalaryWorkTimeProvider = () => {
             companyName: companyName || undefined,
             start,
             limit,
+            dataTimeRange,
+            experienceInYearRange,
+            gender: gender || undefined,
+            sortBy: sortBy || undefined,
           },
           { force },
         ),
       );
     },
-    [dispatch, companyName, jobTitle, start, limit],
+    [
+      dispatch,
+      companyName,
+      jobTitle,
+      start,
+      limit,
+      dataTimeRange,
+      experienceInYearRange,
+      gender,
+      sortBy,
+    ],
   );
 
   useEffect(() => {
@@ -135,6 +186,12 @@ JobTitleSalaryWorkTimeProvider.fetchData = ({
   const companyName = queryFromQuerySelector(query) || undefined;
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
+  const dataTime = dataTimeFromQuerySelector(query);
+  const experience = experienceFromQuerySelector(query);
+  const gender = genderFromQuerySelector(query);
+  const sortBy = sortByFromQuerySelector(query);
+  const dataTimeRange = getDataTimeRange(dataTime);
+  const experienceInYearRange = getExperienceInYearRange(experience);
   return Promise.all([
     dispatch(queryJobTitleOverviewStatistics(jobTitle)),
     dispatch(
@@ -143,6 +200,10 @@ JobTitleSalaryWorkTimeProvider.fetchData = ({
         companyName,
         start,
         limit,
+        dataTimeRange,
+        experienceInYearRange,
+        gender: gender || undefined,
+        sortBy: sortBy || undefined,
       }),
     ),
   ]);

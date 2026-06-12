@@ -1,10 +1,13 @@
 import { Action, AnyAction, combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+<<<<<<< HEAD
 
 import { PERSIST_KEY } from 'config';
+=======
+>>>>>>> upstream/master
 
-// sort by reducers a-z
+import { PERSIST_KEY } from '../config';
 import auth from './auth';
 import companyIndex from './companyIndex';
 import experience from './experience';

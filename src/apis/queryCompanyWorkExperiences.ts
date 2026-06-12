@@ -1,6 +1,9 @@
 import R from 'ramda';
 
+<<<<<<< HEAD
 import { CompanyExperiencesPaginationInput } from 'apis/company';
+=======
+>>>>>>> upstream/master
 import { WorkExperience } from 'apis/experience';
 import { Company } from 'graphql/company';
 import {

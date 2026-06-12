@@ -4,13 +4,30 @@ import {
   changeExperienceStatusGql,
   createExperienceLikeGql,
   deleteExpereinceLikeGql,
+<<<<<<< HEAD
   queryExperienceGql,
+=======
+  queryExperienceCountGql,
+  queryExperienceGql,
+  queryExperienceLikeGql,
+  queryExperienceRepliesGql,
+>>>>>>> upstream/master
   queryRelatedExperiencesGql,
 } from 'graphql/experience';
 import { getPopularExperiencesQuery } from 'graphql/popularExperience';
 import { createReplyLike, deleteReplyLike } from 'graphql/reply';
 import fetchUtil from 'utils/fetchUtil';
 import graphqlClient from 'utils/graphqlClient';
+<<<<<<< HEAD
+=======
+
+export const queryExperienceReplies = async ({ id, token }) =>
+  graphqlClient({
+    query: queryExperienceRepliesGql,
+    variables: { id },
+    token,
+  }).then(data => data.experience.replies);
+>>>>>>> upstream/master
 
 export const postExperienceReply = ({ id, comment, token }) =>
   fetchUtil(`/experiences/${id}/replies`).post({

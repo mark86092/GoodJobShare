@@ -16,7 +16,11 @@ import { GA_ACTION, GA_CATEGORY } from 'constants/gaConstants';
 import { useQuery } from 'hooks/routing';
 import { queryFromQuerySelector } from 'selectors/routing';
 
+<<<<<<< HEAD:src/components/CompanyAndJobTitle/Searchbar.js
 import styles from './Searchbar.module.css';
+=======
+import styles from './SearchBar.module.css';
+>>>>>>> upstream/master:src/components/CompanyAndJobTitle/SearchBar.js
 
 export const useSearchTextFromQuery = () => {
   const history = useHistory();
@@ -35,7 +39,7 @@ export const useSearchTextFromQuery = () => {
   return [searchText, setSearchText];
 };
 
-const Searchbar = ({ className, label, placeholder, onSubmit, pageType }) => {
+const SearchBar = ({ className, label, placeholder, onSubmit, pageType }) => {
   const [searchTextFromQuery] = useSearchTextFromQuery();
   const [searchText, setSearchText] = useState(searchTextFromQuery);
   const ref = useRef(null);
@@ -92,7 +96,7 @@ const Searchbar = ({ className, label, placeholder, onSubmit, pageType }) => {
   );
 };
 
-Searchbar.propTypes = {
+SearchBar.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
@@ -100,7 +104,7 @@ Searchbar.propTypes = {
   placeholder: PropTypes.string,
 };
 
-const WrappedSearchbar = ({ pageType, tabType }) => {
+const WrappedSearchBar = ({ pageType, tabType }) => {
   const [, setFilter] = useSearchTextFromQuery();
 
   const translatedPageType = pageTypeTranslation[pageType];
@@ -122,7 +126,7 @@ const WrappedSearchbar = ({ pageType, tabType }) => {
   const placeholder = `搜該${translatedPageType}指定${translatedSearchingPageType}${translatedTabType}`;
 
   return (
-    <Searchbar
+    <SearchBar
       label={label}
       placeholder={placeholder}
       onSubmit={setFilter}
@@ -131,9 +135,9 @@ const WrappedSearchbar = ({ pageType, tabType }) => {
   );
 };
 
-WrappedSearchbar.propTypes = {
+WrappedSearchBar.propTypes = {
   pageType: PropTypes.string.isRequired,
   tabType: PropTypes.string.isRequired,
 };
 
-export default WrappedSearchbar;
+export default WrappedSearchBar;

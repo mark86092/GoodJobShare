@@ -8,6 +8,10 @@ import Table from 'common/table/Table';
 import ReportZone from 'components/ExperienceDetail/ReportZone';
 import { REPORT_TYPE } from 'components/ExperienceDetail/ReportZone/ReportForm/constants';
 import { PageType } from 'constants/companyJobTitle';
+<<<<<<< HEAD
+=======
+import { GENDER_TRANSLATION } from 'constants/gender';
+>>>>>>> upstream/master
 import usePermission from 'hooks/usePermission';
 
 import { InfoSalaryModal, InfoTimeModal } from './InfoModal';
@@ -25,6 +29,11 @@ import {
   getYear,
 } from '../../TimeAndSalary/common/formatter';
 import injectHideContentBlock from '../../TimeAndSalary/common/injectHideContentBlock';
+<<<<<<< HEAD
+=======
+
+const formatGender = gender => GENDER_TRANSLATION[gender] ?? '-';
+>>>>>>> upstream/master
 
 const SalaryHeader = ({ isInfoSalaryModalOpen, toggleInfoSalaryModal }) => (
   <React.Fragment>
@@ -102,6 +111,13 @@ const columnProps = [
     dataField: 'experience_in_year',
     dataFormatter: getYear,
     Children: () => '業界工作經歷',
+  },
+  {
+    className: styles.colGender,
+    title: '性別',
+    dataField: 'gender',
+    dataFormatter: formatGender,
+    Children: () => '性別',
   },
   {
     className: styles.colSalary,

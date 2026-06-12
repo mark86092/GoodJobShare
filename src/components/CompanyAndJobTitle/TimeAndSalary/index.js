@@ -6,6 +6,20 @@ import { useCreatePageLinkTo } from 'common/Pagination/Pagination';
 import BoxRenderer from 'common/StatusRenderer';
 import { PageType } from 'constants/companyJobTitle';
 import { fetchBoxPropType } from 'utils/fetchBox';
+<<<<<<< HEAD
+=======
+
+import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
+import PageBoxRenderer from '../PageBoxRenderer';
+import Helmet from './Helmet';
+import OvertimeSection from './OvertimeSection';
+import SalaryFilter from './SalaryFilter';
+import TimeAndSalarySection from './TimeAndSalary';
+import SearchBar from '../SearchBar';
+import SummarySection from './SummarySection';
+import styles from './TimeAndSalary.module.css';
+import EsgBlock from '../TimeAndSalary/EsgBlock';
+>>>>>>> upstream/master
 
 import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
 import PageBoxRenderer from '../PageBoxRenderer';
@@ -30,7 +44,7 @@ const SalaryWorkTime = ({
   onCloseReport,
   esgSalaryDataBox,
 }) => {
-  const [createPageLinkTo, handleSectionRef] = useCreatePageLinkTo();
+  const [createPageLinkTo, handleSectionRef, sectionY] = useCreatePageLinkTo();
 
   return (
     <CompanyAndJobTitleWrapper
@@ -97,7 +111,8 @@ const SalaryWorkTime = ({
         }}
       />
       <Wrapper ref={handleSectionRef} size="l" className={styles.searchbar}>
-        <Searchbar pageType={pageType} tabType={tabType} />
+        <SearchBar pageType={pageType} tabType={tabType} />
+        <SalaryFilter y={sectionY} />
       </Wrapper>
       <Wrapper size="l">
         <PageBoxRenderer
