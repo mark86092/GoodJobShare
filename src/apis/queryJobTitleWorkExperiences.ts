@@ -5,11 +5,7 @@ import {
   experiencePartialGql,
   workExperiencesPartialGql,
 } from 'graphql/experience';
-<<<<<<< HEAD
 import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
-=======
-import { JobTitle } from 'graphql/jobTitle';
->>>>>>> upstream/master
 import graphqlClient from 'utils/graphqlClient';
 
 const queryJobTitleWorkExperiencesGql = /* GraphQL */ `
