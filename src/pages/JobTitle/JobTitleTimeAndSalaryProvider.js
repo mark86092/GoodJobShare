@@ -7,12 +7,8 @@ import {
   queryJobTitleSalaryWorkTimeStatistics,
 } from 'actions/jobTitle';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
-<<<<<<< HEAD
-import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/Searchbar';
-import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
-=======
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
-import TimeAndSalary from 'components/CompanyAndJobTitle/TimeAndSalary';
+import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
 import {
   dataTimeFromQuerySelector,
   experienceFromQuerySelector,
@@ -25,19 +21,13 @@ import {
   useGenderFromQuery,
   useSortByFromQuery,
 } from 'components/CompanyAndJobTitle/TimeAndSalary/SalaryFilter';
->>>>>>> upstream/master
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
 import {
   jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
-<<<<<<< HEAD
   jobTitleTimeAndSalaryBoxSelectorByName,
   jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
-=======
-  jobTitleTimeAndSalaryBoxSelectorByName as timeAndSalaryBoxSelectorByName,
-  jobTitleTimeAndSalaryStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
->>>>>>> upstream/master
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
 import {
@@ -88,9 +78,6 @@ const JobTitleSalaryWorkTimeProvider = () => {
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
 
-<<<<<<< HEAD
-  const handleQueryJobTitleSalaryWorkTime = useCallback(
-=======
   const [dataTime] = useDataTimeFromQuery();
   const [experience] = useExperienceFromQuery();
   const [gender] = useGenderFromQuery();
@@ -102,8 +89,7 @@ const JobTitleSalaryWorkTimeProvider = () => {
     [experience],
   );
 
-  const handleQueryJobTitleTimeAndSalary = useCallback(
->>>>>>> upstream/master
+  const handleQueryJobTitleSalaryWorkTime = useCallback(
     ({ force = false } = {}) => {
       dispatch(
         queryJobTitleSalaryWorkTime(
