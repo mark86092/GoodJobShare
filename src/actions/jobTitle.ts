@@ -17,7 +17,7 @@ import {
   JobTitleInterviewExperienceResult,
   JobTitleOverview,
   JobTitleOverviewStatistics,
-  JobTitleTimeAndSalaryResult,
+  JobTitleSalaryWorkTimeResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
 import {
@@ -198,7 +198,7 @@ export const queryJobTitleOverviewStatistics = (
 
 const setSalaryWorkTime = (
   jobTitle: string,
-  box: FetchBox<JobTitleTimeAndSalaryResult | null>,
+  box: FetchBox<JobTitleSalaryWorkTimeResult | null>,
 ): AnyAction => ({
   type: SET_SALARY_WORK_TIME,
   jobTitle,
@@ -218,13 +218,8 @@ export const queryJobTitleSalaryWorkTime = (
     limit: number;
   },
   { force = false } = {},
-<<<<<<< HEAD:src/actions/jobTitle.ts
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = jobTitleTimeAndSalaryBoxSelectorByName(jobTitle)(getState());
-=======
-) => async (dispatch, getState) => {
   const box = jobTitleSalaryWorktimeBoxSelectorByName(jobTitle)(getState());
->>>>>>> upstream/master:src/actions/jobTitle.js
   if (
     !force &&
     (isFetching(box) ||

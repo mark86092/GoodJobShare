@@ -1,6 +1,5 @@
 import R from 'ramda';
 
-<<<<<<< HEAD
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
@@ -10,49 +9,30 @@ import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTi
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 import { JobTitle } from 'graphql/jobTitle';
 import { RootState } from 'reducers';
-import {
-=======
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { RootState } from 'reducers';
 import {
-  CompanyInIndex,
->>>>>>> upstream/master
   CompanyInterviewExperienceResult,
   CompanyIsSubscribed,
   CompanyOverview,
   CompanyOverviewStatistics,
-<<<<<<< HEAD
-  CompanyTimeAndSalaryResult,
-<<<<<<< HEAD
   CompanyWorkExperienceResult,
 } from 'reducers/companyIndex';
 import {
-=======
   CompanyTimeAndSalaryStatistics,
-=======
   CompanySalaryWorkTimeResult,
   CompanySalaryWorkTimeStatistics,
->>>>>>> upstream/master
   CompanyWorkExperienceResult,
   TopNJobTitles,
 } from 'reducers/companyIndex';
 import {
   JobTitleInIndex,
->>>>>>> upstream/master
   JobTitleInterviewExperienceResult,
   JobTitleOverview,
   JobTitleOverviewStatistics,
-<<<<<<< HEAD
-  JobTitleTimeAndSalaryResult,
-<<<<<<< HEAD
-=======
-  JobTitleTimeAndSalaryStatistics,
->>>>>>> upstream/master
-=======
   JobTitleSalaryWorkTimeResult,
   JobTitleSalaryWorkTimeStatistics,
->>>>>>> upstream/master
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
 import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
