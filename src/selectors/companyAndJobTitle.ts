@@ -9,21 +9,14 @@ import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTi
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 import { JobTitle } from 'graphql/jobTitle';
 import { RootState } from 'reducers';
-import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
-import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
-import { RootState } from 'reducers';
 import {
   CompanyInterviewExperienceResult,
   CompanyIsSubscribed,
   CompanyOverview,
   CompanyOverviewStatistics,
   CompanyWorkExperienceResult,
-} from 'reducers/companyIndex';
-import {
-  CompanyTimeAndSalaryStatistics,
   CompanySalaryWorkTimeResult,
   CompanySalaryWorkTimeStatistics,
-  CompanyWorkExperienceResult,
   TopNJobTitles,
 } from 'reducers/companyIndex';
 import {
@@ -32,7 +25,6 @@ import {
   JobTitleOverview,
   JobTitleOverviewStatistics,
   JobTitleSalaryWorkTimeResult,
-  JobTitleSalaryWorkTimeStatistics,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
 import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
