@@ -1,10 +1,9 @@
-import graphqlClient from 'utils/graphqlClient';
-
 import {
-  queryMyPublishIdsGql,
-  queryMyPublishesGql,
   queryMyPermissionGql,
+  queryMyPublishesGql,
+  queryMyPublishIdsGql,
 } from 'graphql/me';
+import graphqlClient from 'utils/graphqlClient';
 
 export const queryHasSearchPermissionApi = ({ token }) =>
   graphqlClient({ query: queryMyPermissionGql, token }).then(

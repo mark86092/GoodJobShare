@@ -1,5 +1,5 @@
-import graphqlClient from 'utils/graphqlClient';
 import { Reply } from 'apis/reply';
+import graphqlClient from 'utils/graphqlClient';
 
 const queryExperienceRepliesGql = /* GraphQL */ `
   query($id: ID!) {

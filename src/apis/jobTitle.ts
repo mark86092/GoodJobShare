@@ -1,14 +1,15 @@
 import R from 'ramda';
-import graphqlClient from 'utils/graphqlClient';
+
 import {
-  queryJobTitleInterviewExperiencesGql,
-  QueryJobTitleInterviewExperiencesData,
-  queryJobTitleSalaryWorkTimeGql,
-  QueryJobTitleSalaryWorkTimeData,
-  queryJobTitlesHavingDataGql,
-  QueryJobTitlesHavingDataData,
   JobTitleExperiencesPaginationInput,
+  QueryJobTitleInterviewExperiencesData,
+  queryJobTitleInterviewExperiencesGql,
+  QueryJobTitleSalaryWorkTimeData,
+  queryJobTitleSalaryWorkTimeGql,
+  QueryJobTitlesHavingDataData,
+  queryJobTitlesHavingDataGql,
 } from 'graphql/jobTitle';
+import graphqlClient from 'utils/graphqlClient';
 
 export const queryJobTitleSalaryWorkTime = ({
   jobTitle,

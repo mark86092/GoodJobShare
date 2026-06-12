@@ -1,6 +1,6 @@
+import qs from 'qs';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import qs from 'qs';
 
 export const useSearch = () => {
   const location = useLocation();

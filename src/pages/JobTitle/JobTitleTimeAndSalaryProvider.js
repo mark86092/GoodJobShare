@@ -1,27 +1,29 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
-import usePermission from 'hooks/usePermission';
-import { usePage } from 'hooks/routing/page';
-import { TabType, PageType, PAGE_SIZE } from 'constants/companyJobTitle';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
   queryJobTitleOverviewStatistics,
   queryJobTitleSalaryWorkTime,
   queryJobTitleSalaryWorkTimeStatistics,
 } from 'actions/jobTitle';
+import { paramsSelector, querySelector } from 'common/routing/selectors';
+import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/Searchbar';
+import SalaryWorkTime from 'components/CompanyAndJobTitle/TimeAndSalary';
+import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
+import { usePage } from 'hooks/routing/page';
+import usePermission from 'hooks/usePermission';
 import {
-  salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
+  jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
   jobTitleTimeAndSalaryBoxSelectorByName,
   jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
-  jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
+  salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
-import { paramsSelector, querySelector } from 'common/routing/selectors';
-import useJobTitle, { jobTitleSelector } from './useJobTitle';
 import {
-  queryFromQuerySelector,
   pageFromQuerySelector,
+  queryFromQuerySelector,
 } from 'selectors/routing';
-import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/Searchbar';
+
+import useJobTitle, { jobTitleSelector } from './useJobTitle';
 
 const useOverviewStatisticsBox = pageName => {
   const selector = useMemo(

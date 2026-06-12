@@ -1,28 +1,30 @@
-import React, { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import R from 'ramda';
+import React, { useCallback, useMemo, useState } from 'react';
+
+import ReportBadge from 'common/button/ReportBadge';
 import { InfoButton } from 'common/Modal';
 import Table from 'common/table/Table';
+import ReportZone from 'components/ExperienceDetail/ReportZone';
+import { REPORT_TYPE } from 'components/ExperienceDetail/ReportZone/ReportForm/constants';
 import { PageType } from 'constants/companyJobTitle';
+import usePermission from 'hooks/usePermission';
+
 import { InfoSalaryModal, InfoTimeModal } from './InfoModal';
 import styles from './WorkingHourTable.module.css';
 import {
-  getNameAsJobTitle,
-  getNameAsCompanyName,
+  formatDate,
+  formatWage,
   getEmploymentType,
-  getWorkingHour,
-  getYear,
   getFrequency,
+  getNameAsCompanyName,
+  getNameAsJobTitle,
   getSalary,
   getWeekWorkTime,
-  formatWage,
-  formatDate,
+  getWorkingHour,
+  getYear,
 } from '../../TimeAndSalary/common/formatter';
 import injectHideContentBlock from '../../TimeAndSalary/common/injectHideContentBlock';
-import usePermission from 'hooks/usePermission';
-import ReportBadge from 'common/button/ReportBadge';
-import ReportZone from 'components/ExperienceDetail/ReportZone';
-import { REPORT_TYPE } from 'components/ExperienceDetail/ReportZone/ReportForm/constants';
 
 const SalaryHeader = ({ isInfoSalaryModalOpen, toggleInfoSalaryModal }) => (
   <React.Fragment>

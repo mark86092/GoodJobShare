@@ -1,41 +1,43 @@
 import { AnyAction } from 'redux';
-import { Thunk } from 'reducers';
+
 import {
-  JobTitleOverview,
-  JobTitleOverviewStatistics,
-  JobTitleTimeAndSalaryResult,
-  JobTitleInterviewExperienceResult,
-  JobTitleWorkExperienceResult,
-} from 'reducers/jobTitleIndex';
-import { GraphqlError } from 'utils/errors';
-import FetchBox, {
-  isFetching,
-  isFetched,
-  toFetching,
-  getFetched,
-  getError,
-} from 'utils/fetchBox';
-import {
-  jobTitleIndexesBoxSelectorAtPage,
-  jobTitleOverviewBoxSelectorByName,
-  jobTitleTimeAndSalaryBoxSelectorByName,
-  jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
-  jobTitleInterviewExperiencesBoxSelectorByName,
-  jobTitleWorkExperiencesBoxSelectorByName,
-  jobTitleOverviewStatisticsBoxSelectorByName,
-} from 'selectors/companyAndJobTitle';
-import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
-import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
-import {
-  queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
   getJobTitleInterviewExperiences,
+  queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
   queryJobTitlesApi,
 } from 'apis/jobTitle';
-import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
+import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
+import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
 import queryJobTitleSalaryWorkTimeStatisticsApi, {
   JobTitleSalaryWorkTimeStatistics,
 } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import queryJobTitleWorkExperiencesApi from 'apis/queryJobTitleWorkExperiences';
+import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
+import { Thunk } from 'reducers';
+import {
+  JobTitleInterviewExperienceResult,
+  JobTitleOverview,
+  JobTitleOverviewStatistics,
+  JobTitleTimeAndSalaryResult,
+  JobTitleWorkExperienceResult,
+} from 'reducers/jobTitleIndex';
+import {
+  jobTitleIndexesBoxSelectorAtPage,
+  jobTitleInterviewExperiencesBoxSelectorByName,
+  jobTitleOverviewBoxSelectorByName,
+  jobTitleOverviewStatisticsBoxSelectorByName,
+  jobTitleTimeAndSalaryBoxSelectorByName,
+  jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
+  jobTitleWorkExperiencesBoxSelectorByName,
+} from 'selectors/companyAndJobTitle';
+import { GraphqlError } from 'utils/errors';
+import FetchBox, {
+  getError,
+  getFetched,
+  isFetched,
+  isFetching,
+  toFetching,
+} from 'utils/fetchBox';
+
 import { setExperience } from './experience';
 
 export const SET_OVERVIEW = '@@JOB_TITLE/SET_OVERVIEW';

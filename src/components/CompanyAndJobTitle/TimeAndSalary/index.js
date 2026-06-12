@@ -1,20 +1,21 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
-import BoxRenderer from 'common/StatusRenderer';
-import PageBoxRenderer from '../PageBoxRenderer';
-import SalaryWorkTimeSection from './SalaryWorkTimeSection';
-import Helmet from './Helmet';
-import OvertimeSection from './OvertimeSection';
-import Searchbar from '../Searchbar';
-import SummarySection from './SummarySection';
-import EsgBlock from '../TimeAndSalary/EsgBlock';
-import { PageType } from 'constants/companyJobTitle';
-import { fetchBoxPropType } from 'utils/fetchBox';
 import { Wrapper } from 'common/base';
 import { useCreatePageLinkTo } from 'common/Pagination/Pagination';
+import BoxRenderer from 'common/StatusRenderer';
+import { PageType } from 'constants/companyJobTitle';
+import { fetchBoxPropType } from 'utils/fetchBox';
+
+import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
+import PageBoxRenderer from '../PageBoxRenderer';
+import Helmet from './Helmet';
+import OvertimeSection from './OvertimeSection';
+import SalaryWorkTimeSection from './SalaryWorkTimeSection';
+import Searchbar from '../Searchbar';
+import SummarySection from './SummarySection';
 import styles from './TimeAndSalary.module.css';
+import EsgBlock from '../TimeAndSalary/EsgBlock';
 
 const SalaryWorkTime = ({
   pageType,

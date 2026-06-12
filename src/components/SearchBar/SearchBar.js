@@ -1,11 +1,13 @@
-import React, { useState, useCallback } from 'react';
 import cn from 'classnames';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
 import SearchTextInput from 'common/form/TextInput/SearchTextInput';
 import Magnifiner from 'common/icons/Magnifiner';
 import { useQuery } from 'hooks/routing';
-import styles from './SearchBar.module.css';
 import { queryFromQuerySelector } from 'selectors/routing';
+
+import styles from './SearchBar.module.css';
 
 const SearchBar = () => {
   const history = useHistory();

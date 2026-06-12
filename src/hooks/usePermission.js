@@ -1,7 +1,9 @@
-import { useContext, useCallback } from 'react';
+import { useCallback, useContext } from 'react';
+
+import { queryHasSearchPermissionApi } from 'apis/me';
 import PermissionContext from 'contexts/PermissionContext';
 import { useToken } from 'hooks/auth';
-import { queryHasSearchPermissionApi } from 'apis/me';
+
 import useIsMyPublishId from './useIsMyPublishId';
 
 const useGetSearchPermission = ({ token }) => {

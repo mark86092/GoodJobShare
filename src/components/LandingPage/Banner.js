@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Wrapper } from 'common/base';
+
 import styles from './Banner.module.css';
 import SearchBar from '../SearchBar/SearchBar';
 

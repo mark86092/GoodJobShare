@@ -1,14 +1,15 @@
 import R from 'ramda';
-import graphqlClient from 'utils/graphqlClient';
+
 import { CompanyExperiencesPaginationInput } from 'apis/company';
 import { Company } from 'graphql/company';
 import {
   experiencePartialGql,
   interviewExperiencePartialGql,
 } from 'graphql/experience';
+import graphqlClient from 'utils/graphqlClient';
 
 // TODO
-export type CompanyInterviewExperience = {};
+export type CompanyInterviewExperience = unknown;
 
 type QueryCompanyInterviewExperiencesData = {
   company:

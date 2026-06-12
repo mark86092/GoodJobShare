@@ -1,40 +1,12 @@
 import { AnyAction } from 'redux';
-import { Thunk } from 'reducers';
-import {
-  CompanyOverview,
-  CompanyOverviewStatistics,
-  CompanyTimeAndSalaryResult,
-  CompanyInterviewExperienceResult,
-  CompanyWorkExperienceResult,
-} from 'reducers/companyIndex';
-import { GraphqlError } from 'utils/errors';
-import FetchBox, {
-  isFetching,
-  isFetched,
-  toFetching,
-  getFetched,
-  getError,
-} from 'utils/fetchBox';
-import {
-  companyIndexesBoxSelectorAtPage,
-  companyOverviewBoxSelectorByName,
-  companyOverviewStatisticsBoxSelectorByName,
-  companyTimeAndSalaryBoxSelectorByName,
-  companyTimeAndSalaryStatisticsBoxSelectorByName,
-  companyInterviewExperiencesBoxSelectorByName,
-  companyWorkExperiencesBoxSelectorByName,
-  companyRatingStatisticsBoxSelectorByName,
-  companyTopNJobTitlesBoxSelectorByName,
-  companyEsgSalaryDataBoxSelectorByName,
-  companyIsSubscribedBoxSelectorByName,
-} from 'selectors/companyAndJobTitle';
+
 import { CompanyExperiencesPaginationInput } from 'apis/company';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
 } from 'apis/queryCompanyEsgSalaryData';
-import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
+import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import queryCompanyRatingStatisticsApi, {
@@ -50,7 +22,37 @@ import queryCompanyTopNJobTitlesApi, {
 import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
+import { Thunk } from 'reducers';
+import {
+  CompanyInterviewExperienceResult,
+  CompanyOverview,
+  CompanyOverviewStatistics,
+  CompanyTimeAndSalaryResult,
+  CompanyWorkExperienceResult,
+} from 'reducers/companyIndex';
 import { tokenSelector } from 'selectors/authSelector';
+import {
+  companyEsgSalaryDataBoxSelectorByName,
+  companyIndexesBoxSelectorAtPage,
+  companyInterviewExperiencesBoxSelectorByName,
+  companyIsSubscribedBoxSelectorByName,
+  companyOverviewBoxSelectorByName,
+  companyOverviewStatisticsBoxSelectorByName,
+  companyRatingStatisticsBoxSelectorByName,
+  companyTimeAndSalaryBoxSelectorByName,
+  companyTimeAndSalaryStatisticsBoxSelectorByName,
+  companyTopNJobTitlesBoxSelectorByName,
+  companyWorkExperiencesBoxSelectorByName,
+} from 'selectors/companyAndJobTitle';
+import { GraphqlError } from 'utils/errors';
+import FetchBox, {
+  getError,
+  getFetched,
+  isFetched,
+  isFetching,
+  toFetching,
+} from 'utils/fetchBox';
+
 import { setExperience } from './experience';
 
 export const SET_RATING_STATISTICS = '@@COMPANY/SET_RATING_STATISTICS';

@@ -1,35 +1,36 @@
 import R from 'ramda';
-import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
-import { RootState } from 'reducers';
-import {
-  CompanyOverview,
-  CompanyOverviewStatistics,
-  CompanyInterviewExperienceResult,
-  CompanyTimeAndSalaryResult,
-  CompanyWorkExperienceResult,
-  CompanyIsSubscribed,
-} from 'reducers/companyIndex';
-import {
-  JobTitleOverview,
-  JobTitleOverviewStatistics,
-  JobTitleInterviewExperienceResult,
-  JobTitleTimeAndSalaryResult,
-  JobTitleWorkExperienceResult,
-} from 'reducers/jobTitleIndex';
-import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
+
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
+import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 import { JobTitle } from 'graphql/jobTitle';
+import { RootState } from 'reducers';
+import {
+  CompanyInterviewExperienceResult,
+  CompanyIsSubscribed,
+  CompanyOverview,
+  CompanyOverviewStatistics,
+  CompanyTimeAndSalaryResult,
+  CompanyWorkExperienceResult,
+} from 'reducers/companyIndex';
+import {
+  JobTitleInterviewExperienceResult,
+  JobTitleOverview,
+  JobTitleOverviewStatistics,
+  JobTitleTimeAndSalaryResult,
+  JobTitleWorkExperienceResult,
+} from 'reducers/jobTitleIndex';
+import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
 
 export const salaryWorkTimeStatistics: (
   arg0:
     | FetchBox<CompanySalaryWorkTimeStatistics | null>
     | FetchBox<JobTitleSalaryWorkTimeStatistics | null>,
-) => SalaryWorkTimeStatistics | {} = R.pipe(
+) => SalaryWorkTimeStatistics | unknown = R.pipe(
   state => state.data,
   R.when(R.is(Object), R.prop('salary_work_time_statistics')),
   R.defaultTo({}),

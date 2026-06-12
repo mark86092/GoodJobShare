@@ -1,12 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import cn from 'classnames';
-import R from 'ramda';
-import { PageType, generatePageURL } from 'constants/companyJobTitle';
-import ChartWrapper from '../../LandingPage/ChartWrapper';
 import loadable from '@loadable/component';
-import styles from '../../LandingPage/SummarySection.module.css';
+import cn from 'classnames';
+import PropTypes from 'prop-types';
+import R from 'ramda';
+import React from 'react';
+
+import { generatePageURL, PageType } from 'constants/companyJobTitle';
+
 import moduleStyles from './ChartsZone.module.css';
+import ChartWrapper from '../../LandingPage/ChartWrapper';
+import styles from '../../LandingPage/SummarySection.module.css';
 
 const isEmptyOrNull = R.either(R.isEmpty, R.isNil);
 

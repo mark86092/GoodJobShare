@@ -1,31 +1,31 @@
-import createReducer from 'utils/createReducer';
-import FetchBox, { getUnfetched } from 'utils/fetchBox';
 import {
-  SET_INDEX_COUNT,
   SET_INDEX,
-  SET_OVERVIEW,
-  SET_SALARY_WORK_TIME,
+  SET_INDEX_COUNT,
   SET_INTERVIEW_EXPERIENCES,
-  SET_WORK_EXPERIENCES,
-  SET_SALARY_WORK_TIME_STATISTICS,
+  SET_OVERVIEW,
   SET_OVERVIEW_STATISTICS,
+  SET_SALARY_WORK_TIME,
+  SET_SALARY_WORK_TIME_STATISTICS,
+  SET_WORK_EXPERIENCES,
 } from 'actions/jobTitle';
+import { WorkExperience } from 'apis/experience';
+import {
+  InterviewExperienceInOverview,
+  WorkExperienceInOverview,
+} from 'apis/overview';
+import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+import {
+  OvertimeFrequencyCount,
+  SalaryDistributionBin,
+  SalaryWorkTime,
+} from 'apis/salaryWorkTime';
 import {
   JobTitle,
   JobTitleExperiencesPaginationInput,
   JobTitleInterviewExperience,
 } from 'graphql/jobTitle';
-import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
-import {
-  SalaryDistributionBin,
-  OvertimeFrequencyCount,
-  SalaryWorkTime,
-} from 'apis/salaryWorkTime';
-import {
-  InterviewExperienceInOverview,
-  WorkExperienceInOverview,
-} from 'apis/overview';
-import { WorkExperience } from 'apis/experience';
+import createReducer from 'utils/createReducer';
+import FetchBox, { getUnfetched } from 'utils/fetchBox';
 
 // Flattened from QueryJobTitleOverviewData, so a type is defined here
 export type JobTitleOverview = {

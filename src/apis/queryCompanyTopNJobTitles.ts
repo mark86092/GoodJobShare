@@ -1,5 +1,5 @@
-import graphqlClient from 'utils/graphqlClient';
 import { Company } from 'graphql/company';
+import graphqlClient from 'utils/graphqlClient';
 
 export type TopNJobTitles = {
   work: { name: string }[];
