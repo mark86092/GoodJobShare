@@ -1,12 +1,7 @@
 import { AnyAction } from 'redux';
 
-<<<<<<< HEAD
 import { postInterviewExperience as postInterviewExperienceApi } from 'apis/interviewExperiencesApi';
 import queryExperienceCountApi from 'apis/queryExperienceCount';
-=======
-import { queryExperienceCountApi } from 'apis/experiencesApi';
-import { postInterviewExperience as postInterviewExperienceApi } from 'apis/interviewExperiencesApi';
->>>>>>> upstream/master
 import { postWorkExperienceWithRating as postWorkExperienceWithRatingApi } from 'apis/workExperiencesApi';
 import { Thunk } from 'reducers';
 import { tokenSelector } from 'selectors/authSelector';

@@ -1,22 +1,12 @@
-<<<<<<< HEAD:src/actions/jobTitle.ts
 import { AnyAction } from 'redux';
 
 import {
   getJobTitleInterviewExperiences,
   queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
-=======
-import R from 'ramda';
-
-import {
-  getJobTitleInterviewExperiences,
-  getJobTitleTimeAndSalary,
-  getJobTitleTimeAndSalaryStatistics,
->>>>>>> upstream/master:src/actions/jobTitle.js
   queryJobTitlesApi,
 } from 'apis/jobTitle';
 import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
 import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
-<<<<<<< HEAD:src/actions/jobTitle.ts
 import queryJobTitleSalaryWorkTimeStatisticsApi, {
   JobTitleSalaryWorkTimeStatistics,
 } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
@@ -30,9 +20,6 @@ import {
   JobTitleTimeAndSalaryResult,
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
-=======
-import queryJobTitleWorkExperiencesApi from 'apis/queryJobTitleWorkExperiences';
->>>>>>> upstream/master:src/actions/jobTitle.js
 import {
   jobTitleIndexesBoxSelectorAtPage,
   jobTitleInterviewExperiencesBoxSelectorByName,
@@ -42,13 +29,8 @@ import {
   jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
   jobTitleWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-<<<<<<< HEAD:src/actions/jobTitle.ts
 import { GraphqlError } from 'utils/errors';
 import FetchBox, {
-=======
-import { isGraphqlError } from 'utils/errors';
-import {
->>>>>>> upstream/master:src/actions/jobTitle.js
   getError,
   getFetched,
   isFetched,
@@ -223,7 +205,6 @@ const setSalaryWorkTime = (
   box,
 });
 
-<<<<<<< HEAD:src/actions/jobTitle.ts
 export const queryJobTitleSalaryWorkTime = (
   {
     jobTitle,
@@ -235,18 +216,6 @@ export const queryJobTitleSalaryWorkTime = (
     companyName?: string | null;
     start: number;
     limit: number;
-=======
-export const queryJobTitleTimeAndSalary = (
-  {
-    companyName,
-    jobTitle,
-    start,
-    limit,
-    dataTimeRange,
-    experienceInYearRange,
-    gender,
-    sortBy,
->>>>>>> upstream/master:src/actions/jobTitle.js
   },
   { force = false } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
