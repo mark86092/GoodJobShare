@@ -366,6 +366,15 @@ const setSalaryWorkTimeStatistics = (
   box,
 });
 
+const setCompanyTopNJobTitles = (
+  companyName: string,
+  box: FetchBox<TopNJobTitles | null>,
+): AnyAction => ({
+  type: SET_COMPANY_TOP_N_JOB_TITLES,
+  companyName,
+  box,
+});
+
 export const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
 }: {
@@ -430,15 +439,6 @@ export const queryCompanyEsgSalaryData = ({
     dispatch(setEsgSalaryData(companyName, getError(error)));
   }
 };
-
-const setCompanyTopNJobTitles = (
-  companyName: string,
-  box: FetchBox<TopNJobTitles | null>,
-): AnyAction => ({
-  type: SET_COMPANY_TOP_N_JOB_TITLES,
-  companyName,
-  box,
-});
 
 export const queryCompanyTopNJobTitles = ({
   companyName,
