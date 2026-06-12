@@ -16,11 +16,7 @@ import { GA_ACTION, GA_CATEGORY } from 'constants/gaConstants';
 import { useQuery } from 'hooks/routing';
 import { queryFromQuerySelector } from 'selectors/routing';
 
-<<<<<<< HEAD:src/components/CompanyAndJobTitle/Searchbar.js
-import styles from './Searchbar.module.css';
-=======
 import styles from './SearchBar.module.css';
->>>>>>> upstream/master:src/components/CompanyAndJobTitle/SearchBar.js
 
 export const useSearchTextFromQuery = () => {
   const history = useHistory();
