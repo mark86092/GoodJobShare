@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/hooks/routing/index.js
-import qs from 'qs';
-=======
 import qs, { ParsedQs } from 'qs';
->>>>>>> upstream/master:src/hooks/routing/index.ts
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
