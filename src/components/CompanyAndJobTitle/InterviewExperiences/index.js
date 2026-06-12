@@ -3,17 +3,6 @@ import React, { Fragment } from 'react';
 
 import { Wrapper } from 'common/base';
 import { useCreatePageLinkTo } from 'common/Pagination/Pagination';
-<<<<<<< HEAD
-
-import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
-import PageBoxRenderer from '../PageBoxRenderer';
-import InterviewExperienceHelmet from './Helmet';
-import InterviewExperiencesSection from './InterviewExperiences';
-import Searchbar from '../Searchbar';
-import Sorter from '../Sorter';
-import styles from '../styles.module.css';
-=======
->>>>>>> upstream/master
 
 import CompanyAndJobTitleWrapper from '../CompanyAndJobTitleWrapper';
 import PageBoxRenderer from '../PageBoxRenderer';

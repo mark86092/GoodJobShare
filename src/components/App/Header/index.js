@@ -29,11 +29,7 @@ import styles from './Header.module.css';
 import InboxIcon from './InboxIcon';
 import inboxIconStyles from './InboxIcon.module.css';
 import InboxPopoverContainer from './InboxPopoverContainer';
-<<<<<<< HEAD
-import Searchbar from './Searchbar';
-=======
 import SearchBar from './SearchBar';
->>>>>>> upstream/master
 import SiteMenu from './SiteMenu';
 import Top from './Top';
 import ProgressTop from './Top/ProgressTop';

@@ -1,21 +1,10 @@
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
-<<<<<<< HEAD:src/components/App/Header/Searchbar.js
-import { useHistory } from 'react-router-dom';
-
-import SearchTextInput from 'common/form/TextInput/SearchTextInput';
-import Magnifiner from 'common/icons/Magnifiner';
-import { useQuery } from 'hooks/routing';
-import { queryFromQuerySelector } from 'selectors/routing';
-
-import styles from './Searchbar.module.css';
-=======
 
 import SearchTextInput from 'common/form/TextInput/SearchTextInput';
 import Magnifiner from 'common/icons/Magnifiner';
 import { useSearchQuery } from 'common/SearchBar';
->>>>>>> upstream/master:src/components/App/Header/SearchBar.js
 
 import styles from './SearchBar.module.css';
 
