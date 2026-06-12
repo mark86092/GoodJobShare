@@ -1,25 +1,6 @@
-<<<<<<< HEAD
-import {
-  queryMyPermissionGql,
-  queryMyPublishesGql,
-  queryMyPublishIdsGql,
-} from 'graphql/me';
-import graphqlClient from 'utils/graphqlClient';
-
-export const queryHasSearchPermissionApi = ({ token }) =>
-  graphqlClient({ query: queryMyPermissionGql, token }).then(
-    ({
-      me: {
-        permission: { hasAllPermission },
-      },
-    }) => hasAllPermission,
-  );
-
-=======
 import { queryMyPublishesGql, queryMyPublishIdsGql } from 'graphql/me';
 import graphqlClient from 'utils/graphqlClient';
 
->>>>>>> upstream/master
 export const queryMyPublishIdsApi = ({ token }) =>
   graphqlClient({ query: queryMyPublishIdsGql, token }).then(data => [
     ...data.me.experiences.map(({ id }) => id),
