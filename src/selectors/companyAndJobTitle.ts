@@ -4,6 +4,10 @@ import R from 'ramda';
 import { CompanyInIndex } from 'apis/queryCompanies';
 =======
 import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
+import { CompanyInIndex } from 'apis/queryCompanies';
 >>>>>>> upstream/master
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
@@ -20,7 +24,10 @@ import {
 <<<<<<< HEAD
 =======
   CompanyAspectExperienceResult,
+<<<<<<< HEAD
   CompanyInIndex,
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
   CompanyInterviewExperienceResult,
   CompanyIsSubscribed,

@@ -11,8 +11,8 @@ import {
   getCompanyInterviewExperiences,
   getCompanyTimeAndSalary,
   getCompanyTimeAndSalaryStatistics,
-  queryCompaniesApi,
 } from 'apis/company';
+import queryCompaniesApi from 'apis/queryCompanies';
 import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
 import queryCompanyEsgSalaryDataApi from 'apis/queryCompanyEsgSalaryData';
 >>>>>>> upstream/master:src/actions/company.js

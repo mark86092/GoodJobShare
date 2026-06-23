@@ -117,6 +117,7 @@ export const getCompanyInterviewExperiencesQuery = /* GraphQL */ `
     }
   }
 `;
+<<<<<<< HEAD
 
 export const queryCompaniesHavingDataGql = /* GraphQL */ `
   query($start: Int!, $limit: Int!) {
@@ -128,4 +129,6 @@ export const queryCompaniesHavingDataGql = /* GraphQL */ `
     companiesHavingDataCount
   }
 `;
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
