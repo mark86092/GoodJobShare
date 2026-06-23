@@ -83,12 +83,6 @@ export type CompanyWorkExperienceResult = {
   workExperiencesCount: number;
 };
 
-<<<<<<< HEAD
-export type CompanyIsSubscribed = {
-  isSubscribed: boolean;
-  companyId: string | null;
-};
-=======
 // Flattened from QueryCompanyWorkExperiencesData, so a type is defined here
 export type CompanyAspectExperienceResult = {
   name: string;
@@ -100,9 +94,10 @@ export type CompanyAspectExperienceResult = {
   workExperiencesCount: number;
 };
 
-// TODO: replace with proper CompanyIsSubscribed type
-export type CompanyIsSubscribed = unknown;
->>>>>>> upstream/master
+export type CompanyIsSubscribed = {
+  isSubscribed: boolean;
+  companyId: string | null;
+};
 
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
@@ -129,9 +124,6 @@ type State = {
     string,
     FetchBox<CompanyWorkExperienceResult | null>
   >;
-<<<<<<< HEAD
-  isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed>>;
-=======
   workExperiencesAspectStatisticsByName: Record<
     string,
     FetchBox<AspectStatisticsData | null>
@@ -141,7 +133,6 @@ type State = {
     FetchBox<CompanyAspectExperienceResult | null>
   >;
   isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed | null>>;
->>>>>>> upstream/master
   topNJobTitlesByName: Record<string, FetchBox<TopNJobTitles | null>>;
   esgSalaryData: Record<string, FetchBox<ESGSalaryData | null>>;
 };

@@ -1,34 +1,16 @@
 import R from 'ramda';
 
-<<<<<<< HEAD
-import { CompanyInIndex } from 'apis/queryCompanies';
-=======
 import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 import { CompanyInIndex } from 'apis/queryCompanies';
->>>>>>> upstream/master
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
-<<<<<<< HEAD
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
-=======
-import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
->>>>>>> upstream/master
 import { RootState } from 'reducers';
 import {
-<<<<<<< HEAD
-=======
   CompanyAspectExperienceResult,
-<<<<<<< HEAD
-  CompanyInIndex,
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
   CompanyInterviewExperienceResult,
   CompanyIsSubscribed,
   CompanyOverview,
