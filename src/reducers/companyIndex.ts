@@ -11,7 +11,10 @@ import {
   SET_SALARY_WORK_TIME,
   SET_SALARY_WORK_TIME_STATISTICS,
   SET_WORK_EXPERIENCES,
+  SET_WORK_EXPERIENCES_ASPECT_EXPERIENCES,
+  SET_WORK_EXPERIENCES_ASPECT_STATISTICS,
 } from 'actions/company';
+import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
 import { WorkExperience } from 'apis/experience';
 import {
   InterviewExperienceInOverview,
@@ -28,6 +31,7 @@ import {
   OvertimeFrequencyCount,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
+import { Aspect } from 'constants/companyJobTitle';
 import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
 
@@ -79,10 +83,26 @@ export type CompanyWorkExperienceResult = {
   workExperiencesCount: number;
 };
 
+<<<<<<< HEAD
 export type CompanyIsSubscribed = {
   isSubscribed: boolean;
   companyId: string | null;
 };
+=======
+// Flattened from QueryCompanyWorkExperiencesData, so a type is defined here
+export type CompanyAspectExperienceResult = {
+  name: string;
+  aspect: Aspect;
+  rating: number | null;
+  start: number;
+  limit: number;
+  workExperiences: WorkExperience[];
+  workExperiencesCount: number;
+};
+
+// TODO: replace with proper CompanyIsSubscribed type
+export type CompanyIsSubscribed = unknown;
+>>>>>>> upstream/master
 
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
@@ -109,7 +129,19 @@ type State = {
     string,
     FetchBox<CompanyWorkExperienceResult | null>
   >;
+<<<<<<< HEAD
   isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed>>;
+=======
+  workExperiencesAspectStatisticsByName: Record<
+    string,
+    FetchBox<AspectStatisticsData | null>
+  >;
+  workExperiencesAspectExperiencesByName: Record<
+    string,
+    FetchBox<CompanyAspectExperienceResult | null>
+  >;
+  isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed | null>>;
+>>>>>>> upstream/master
   topNJobTitlesByName: Record<string, FetchBox<TopNJobTitles | null>>;
   esgSalaryData: Record<string, FetchBox<ESGSalaryData | null>>;
 };
@@ -126,6 +158,8 @@ const preloadedState: State = {
   timeAndSalaryStatisticsByName: {},
   interviewExperiencesByName: {},
   workExperiencesByName: {},
+  workExperiencesAspectStatisticsByName: {},
+  workExperiencesAspectExperiencesByName: {},
   isSubscribedByName: {},
   // companyName --> box
   // box.data: null | {all, interview, work, salary}
@@ -263,6 +297,42 @@ const reducer = createReducer(preloadedState, {
       ...state,
       workExperiencesByName: {
         ...state.workExperiencesByName,
+        [companyName]: box,
+      },
+    };
+  },
+  [SET_WORK_EXPERIENCES_ASPECT_STATISTICS]: (
+    state,
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<AspectStatisticsData | null>;
+    },
+  ) => {
+    return {
+      ...state,
+      workExperiencesAspectStatisticsByName: {
+        ...state.workExperiencesAspectStatisticsByName,
+        [companyName]: box,
+      },
+    };
+  },
+  [SET_WORK_EXPERIENCES_ASPECT_EXPERIENCES]: (
+    state,
+    {
+      companyName,
+      box,
+    }: {
+      companyName: string;
+      box: FetchBox<CompanyAspectExperienceResult | null>;
+    },
+  ) => {
+    return {
+      ...state,
+      workExperiencesAspectExperiencesByName: {
+        ...state.workExperiencesAspectExperiencesByName,
         [companyName]: box,
       },
     };

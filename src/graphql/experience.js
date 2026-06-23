@@ -63,6 +63,9 @@ export const workExperiencesPartialGql = ({
   averageSectionRating
   reply_count
   like_count
+  sector
+  gender
+  jobLevel
 `;
 
 export const queryExperienceGql = /* GraphQL */ `
