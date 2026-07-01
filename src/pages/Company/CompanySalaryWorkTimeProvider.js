@@ -30,18 +30,8 @@ import usePermission from 'hooks/usePermission';
 import {
   companyEsgSalaryDataBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
-<<<<<<< HEAD
-<<<<<<< HEAD:src/pages/Company/CompanyTimeAndSalaryProvider.js
-  companyTimeAndSalaryBoxSelectorByName,
-  companyTimeAndSalaryStatisticsBoxSelectorByName,
-=======
-  companySalaryWorkTimeBoxSelectorByName as timeAndSalaryBoxSelectorByName,
-  companySalaryWorkTimeStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
->>>>>>> upstream/master:src/pages/Company/CompanySalaryWorkTimeProvider.js
-=======
   companySalaryWorkTimeBoxSelectorByName,
   companySalaryWorkTimeStatisticsBoxSelectorByName,
->>>>>>> upstream/master
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
 import {
@@ -63,15 +53,9 @@ const useOverviewStatisticsBox = pageName => {
 const useSalaryWorkTimeStatisticsBox = pageName => {
   const selector = useCallback(
     state => {
-<<<<<<< HEAD
-      const company = companyTimeAndSalaryStatisticsBoxSelectorByName(pageName)(
-        state,
-      );
-=======
       const company = companySalaryWorkTimeStatisticsBoxSelectorByName(
         pageName,
       )(state);
->>>>>>> upstream/master
       return salaryWorkTimeStatisticsSelector(company);
     },
     [pageName],
