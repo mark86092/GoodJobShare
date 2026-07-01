@@ -66,13 +66,9 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
 const useSalaryWorkTimeBoxSelector = companyName => {
   return useCallback(
     state => {
-<<<<<<< HEAD
-      const company = companyTimeAndSalaryBoxSelectorByName(companyName)(state);
-=======
       const company = companySalaryWorkTimeBoxSelectorByName(companyName)(
         state,
       );
->>>>>>> upstream/master
       return company;
     },
     [companyName],
@@ -215,65 +211,23 @@ CompanySalaryWorkTimeProvider.fetchData = ({
   const jobTitle = queryFromQuerySelector(query) || undefined;
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
-<<<<<<< HEAD:src/pages/Company/CompanyTimeAndSalaryProvider.js
-=======
   const dataTime = dataTimeFromQuerySelector(query);
   const experience = experienceFromQuerySelector(query);
   const gender = genderFromQuerySelector(query);
   const sortBy = sortByFromQuerySelector(query);
   const dataTimeRange = getDataTimeRange(dataTime);
   const experienceInYearRange = getExperienceInYearRange(experience);
-<<<<<<< HEAD
-  const dispatchOverviewStatistics = dispatch(
-    queryCompanyOverviewStatistics(companyName),
-  );
-  const dispatchTimeAndSalaryStatistics = dispatch(
-    queryCompanySalaryWorkTimeStatistics({
-      companyName,
-    }),
-  );
-  const dispatchTimeAndSalary = dispatch(
-    queryCompanySalaryWorkTime({
-      companyName,
-      jobTitle,
-      start,
-      limit,
-      dataTimeRange,
-      experienceInYearRange,
-      gender: gender || undefined,
-      sortBy: sortBy || undefined,
-    }),
-  );
-  const dispatchRatingStatistics = dispatch(queryRatingStatistics(companyName));
-  const dispatchTopNJobTitles = dispatch(
-    queryCompanyTopNJobTitles({
-      companyName,
-    }),
-  );
-  const dispatchEsgSalaryData = dispatch(
-    queryCompanyEsgSalaryData({
-      companyName,
-    }),
-  );
->>>>>>> upstream/master:src/pages/Company/CompanySalaryWorkTimeProvider.js
   return Promise.all([
-    dispatch(queryCompanyOverviewStatistics(companyName)),
-=======
-  return Promise.all([
->>>>>>> upstream/master
     dispatch(
       queryCompanySalaryWorkTime({
         companyName,
         jobTitle,
         start,
         limit,
-<<<<<<< HEAD
-=======
         dataTimeRange,
         experienceInYearRange,
         gender: gender || undefined,
         sortBy: sortBy || undefined,
->>>>>>> upstream/master
       }),
     ),
     dispatch(
@@ -281,10 +235,7 @@ CompanySalaryWorkTimeProvider.fetchData = ({
         companyName,
       }),
     ),
-<<<<<<< HEAD
-=======
     dispatch(queryCompanyOverviewStatistics(companyName)),
->>>>>>> upstream/master
     dispatch(queryRatingStatistics(companyName)),
     dispatch(
       queryCompanyTopNJobTitles({

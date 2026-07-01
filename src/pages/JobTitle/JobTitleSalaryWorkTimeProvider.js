@@ -25,20 +25,9 @@ import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
 import {
-<<<<<<< HEAD
-  jobTitleOverviewStatisticsBoxSelectorByName as overviewStatisticsBoxSelectorByName,
-<<<<<<< HEAD:src/pages/JobTitle/JobTitleTimeAndSalaryProvider.js
-  jobTitleTimeAndSalaryBoxSelectorByName,
-  jobTitleTimeAndSalaryStatisticsBoxSelectorByName,
-=======
-  jobTitleSalaryWorktimeBoxSelectorByName as timeAndSalaryBoxSelectorByName,
-  jobTitleSalaryWorkTimeStatisticsBoxSelectorByName as timeAndSalaryStatisticsBoxSelectorByName,
->>>>>>> upstream/master:src/pages/JobTitle/JobTitleSalaryWorkTimeProvider.js
-=======
   jobTitleOverviewStatisticsBoxSelectorByName,
   jobTitleSalaryWorktimeBoxSelectorByName,
   jobTitleSalaryWorkTimeStatisticsBoxSelectorByName,
->>>>>>> upstream/master
   salaryWorkTimeStatistics as salaryWorkTimeStatisticsSelector,
 } from 'selectors/companyAndJobTitle';
 import {
@@ -59,11 +48,7 @@ const useOverviewStatisticsBox = pageName => {
 const useSalaryWorkTimeStatistics = pageName => {
   const selector = useCallback(
     state => {
-<<<<<<< HEAD
-      const jobTitle = jobTitleTimeAndSalaryStatisticsBoxSelectorByName(
-=======
       const jobTitle = jobTitleSalaryWorkTimeStatisticsBoxSelectorByName(
->>>>>>> upstream/master
         pageName,
       )(state);
       return salaryWorkTimeStatisticsSelector(jobTitle);
@@ -77,11 +62,7 @@ const useSalaryWorkTimeStatistics = pageName => {
 const useSalaryWorkTimeBoxSelector = pageName => {
   return useCallback(
     state => {
-<<<<<<< HEAD
-      const jobTitle = jobTitleTimeAndSalaryBoxSelectorByName(pageName)(state);
-=======
       const jobTitle = jobTitleSalaryWorktimeBoxSelectorByName(pageName)(state);
->>>>>>> upstream/master
       return jobTitle;
     },
     [pageName],
