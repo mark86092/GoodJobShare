@@ -88,29 +88,6 @@ export const queryExperienceGql = /* GraphQL */ `
   }
 `;
 
-export const queryExperienceLikeGql = /* GraphQL */ `
-  query($id: ID!) {
-    experience(id: $id) {
-      liked
-    }
-  }
-`;
-
-export const queryExperienceRepliesGql = /* GraphQL */ `
-  query($id: ID!) {
-    experience(id: $id) {
-      replies {
-        id
-        content
-        like_count
-        floor
-        created_at
-        liked
-      }
-    }
-  }
-`;
-
 export const createInterviewExperienceWithRating = /* GraphQL */ `
   mutation($input: CreateInterviewExperienceWithRatingInput!) {
     createInterviewExperienceWithRating(input: $input) {
@@ -122,15 +99,18 @@ export const createInterviewExperienceWithRating = /* GraphQL */ `
   }
 `;
 
-export const createWorkExperienceWithRating = `
-mutation CreateWorkExperienceWithRating($input: CreateWorkExperienceWithRatingInput!) {
-  createWorkExperienceWithRating(input: $input) {
-    success
-    experience {
-      id
+export const createWorkExperienceWithRating = /* GraphQL */ `
+  mutation CreateWorkExperienceWithRating(
+    $input: CreateWorkExperienceWithRatingInput!
+  ) {
+    createWorkExperienceWithRating(input: $input) {
+      success
+      experience {
+        id
+      }
     }
   }
-}`;
+`;
 
 export const queryRelatedExperiencesGql = /* GraphQL */ `
   query($id: ID!, $start: Int!, $limit: Int!) {

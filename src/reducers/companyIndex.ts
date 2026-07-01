@@ -22,7 +22,9 @@ import {
 } from 'apis/overview';
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
+import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
+import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   JobAverageSalary,
@@ -51,21 +53,32 @@ export type CompanyOverviewStatistics = {
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
-// TODO: replace with proper CompanySalaryWorkTimeResult type
-export type CompanySalaryWorkTimeResult = unknown;
+export type CompanySalaryWorkTimeResult = {
+  name: string;
+  salaryWorkTimes: SalaryWorkTime[];
+  salaryWorkTimesCount: number;
+  // params
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+};
 
-// TODO: replace with proper CompanySalaryWorkTimeStatistics type
-export type CompanySalaryWorkTimeStatistics = unknown;
-
-// TODO: replace with proper CompanyInterviewExperienceResult type
-export type CompanyInterviewExperienceResult = unknown;
+export type CompanyInterviewExperienceResult = {
+  name: string;
+  jobTitle?: string | null;
+  start: number;
+  limit: number;
+  sortBy?: string;
+  interviewExperiences: CompanyInterviewExperience[];
+  interviewExperiencesCount: number;
+};
 
 export type CompanyWorkExperienceResult = {
   name: string;
-  jobTitle: string | undefined;
+  jobTitle?: string | null;
   start: number;
   limit: number;
-  sortBy: string | undefined;
+  sortBy?: string;
   workExperiences: WorkExperience[];
   workExperiencesCount: number;
 };
@@ -81,8 +94,10 @@ export type CompanyAspectExperienceResult = {
   workExperiencesCount: number;
 };
 
-// TODO: replace with proper CompanyIsSubscribed type
-export type CompanyIsSubscribed = unknown;
+export type CompanyIsSubscribed = {
+  isSubscribed: boolean;
+  companyId: string | null;
+};
 
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
@@ -348,7 +363,7 @@ const reducer = createReducer(preloadedState, {
     {
       companyName,
       box,
-    }: { companyName: string; box: FetchBox<CompanyIsSubscribed | null> },
+    }: { companyName: string; box: FetchBox<CompanyIsSubscribed> },
   ) => {
     return {
       ...state,

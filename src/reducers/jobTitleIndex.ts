@@ -13,16 +13,22 @@ import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
+import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import {
   OvertimeFrequencyCount,
   SalaryDistributionBin,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
+import {
+  JobTitle,
+  JobTitleExperiencesPaginationInput,
+  JobTitleInterviewExperience,
+} from 'graphql/jobTitle';
 import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
 
 // TODO: replace with proper JobTitleInIndex type
-export type JobTitleInIndex = unknown;
+export type JobTitleInIndex = { name: string };
 
 // Flattened from QueryJobTitleOverviewData, so a type is defined here
 export type JobTitleOverview = {
@@ -42,27 +48,30 @@ export type JobTitleOverviewStatistics = {
   overtimeFrequencyCount: OvertimeFrequencyCount | null;
 };
 
-// TODO: replace with proper JobTitleSalaryWorkTimeResult type
-export type JobTitleSalaryWorkTimeResult = unknown;
+export type JobTitleSalaryWorkTimeResult = {
+  name: string;
+  salaryWorkTimes: SalaryWorkTime[];
+  salaryWorkTimesCount: number;
+  // params
+  companyName?: string | null;
+  start: number;
+  limit: number;
+};
 
-// TODO: replace with proper JobTitleSalaryWorkTimeStatistics type
-export type JobTitleSalaryWorkTimeStatistics = unknown;
-
-// TODO: replace with proper JobTitleInterviewExperienceResult type
-export type JobTitleInterviewExperienceResult = unknown;
+export type JobTitleInterviewExperienceResult = {
+  name: string;
+  interviewExperiences: JobTitleInterviewExperience[];
+  interviewExperiencesCount: number;
+} & Omit<JobTitleExperiencesPaginationInput, 'jobTitle'>;
 
 export type JobTitleWorkExperienceResult = {
   name: string;
-  companyName?: string;
-  start: number;
-  limit: number;
-  sortBy?: string;
   workExperiences: WorkExperience[];
   workExperiencesCount: number;
-};
+} & Omit<JobTitleExperiencesPaginationInput, 'jobTitle'>;
 
 type State = {
-  indexesByPage: Record<number, FetchBox<JobTitleInIndex[]>>;
+  indexesByPage: Record<number, FetchBox<JobTitle[]>>;
   indexCountBox: FetchBox<number>;
   overviewByName: Record<string, FetchBox<JobTitleOverview | null>>;
   overviewStatisticsByName: Record<
