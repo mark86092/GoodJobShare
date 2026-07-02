@@ -8,9 +8,6 @@ import {
   QueryInboxResult,
   readInboxMessageGql,
   ReadInboxMessageResult,
-  UserLikeMyExperienceNotification,
-  UserLikeMyReplyNotification,
-  UserReplyMyExperienceNotification,
 } from 'graphql/inbox';
 import graphqlClient from 'utils/graphqlClient';
 
@@ -22,13 +19,13 @@ const typeToName: Record<ExperienceType, string> = {
 };
 
 const mapToInboxMessage = (notification: Notification): InboxMessage | null => {
-  const { __typename, id, createdAt, isRead, ...rest } = notification;
+  const { id, createdAt, isRead } = notification;
 
-  switch (__typename) {
+  switch (notification.__typename) {
     case 'UserReplyMyExperienceNotification': {
       const {
         experience: { id: experienceId, __typename },
-      } = rest as UserReplyMyExperienceNotification;
+      } = notification;
       return {
         id,
         link: `/experiences/${experienceId}`,
@@ -41,7 +38,7 @@ const mapToInboxMessage = (notification: Notification): InboxMessage | null => {
     case 'UserLikeMyExperienceNotification': {
       const {
         experience: { id: experienceId, __typename },
-      } = rest as UserLikeMyExperienceNotification;
+      } = notification;
       return {
         id,
         link: `/experiences/${experienceId}`,
@@ -56,7 +53,7 @@ const mapToInboxMessage = (notification: Notification): InboxMessage | null => {
         reply: {
           experience: { id: experienceId },
         },
-      } = rest as UserLikeMyReplyNotification;
+      } = notification;
       return {
         id,
         link: `/experiences/${experienceId}`,
@@ -67,7 +64,7 @@ const mapToInboxMessage = (notification: Notification): InboxMessage | null => {
     }
 
     default:
-      console.error('Unknown notification type', __typename);
+      console.error('Unknown notification type', notification);
       return null;
   }
 };
