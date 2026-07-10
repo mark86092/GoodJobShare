@@ -1,21 +1,10 @@
 import { AnyAction } from 'redux';
-
-<<<<<<< HEAD:src/actions/company.ts
+import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
+import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
 } from 'apis/queryCompanyEsgSalaryData';
-import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
-=======
-import {
-  getCompanyInterviewExperiences,
-  getCompanyTimeAndSalary,
-  getCompanyTimeAndSalaryStatistics,
-} from 'apis/company';
-import queryCompaniesApi from 'apis/queryCompanies';
-import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
-import queryCompanyEsgSalaryDataApi from 'apis/queryCompanyEsgSalaryData';
->>>>>>> upstream/master:src/actions/company.js
 import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
@@ -634,7 +623,6 @@ export const queryCompanyWorkExperiences = ({
   }
 };
 
-<<<<<<< HEAD:src/actions/company.ts
 const setIsSubscribed = (
   companyName: string,
   box: FetchBox<{
@@ -642,120 +630,6 @@ const setIsSubscribed = (
     companyId: string | null;
   }>,
 ): AnyAction => ({
-=======
-const setWorkExperiencesAspectStatistics = (companyName, box) => ({
-  type: SET_WORK_EXPERIENCES_ASPECT_STATISTICS,
-  companyName,
-  box,
-});
-
-export const queryCompanyWorkExperiencesAspectStatistics = ({
-  companyName,
-}) => async (dispatch, getState) => {
-  const box = companyWorkExperiencesAspectStatisticsBoxSelectorByName(
-    companyName,
-  )(getState());
-
-  if (isFetching(box) || isFetched(box)) {
-    return;
-  }
-
-  dispatch(setWorkExperiencesAspectStatistics(companyName, toFetching(box)));
-
-  try {
-    const data = await queryCompanyAspectRatingStatisticsApi({
-      companyName,
-    });
-    dispatch(setWorkExperiencesAspectStatistics(companyName, getFetched(data)));
-  } catch (error) {
-    dispatch(setWorkExperiencesAspectStatistics(companyName, getError(error)));
-  }
-};
-
-const setWorkExperiencesAspectExperiences = (companyName, box) => ({
-  type: SET_WORK_EXPERIENCES_ASPECT_EXPERIENCES,
-  companyName,
-  box,
-});
-
-export const queryCompanyWorkExperiencesAspectExperiences = ({
-  companyName,
-  aspect,
-  rating,
-  start,
-  limit,
-}) => async (dispatch, getState) => {
-  const box = companyWorkExperiencesAspectExperiencesBoxSelectorByName(
-    companyName,
-  )(getState());
-
-  if (
-    isFetching(box) ||
-    (isFetched(box) &&
-      box.data &&
-      box.data.name === companyName &&
-      box.data.rating === rating &&
-      box.data.start === start &&
-      box.data.limit === limit &&
-      box.data.aspect === aspect)
-  ) {
-    return;
-  }
-
-  dispatch(setWorkExperiencesAspectExperiences(companyName, toFetching(box)));
-
-  try {
-    const data = await queryCompanyWorkExperiencesApi({
-      companyName,
-      start,
-      limit,
-      aspectFilter: {
-        aspect,
-        rating: rating === null ? undefined : rating,
-      },
-    });
-
-    // Not found case
-    if (data === null) {
-      return dispatch(
-        setWorkExperiencesAspectExperiences(companyName, getFetched(data)),
-      );
-    }
-
-    /** @type {import('reducers/companyIndex').CompanyAspectExperienceResult} */
-    const workExperiencesAspectExperiencesData = {
-      name: companyName,
-      aspect,
-      rating,
-      start,
-      limit,
-      workExperiences: data.workExperiencesResult.workExperiences,
-      workExperiencesCount: data.workExperiencesResult.count,
-    };
-
-    dispatch(
-      setWorkExperiencesAspectExperiences(
-        companyName,
-        getFetched(workExperiencesAspectExperiencesData),
-      ),
-    );
-  } catch (error) {
-    dispatch(setWorkExperiencesAspectExperiences(companyName, getError(error)));
-  }
-};
-
-/**
- * @type {(
- *   companyName: string,
- *   box: import('utils/fetchBox').default<import('apis/queryCompanyIsSubscribed').CompanyIsSubscribed>
- * ) => {
- *   type: string;
- *   companyName: string;
- *   box: import('utils/fetchBox').default<import('apis/queryCompanyIsSubscribed').CompanyIsSubscribed>
- * }}
- */
-const setIsSubscribed = (companyName, box) => ({
->>>>>>> upstream/master:src/actions/company.js
   type: SET_IS_SUBSCRIBED,
   companyName,
   box,
