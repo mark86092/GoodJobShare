@@ -3,14 +3,8 @@ import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { CompanyIsSubscribed } from 'apis/queryCompanyIsSubscribed';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
-import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
-<<<<<<< HEAD
-import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
-import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
-=======
 import { OvertimeStats } from 'apis/salaryWorkTime';
->>>>>>> cc889ec0
 import { RootState } from 'reducers';
 import {
   CompanyAspectExperienceResult,
@@ -30,19 +24,6 @@ import {
 } from 'reducers/jobTitleIndex';
 import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
 
-<<<<<<< HEAD
-export const salaryWorkTimeStatistics: (
-  arg0:
-    | FetchBox<CompanySalaryWorkTimeStatistics | null>
-    | FetchBox<JobTitleSalaryWorkTimeStatistics | null>,
-) => SalaryWorkTimeStatistics | unknown = R.pipe(
-  state => state.data,
-  R.when(R.is(Object), R.prop('salary_work_time_statistics')),
-  R.defaultTo({}),
-);
-
-=======
->>>>>>> cc889ec0
 export const companyIndexesBoxSelectorAtPage = (page: number) => (
   state: RootState,
 ): FetchBox<CompanyInIndex[]> =>
