@@ -92,7 +92,6 @@ export const queryJobTitleSalaryWorkTimeGql = /* GraphQL */ `
   ${fragmentSalaryWorkTimeFields}
 `;
 
-<<<<<<< HEAD
 export type JobTitleExperiencesPaginationInput = {
   jobTitle: string;
   companyName?: string | null;
@@ -143,8 +142,6 @@ export const getJobTitleTimeAndSalaryStatisticsQuery = /* GraphQL */ `
   }
 `;
 
-=======
->>>>>>> cc889ec0
 export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
   query(
     $jobTitle: String!
