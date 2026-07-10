@@ -622,15 +622,6 @@ export const queryCompanyWorkExperiences = ({
   }
 };
 
-<<<<<<< HEAD:src/actions/company.ts
-const setIsSubscribed = (
-  companyName: string,
-  box: FetchBox<{
-    isSubscribed: boolean;
-    companyId: string | null;
-  }>,
-): AnyAction => ({
-=======
 const setWorkExperiencesAspectStatistics = (companyName, box) => ({
   type: SET_WORK_EXPERIENCES_ASPECT_STATISTICS,
   companyName,
@@ -732,18 +723,13 @@ export const queryCompanyWorkExperiencesAspectExperiences = ({
   }
 };
 
-/**
- * @type {(
- *   companyName: string,
- *   box: import('utils/fetchBox').default<import('apis/queryCompanyIsSubscribed').CompanyIsSubscribed>
- * ) => {
- *   type: string;
- *   companyName: string;
- *   box: import('utils/fetchBox').default<import('apis/queryCompanyIsSubscribed').CompanyIsSubscribed>
- * }}
- */
-const setIsSubscribed = (companyName, box) => ({
->>>>>>> upstream/master:src/actions/company.js
+const setIsSubscribed = (
+  companyName: string,
+  box: FetchBox<{
+    isSubscribed: boolean;
+    companyId: string | null;
+  }>,
+): AnyAction => ({
   type: SET_IS_SUBSCRIBED,
   companyName,
   box,
