@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import R from 'ramda';
 
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
@@ -16,6 +17,14 @@ export const queryCompanySalaryWorkTimeStatisticsGql = /* GraphQL */ `
   query($companyName: String!) {
     company(name: $companyName) {
       name
+=======
+import { OvertimeStats } from 'apis/salaryWorkTime';
+import graphqlClient from 'utils/graphqlClient';
+
+const queryCompanySalaryWorkTimeStatisticsGql = /* GraphQL */ `
+  query($companyName: String!) {
+    company(name: $companyName) {
+>>>>>>> cc889ec0
       salary_work_time_statistics {
         count
         is_overtime_salary_legal_count {
@@ -38,14 +47,31 @@ export const queryCompanySalaryWorkTimeStatisticsGql = /* GraphQL */ `
   }
 `;
 
+<<<<<<< HEAD
+=======
+type QueryCompanySalaryWorkTimeStatisticsData = {
+  company: { salary_work_time_statistics: OvertimeStats } | null;
+};
+
+>>>>>>> cc889ec0
 const queryCompanySalaryWorkTimeStatistics = ({
   companyName,
 }: {
   companyName: string;
+<<<<<<< HEAD
 }): Promise<CompanySalaryWorkTimeStatistics | null> =>
   graphqlClient<QueryCompanySalaryWorkTimeStatisticsData>({
     query: queryCompanySalaryWorkTimeStatisticsGql,
     variables: { companyName },
   }).then(R.prop('company'));
+=======
+}): Promise<OvertimeStats | null> =>
+  graphqlClient<QueryCompanySalaryWorkTimeStatisticsData>({
+    query: queryCompanySalaryWorkTimeStatisticsGql,
+    variables: { companyName },
+  }).then(data =>
+    data.company ? data.company.salary_work_time_statistics : null,
+  );
+>>>>>>> cc889ec0
 
 export default queryCompanySalaryWorkTimeStatistics;

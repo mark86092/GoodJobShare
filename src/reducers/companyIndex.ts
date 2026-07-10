@@ -33,6 +33,7 @@ import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   JobAverageSalary,
   OvertimeFrequencyCount,
+  OvertimeStats,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
 import { Aspect } from 'constants/companyJobTitle';
@@ -67,6 +68,7 @@ export type CompanySalaryWorkTimeResult = {
   limit: number;
 };
 
+<<<<<<< HEAD
 export type CompanyInterviewExperienceResult = {
   name: string;
   jobTitle?: string | null;
@@ -76,6 +78,10 @@ export type CompanyInterviewExperienceResult = {
   interviewExperiences: CompanyInterviewExperience[];
   interviewExperiencesCount: number;
 };
+=======
+// TODO: replace with proper CompanyInterviewExperienceResult type
+export type CompanyInterviewExperienceResult = unknown;
+>>>>>>> cc889ec0
 
 export type CompanyWorkExperienceResult = {
   name: string;
@@ -119,10 +125,7 @@ type State = {
     string,
     FetchBox<CompanySalaryWorkTimeResult | null>
   >;
-  timeAndSalaryStatisticsByName: Record<
-    string,
-    FetchBox<CompanySalaryWorkTimeStatistics | null>
-  >;
+  timeAndSalaryStatisticsByName: Record<string, FetchBox<OvertimeStats | null>>;
   interviewExperiencesByName: Record<
     string,
     FetchBox<CompanyInterviewExperienceResult | null>
@@ -252,7 +255,7 @@ const reducer = createReducer(preloadedState, {
       box,
     }: {
       companyName: string;
-      box: FetchBox<CompanySalaryWorkTimeStatistics | null>;
+      box: FetchBox<OvertimeStats | null>;
     },
   ) => {
     return {

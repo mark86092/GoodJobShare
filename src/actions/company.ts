@@ -1,6 +1,16 @@
+<<<<<<< HEAD:src/actions/company.ts
 import { AnyAction } from 'redux';
 import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
+=======
+import R from 'ramda';
+
+import {
+  getCompanyInterviewExperiences,
+  getCompanyTimeAndSalary,
+} from 'apis/company';
+import queryCompaniesApi from 'apis/queryCompanies';
+>>>>>>> cc889ec0:src/actions/company.js
 import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
@@ -8,6 +18,7 @@ import queryCompanyEsgSalaryDataApi, {
 import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
+<<<<<<< HEAD:src/actions/company.ts
 import queryCompanyRatingStatisticsApi, {
   RatingStatistics,
 } from 'apis/queryCompanyRatingStatistics';
@@ -18,6 +29,11 @@ import queryCompanySalaryWorkTimeStatisticsApi, {
 import queryCompanyTopNJobTitlesApi, {
   TopNJobTitles,
 } from 'apis/queryCompanyTopNJobTitles';
+=======
+import queryCompanyRatingStatisticsApi from 'apis/queryCompanyRatingStatistics';
+import queryCompanySalaryWorkTimeStatisticsApi from 'apis/queryCompanySalaryWorkTimeStatistics';
+import queryCompanyTopNJobTitlesApi from 'apis/queryCompanyTopNJobTitles';
+>>>>>>> cc889ec0:src/actions/company.js
 import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
@@ -389,10 +405,7 @@ export const queryCompanySalaryWorkTimeStatistics = ({
   const box = companySalaryWorkTimeStatisticsBoxSelectorByName(companyName)(
     getState(),
   );
-  if (
-    isFetching(box) ||
-    (isFetched(box) && box.data && box.data.name === companyName)
-  ) {
+  if (isFetching(box) || isFetched(box)) {
     return;
   }
 
@@ -402,6 +415,10 @@ export const queryCompanySalaryWorkTimeStatistics = ({
     const data = await queryCompanySalaryWorkTimeStatisticsApi({
       companyName,
     });
+<<<<<<< HEAD:src/actions/company.ts
+=======
+
+>>>>>>> cc889ec0:src/actions/company.js
     dispatch(setSalaryWorkTimeStatistics(companyName, getFetched(data)));
   } catch (error) {
     dispatch(setSalaryWorkTimeStatistics(companyName, getError(error)));
