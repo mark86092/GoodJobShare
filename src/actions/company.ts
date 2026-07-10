@@ -744,6 +744,16 @@ export const queryCompanyWorkExperiencesAspectExperiences = ({
   }
 };
 
+/**
+ * @type {(
+ *   companyName: string,
+ *   box: import('utils/fetchBox').default<import('apis/queryCompanyIsSubscribed').CompanyIsSubscribed>
+ * ) => {
+ *   type: string;
+ *   companyName: string;
+ *   box: import('utils/fetchBox').default<import('apis/queryCompanyIsSubscribed').CompanyIsSubscribed>
+ * }}
+ */
 const setIsSubscribed = (companyName, box) => ({
 >>>>>>> upstream/master:src/actions/company.js
   type: SET_IS_SUBSCRIBED,
@@ -898,6 +908,10 @@ export const queryCompanyIsSubscribed = ({
     const state = getState();
     const token = tokenSelector(state);
     const data = await queryCompanyIsSubscribedApi({ companyName, token });
+<<<<<<< HEAD:src/actions/company.ts
+=======
+
+>>>>>>> refactor/company-is-subscribed-cleanup:src/actions/company.js
     dispatch(setIsSubscribed(companyName, getFetched(data)));
   } catch (error) {
     if (isGraphqlError(error)) {
