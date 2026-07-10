@@ -22,17 +22,9 @@ import {
 } from 'apis/overview';
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
-=======
 import { CompanyIsSubscribed } from 'apis/queryCompanyIsSubscribed';
->>>>>>> refactor/company-is-subscribed-cleanup
-=======
-import { CompanyIsSubscribed } from 'apis/queryCompanyIsSubscribed';
->>>>>>> upstream/master
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
-import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import {
   DataTimeRange,
@@ -66,14 +58,6 @@ export type CompanyOverviewStatistics = {
 
 export type CompanySalaryWorkTimeResult = {
   name: string;
-<<<<<<< HEAD
-  salaryWorkTimes: SalaryWorkTime[];
-  salaryWorkTimesCount: number;
-  // params
-  jobTitle?: string | null;
-  start: number;
-  limit: number;
-=======
   jobTitle: string | undefined;
   start: number;
   limit: number;
@@ -81,13 +65,10 @@ export type CompanySalaryWorkTimeResult = {
   experienceInYearRange: ExperienceInYearRange | undefined;
   gender: string | undefined;
   sortBy: string | undefined;
-  // TODO: replace with SalaryWorkTime[] once getCompanyTimeAndSalary is typed
-  salaryWorkTimes: unknown[];
+  salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
->>>>>>> 68fca42c
 };
 
-<<<<<<< HEAD
 export type CompanyInterviewExperienceResult = {
   name: string;
   jobTitle?: string | null;
@@ -97,10 +78,6 @@ export type CompanyInterviewExperienceResult = {
   interviewExperiences: CompanyInterviewExperience[];
   interviewExperiencesCount: number;
 };
-=======
-// TODO: replace with proper CompanyInterviewExperienceResult type
-export type CompanyInterviewExperienceResult = unknown;
->>>>>>> cc889ec0
 
 export type CompanyWorkExperienceResult = {
   name: string;
@@ -123,17 +100,6 @@ export type CompanyAspectExperienceResult = {
   workExperiencesCount: number;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-export type CompanyIsSubscribed = {
-  isSubscribed: boolean;
-  companyId: string | null;
-};
-
-=======
->>>>>>> refactor/company-is-subscribed-cleanup
-=======
->>>>>>> upstream/master
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
   indexCountBox: FetchBox<number>;
