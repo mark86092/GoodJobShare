@@ -15,6 +15,8 @@ import {
 } from 'apis/overview';
 import { JobTitleSalaryWorkTimeStatistics } from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import {
+  DataTimeRange,
+  ExperienceInYearRange,
   OvertimeFrequencyCount,
   OvertimeStats,
   SalaryDistributionBin,
@@ -51,12 +53,25 @@ export type JobTitleOverviewStatistics = {
 
 export type JobTitleSalaryWorkTimeResult = {
   name: string;
+<<<<<<< HEAD
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
   // params
   companyName?: string | null;
   start: number;
   limit: number;
+=======
+  companyName: string | undefined;
+  start: number;
+  limit: number;
+  dataTimeRange: DataTimeRange | undefined;
+  experienceInYearRange: ExperienceInYearRange | undefined;
+  gender: string | undefined;
+  sortBy: string | undefined;
+  // TODO: replace with SalaryWorkTime[] once getJobTitleTimeAndSalary is typed
+  salaryWorkTimes: unknown[];
+  salaryWorkTimesCount: number;
+>>>>>>> 68fca42c
 };
 
 <<<<<<< HEAD
