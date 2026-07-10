@@ -12,7 +12,9 @@ const useSearchQuery = (): [
 ] => {
   const history = useHistory();
   const query = useQuery();
-  const [searchText, setSearchText] = useState(queryFromQuerySelector(query));
+  const [searchText, setSearchText] = useState(
+    queryFromQuerySelector(query) || '',
+  );
 
   const gotoSearchResult = useCallback(
     (text: string) =>

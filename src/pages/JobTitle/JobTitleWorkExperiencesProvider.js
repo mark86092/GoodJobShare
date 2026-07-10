@@ -93,7 +93,7 @@ JobTitleWorkExperiencesProvider.fetchData = ({
   const query = querySelector(props);
   const page = pageFromQuerySelector(query);
   const sortBy = sortByFromQuerySelector(query);
-  const companyName = queryFromQuerySelector(query) || undefined;
+  const companyName = queryFromQuerySelector(query);
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
   return dispatch(
