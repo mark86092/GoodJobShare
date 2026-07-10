@@ -23,10 +23,14 @@ import {
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 =======
 import { CompanyIsSubscribed } from 'apis/queryCompanyIsSubscribed';
 >>>>>>> refactor/company-is-subscribed-cleanup
+=======
+import { CompanyIsSubscribed } from 'apis/queryCompanyIsSubscribed';
+>>>>>>> upstream/master
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { CompanySalaryWorkTimeStatistics } from 'apis/queryCompanySalaryWorkTimeStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
@@ -105,6 +109,7 @@ export type CompanyAspectExperienceResult = {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type CompanyIsSubscribed = {
   isSubscribed: boolean;
   companyId: string | null;
@@ -112,6 +117,8 @@ export type CompanyIsSubscribed = {
 
 =======
 >>>>>>> refactor/company-is-subscribed-cleanup
+=======
+>>>>>>> upstream/master
 type State = {
   indexesByPage: Record<number, FetchBox<CompanyInIndex[]>>;
   indexCountBox: FetchBox<number>;
