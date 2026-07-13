@@ -1,14 +1,41 @@
-import R from 'ramda';
+import { AnyAction } from 'redux';
 
 import {
   getJobTitleInterviewExperiences,
+<<<<<<< HEAD:src/actions/jobTitle.ts
+<<<<<<< HEAD:src/actions/jobTitle.ts
+  queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
+=======
+  getJobTitleTimeAndSalary,
+>>>>>>> cc889ec0:src/actions/jobTitle.js
+=======
+>>>>>>> upstream/master:src/actions/jobTitle.js
   queryJobTitlesApi,
 } from 'apis/jobTitle';
 import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
 import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
+<<<<<<< HEAD:src/actions/jobTitle.ts
+<<<<<<< HEAD:src/actions/jobTitle.ts
+import queryJobTitleSalaryWorkTimeStatisticsApi, {
+  JobTitleSalaryWorkTimeStatistics,
+} from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+=======
+import queryJobTitleSalaryWorkTimeStatisticsApi from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+>>>>>>> cc889ec0:src/actions/jobTitle.js
+=======
 import queryJobTitleSalaryWorkTimeApi from 'apis/queryJobTitleSalaryWorkTime';
 import queryJobTitleSalaryWorkTimeStatisticsApi from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+>>>>>>> upstream/master:src/actions/jobTitle.js
 import queryJobTitleWorkExperiencesApi from 'apis/queryJobTitleWorkExperiences';
+import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
+import { Thunk } from 'reducers';
+import {
+  JobTitleInterviewExperienceResult,
+  JobTitleOverview,
+  JobTitleOverviewStatistics,
+  JobTitleSalaryWorkTimeResult,
+  JobTitleWorkExperienceResult,
+} from 'reducers/jobTitleIndex';
 import {
   jobTitleIndexesBoxSelectorAtPage,
   jobTitleInterviewExperiencesBoxSelectorByName,
@@ -19,7 +46,7 @@ import {
   jobTitleWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import { isGraphqlError } from 'utils/errors';
-import {
+import FetchBox, {
   getError,
   getFetched,
   isFetched,
@@ -40,21 +67,24 @@ export const SET_WORK_EXPERIENCES = '@@JOB_TITLE/SET_WORK_EXPERIENCES';
 export const SET_INDEX = '@@JOB_TITLE/SET_INDEX';
 export const SET_INDEX_COUNT = '@@JOB_TITLE/SET_INDEX_COUNT';
 
-const setIndex = (page, box) => ({
+const setIndex = (page: number, box: FetchBox<JobTitle[]>): AnyAction => ({
   type: SET_INDEX,
   page,
   box,
 });
 
-const setIndexCount = box => ({
+const setIndexCount = (box: FetchBox<number>): AnyAction => ({
   type: SET_INDEX_COUNT,
   box,
 });
 
-export const fetchJobTitles = ({ page, pageSize }) => async (
-  dispatch,
-  getState,
-) => {
+export const fetchJobTitles = ({
+  page,
+  pageSize,
+}: {
+  page: number;
+  pageSize: number;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = jobTitleIndexesBoxSelectorAtPage(page)(getState());
   if (isFetching(box) || isFetched(box)) {
     return;
@@ -82,26 +112,19 @@ const SALARY_WORK_TIMES_LIMIT = 5;
 const WORK_EXPERIENCES_LIMIT = 3;
 const INTERVIEW_EXPERIENCES_LIMIT = 3;
 
-/**
- * @type {(
- *   jobTitle: string,
- *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverview | null>
- * ) => {
- *   type: string;
- *   jobTitle: string;
- *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverview | null>
- * }}
- */
-const setOverview = (jobTitle, box) => ({
+const setOverview = (
+  jobTitle: string,
+  box: FetchBox<JobTitleOverview | null>,
+): AnyAction => ({
   type: SET_OVERVIEW,
   jobTitle,
   box,
 });
 
 export const queryJobTitleOverview = (
-  jobTitle,
-  { force = false } = {},
-) => async (dispatch, getState) => {
+  jobTitle: string,
+  { force = false }: { force?: boolean } = {},
+): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = jobTitleOverviewBoxSelectorByName(jobTitle)(getState());
   if (!force && (isFetching(box) || isFetched(box))) {
     return;
@@ -142,26 +165,18 @@ export const queryJobTitleOverview = (
   }
 };
 
-/**
- * @type {(
- *   jobTitle: string,
- *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverviewStatistics | null>
- * ) => {
- *   type: string;
- *   jobTitle: string;
- *   box: import('utils/fetchBox').default<import('reducers/jobTitleIndex').JobTitleOverviewStatistics | null>
- * }}
- */
-const setOverviewStatistics = (jobTitle, box) => ({
+const setOverviewStatistics = (
+  jobTitle: string,
+  box: FetchBox<JobTitleOverviewStatistics | null>,
+): AnyAction => ({
   type: SET_OVERVIEW_STATISTICS,
   jobTitle,
   box,
 });
 
-export const queryJobTitleOverviewStatistics = jobTitle => async (
-  dispatch,
-  getState,
-) => {
+export const queryJobTitleOverviewStatistics = (
+  jobTitle: string,
+): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = jobTitleOverviewStatisticsBoxSelectorByName(jobTitle)(getState());
   if (isFetching(box) || isFetched(box)) {
     return;
@@ -179,13 +194,13 @@ export const queryJobTitleOverviewStatistics = jobTitle => async (
       return dispatch(setOverviewStatistics(jobTitle, getFetched(data)));
     }
 
+    // TODO: don't process default value
     const model = {
-      name: data.name,
       salaryDistribution: data.salary_distribution.bins || [],
       averageWeekWorkTime:
         data.salary_work_time_statistics.average_week_work_time || 0,
       overtimeFrequencyCount:
-        data.salary_work_time_statistics.overtime_frequency_count || 0,
+        data.salary_work_time_statistics.overtime_frequency_count || null,
     };
 
     dispatch(setOverviewStatistics(jobTitle, getFetched(model)));
@@ -197,7 +212,10 @@ export const queryJobTitleOverviewStatistics = jobTitle => async (
   }
 };
 
-const setSalaryWorkTime = (jobTitle, box) => ({
+const setSalaryWorkTime = (
+  jobTitle: string,
+  box: FetchBox<JobTitleSalaryWorkTimeResult | null>,
+): AnyAction => ({
   type: SET_SALARY_WORK_TIME,
   jobTitle,
   box,
@@ -220,17 +238,18 @@ const setSalaryWorkTime = (jobTitle, box) => ({
  */
 export const queryJobTitleSalaryWorkTime = (
   {
-    companyName,
     jobTitle,
+    companyName,
     start,
     limit,
-    dataTimeRange,
-    experienceInYearRange,
-    gender,
-    sortBy,
+  }: {
+    jobTitle: string;
+    companyName?: string | null;
+    start: number;
+    limit: number;
   },
   { force = false } = {},
-) => async (dispatch, getState) => {
+): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = jobTitleSalaryWorktimeBoxSelectorByName(jobTitle)(getState());
   if (
     !force &&
@@ -287,16 +306,20 @@ export const queryJobTitleSalaryWorkTime = (
   }
 };
 
-const setSalaryWorkTimeStatistics = (jobTitle, box) => ({
+const setSalaryWorkTimeStatistics = (
+  jobTitle: string,
+  box: FetchBox<JobTitleSalaryWorkTimeStatistics | null>,
+): AnyAction => ({
   type: SET_SALARY_WORK_TIME_STATISTICS,
   jobTitle,
   box,
 });
 
-export const queryJobTitleSalaryWorkTimeStatistics = ({ jobTitle }) => async (
-  dispatch,
-  getState,
-) => {
+export const queryJobTitleSalaryWorkTimeStatistics = ({
+  jobTitle,
+}: {
+  jobTitle: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = jobTitleSalaryWorkTimeStatisticsBoxSelectorByName(jobTitle)(
     getState(),
   );
@@ -310,14 +333,23 @@ export const queryJobTitleSalaryWorkTimeStatistics = ({ jobTitle }) => async (
     const data = await queryJobTitleSalaryWorkTimeStatisticsApi({
       jobTitle,
     });
+<<<<<<< HEAD:src/actions/jobTitle.ts
+=======
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
+>>>>>>> cc889ec0:src/actions/jobTitle.js
+=======
+>>>>>>> upstream/master:src/actions/jobTitle.js
     dispatch(setSalaryWorkTimeStatistics(jobTitle, getFetched(data)));
   } catch (error) {
     dispatch(setSalaryWorkTimeStatistics(jobTitle, getError(error)));
   }
 };
 
-const setInterviewExperiences = (jobTitle, box) => ({
+const setInterviewExperiences = (
+  jobTitle: string,
+  box: FetchBox<JobTitleInterviewExperienceResult | null>,
+): AnyAction => ({
   type: SET_INTERVIEW_EXPERIENCES,
   jobTitle,
   box,
@@ -329,7 +361,10 @@ export const queryJobTitleInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}) => async (dispatch, getState) => {
+}: JobTitleExperiencesPaginationInput): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
   const box = jobTitleInterviewExperiencesBoxSelectorByName(jobTitle)(
     getState(),
   );
@@ -378,6 +413,7 @@ export const queryJobTitleInterviewExperiences = ({
 
     // Update state.experiences which is the source of truth for all experiences
     data.interviewExperiencesResult.interviewExperiences.forEach(e => {
+      // @ts-ignore
       dispatch(setExperience(e.id, getFetched(e)));
     });
   } catch (error) {
@@ -385,7 +421,10 @@ export const queryJobTitleInterviewExperiences = ({
   }
 };
 
-const setWorkExperiences = (jobTitle, box) => ({
+const setWorkExperiences = (
+  jobTitle: string,
+  box: FetchBox<JobTitleWorkExperienceResult | null>,
+): AnyAction => ({
   type: SET_WORK_EXPERIENCES,
   jobTitle,
   box,
@@ -397,7 +436,10 @@ export const queryJobTitleWorkExperiences = ({
   start,
   limit,
   sortBy,
-}) => async (dispatch, getState) => {
+}: JobTitleExperiencesPaginationInput): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
   const box = jobTitleWorkExperiencesBoxSelectorByName(jobTitle)(getState());
   if (
     isFetching(box) ||
@@ -443,6 +485,7 @@ export const queryJobTitleWorkExperiences = ({
 
     // Update state.experiences which is the source of truth for all experiences
     data.workExperiencesResult.workExperiences.forEach(e => {
+      // @ts-ignore
       dispatch(setExperience(e.id, getFetched(e)));
     });
   } catch (error) {

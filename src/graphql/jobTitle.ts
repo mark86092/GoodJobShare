@@ -8,6 +8,10 @@ export interface JobTitle {
   name: string;
 }
 
+export type QueryJobTitlesData = {
+  job_titles: JobTitle[];
+};
+
 export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
     job_titles(query: $key, page: 0) {
@@ -41,6 +45,11 @@ export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
     }
   }
 `;
+
+export type QueryJobTitlesHavingDataData = {
+  jobTitlesHavingData: JobTitle[];
+  jobTitlesHavingDataCount: number;
+};
 
 export const queryJobTitlesHavingDataGql = /* GraphQL */ `
   query($start: Int!, $limit: Int!) {
