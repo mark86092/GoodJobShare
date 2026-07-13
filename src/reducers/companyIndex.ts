@@ -58,20 +58,20 @@ export type CompanyOverviewStatistics = {
 
 export type CompanySalaryWorkTimeResult = {
   name: string;
-  jobTitle: string | undefined;
+  jobTitle?: string;
   start: number;
   limit: number;
-  dataTimeRange: DataTimeRange | undefined;
-  experienceInYearRange: ExperienceInYearRange | undefined;
-  gender: string | undefined;
-  sortBy: string | undefined;
+  dataTimeRange?: DataTimeRange;
+  experienceInYearRange?: ExperienceInYearRange;
+  gender?: string;
+  sortBy?: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
 };
 
 export type CompanyInterviewExperienceResult = {
   name: string;
-  jobTitle: string | undefined;
+  jobTitle?: string;
   start: number;
   limit: number;
   sortBy?: string;
@@ -81,7 +81,7 @@ export type CompanyInterviewExperienceResult = {
 
 export type CompanyWorkExperienceResult = {
   name: string;
-  jobTitle?: string | null;
+  jobTitle?: string;
   start: number;
   limit: number;
   sortBy?: string;

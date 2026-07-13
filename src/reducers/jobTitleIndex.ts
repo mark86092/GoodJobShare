@@ -48,13 +48,13 @@ export type JobTitleOverviewStatistics = {
 
 export type JobTitleSalaryWorkTimeResult = {
   name: string;
-  companyName: string | undefined;
+  companyName?: string;
   start: number;
   limit: number;
-  dataTimeRange: DataTimeRange | undefined;
-  experienceInYearRange: ExperienceInYearRange | undefined;
-  gender: string | undefined;
-  sortBy: string | undefined;
+  dataTimeRange?: DataTimeRange;
+  experienceInYearRange?: ExperienceInYearRange;
+  gender?: string;
+  sortBy?: string;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
 };
