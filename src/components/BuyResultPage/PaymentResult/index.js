@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { buyStatus as buyStatusMap } from 'constants/payment';
+import { BuyStatus as buyStatusMap } from 'constants/payment';
 import { fetchBoxPropType } from 'utils/fetchBox';
 
 import Failure from './Failure';
