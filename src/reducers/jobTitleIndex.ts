@@ -21,11 +21,7 @@ import {
   SalaryDistributionBin,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
-import {
-  JobTitle,
-  JobTitleExperiencesPaginationInput,
-  JobTitleInterviewExperience,
-} from 'graphql/jobTitle';
+import { JobTitleInterviewExperience } from 'graphql/jobTitle';
 import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
 
@@ -63,25 +59,28 @@ export type JobTitleSalaryWorkTimeResult = {
   salaryWorkTimesCount: number;
 };
 
-<<<<<<< HEAD
 export type JobTitleInterviewExperienceResult = {
   name: string;
+  companyName?: string;
+  start: number;
+  limit: number;
+  sortBy?: string;
   interviewExperiences: JobTitleInterviewExperience[];
   interviewExperiencesCount: number;
-} & Omit<JobTitleExperiencesPaginationInput, 'jobTitle'>;
-=======
-// TODO: replace with proper JobTitleInterviewExperienceResult type
-export type JobTitleInterviewExperienceResult = unknown;
->>>>>>> upstream/master
+};
 
 export type JobTitleWorkExperienceResult = {
   name: string;
+  companyName?: string;
+  start: number;
+  limit: number;
+  sortBy?: string;
   workExperiences: WorkExperience[];
   workExperiencesCount: number;
-} & Omit<JobTitleExperiencesPaginationInput, 'jobTitle'>;
+};
 
 type State = {
-  indexesByPage: Record<number, FetchBox<JobTitle[]>>;
+  indexesByPage: Record<number, FetchBox<JobTitleInIndex[]>>;
   indexCountBox: FetchBox<number>;
   overviewByName: Record<string, FetchBox<JobTitleOverview | null>>;
   overviewStatisticsByName: Record<

@@ -57,25 +57,6 @@ export type CompanyOverviewStatistics = {
 };
 
 export type CompanySalaryWorkTimeResult = {
-<<<<<<< HEAD
-=======
-  name: string;
-  jobTitle: string | undefined;
-  start: number;
-  limit: number;
-  dataTimeRange: DataTimeRange | undefined;
-  experienceInYearRange: ExperienceInYearRange | undefined;
-  gender: string | undefined;
-  sortBy: string | undefined;
-  salaryWorkTimes: SalaryWorkTime[];
-  salaryWorkTimesCount: number;
-};
-
-// TODO: replace with proper CompanyInterviewExperienceResult type
-export type CompanyInterviewExperienceResult = unknown;
-
-export type CompanyWorkExperienceResult = {
->>>>>>> upstream/master
   name: string;
   jobTitle: string | undefined;
   start: number;
@@ -90,7 +71,7 @@ export type CompanyWorkExperienceResult = {
 
 export type CompanyInterviewExperienceResult = {
   name: string;
-  jobTitle?: string | null;
+  jobTitle: string | undefined;
   start: number;
   limit: number;
   sortBy?: string;
