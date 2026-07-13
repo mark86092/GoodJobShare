@@ -3,14 +3,18 @@ import { AnyAction } from 'redux';
 import {
   getJobTitleInterviewExperiences,
 <<<<<<< HEAD:src/actions/jobTitle.ts
+<<<<<<< HEAD:src/actions/jobTitle.ts
   queryJobTitleSalaryWorkTime as queryJobTitleSalaryWorkTimeApi,
 =======
   getJobTitleTimeAndSalary,
 >>>>>>> cc889ec0:src/actions/jobTitle.js
+=======
+>>>>>>> upstream/master:src/actions/jobTitle.js
   queryJobTitlesApi,
 } from 'apis/jobTitle';
 import queryJobTitleOverviewApi from 'apis/queryJobTitleOverview';
 import queryJobTitleOverviewStatisticsApi from 'apis/queryJobTitleOverviewStatistics';
+<<<<<<< HEAD:src/actions/jobTitle.ts
 <<<<<<< HEAD:src/actions/jobTitle.ts
 import queryJobTitleSalaryWorkTimeStatisticsApi, {
   JobTitleSalaryWorkTimeStatistics,
@@ -18,6 +22,10 @@ import queryJobTitleSalaryWorkTimeStatisticsApi, {
 =======
 import queryJobTitleSalaryWorkTimeStatisticsApi from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 >>>>>>> cc889ec0:src/actions/jobTitle.js
+=======
+import queryJobTitleSalaryWorkTimeApi from 'apis/queryJobTitleSalaryWorkTime';
+import queryJobTitleSalaryWorkTimeStatisticsApi from 'apis/queryJobTitleSalaryWorkTimeStatistics';
+>>>>>>> upstream/master:src/actions/jobTitle.js
 import queryJobTitleWorkExperiencesApi from 'apis/queryJobTitleWorkExperiences';
 import { JobTitle, JobTitleExperiencesPaginationInput } from 'graphql/jobTitle';
 import { Thunk } from 'reducers';
@@ -328,7 +336,10 @@ export const queryJobTitleSalaryWorkTimeStatistics = ({
 <<<<<<< HEAD:src/actions/jobTitle.ts
 =======
 
+<<<<<<< HEAD:src/actions/jobTitle.ts
 >>>>>>> cc889ec0:src/actions/jobTitle.js
+=======
+>>>>>>> upstream/master:src/actions/jobTitle.js
     dispatch(setSalaryWorkTimeStatistics(jobTitle, getFetched(data)));
   } catch (error) {
     dispatch(setSalaryWorkTimeStatistics(jobTitle, getError(error)));

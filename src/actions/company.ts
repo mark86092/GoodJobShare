@@ -2,6 +2,12 @@ import { AnyAction } from 'redux';
 import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import R from 'ramda';
+<<<<<<< HEAD:src/actions/company.ts
+=======
+
+import { getCompanyInterviewExperiences } from 'apis/company';
+import queryCompaniesApi from 'apis/queryCompanies';
+>>>>>>> upstream/master:src/actions/company.js
 import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
@@ -9,6 +15,7 @@ import queryCompanyEsgSalaryDataApi, {
 import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
+<<<<<<< HEAD:src/actions/company.ts
 import queryCompanyRatingStatisticsApi, {
   RatingStatistics,
 } from 'apis/queryCompanyRatingStatistics';
@@ -19,6 +26,12 @@ import queryCompanySalaryWorkTimeStatisticsApi, {
 import queryCompanyTopNJobTitlesApi, {
   TopNJobTitles,
 } from 'apis/queryCompanyTopNJobTitles';
+=======
+import queryCompanyRatingStatisticsApi from 'apis/queryCompanyRatingStatistics';
+import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
+import queryCompanySalaryWorkTimeStatisticsApi from 'apis/queryCompanySalaryWorkTimeStatistics';
+import queryCompanyTopNJobTitlesApi from 'apis/queryCompanyTopNJobTitles';
+>>>>>>> upstream/master:src/actions/company.js
 import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';

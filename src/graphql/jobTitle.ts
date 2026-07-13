@@ -26,6 +26,7 @@ export const queryJobTitles = /* GraphQL */ `
   }
 `;
 
+<<<<<<< HEAD
 export type QueryJobTitleSalaryWorkTimeData = {
   job_title:
     | (JobTitle & {
@@ -142,6 +143,8 @@ export const getJobTitleTimeAndSalaryStatisticsQuery = /* GraphQL */ `
   }
 `;
 
+=======
+>>>>>>> upstream/master
 export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
   query(
     $jobTitle: String!

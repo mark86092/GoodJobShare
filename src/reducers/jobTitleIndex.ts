@@ -63,11 +63,16 @@ export type JobTitleSalaryWorkTimeResult = {
   salaryWorkTimesCount: number;
 };
 
+<<<<<<< HEAD
 export type JobTitleInterviewExperienceResult = {
   name: string;
   interviewExperiences: JobTitleInterviewExperience[];
   interviewExperiencesCount: number;
 } & Omit<JobTitleExperiencesPaginationInput, 'jobTitle'>;
+=======
+// TODO: replace with proper JobTitleInterviewExperienceResult type
+export type JobTitleInterviewExperienceResult = unknown;
+>>>>>>> upstream/master
 
 export type JobTitleWorkExperienceResult = {
   name: string;
