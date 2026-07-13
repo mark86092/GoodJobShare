@@ -8,25 +8,25 @@ export const paymentRecordToBuyStatus = paymentRecord => {
   const fetchingStatus = paymentRecord.status;
 
   if (fetchingStatus === fetchingStatusMap.FETCHING) {
-    return BuyStatus.inProgress;
+    return BuyStatus.IN_PROGRESS;
   }
 
   if (fetchingStatus === fetchingStatusMap.UNFETCHED) {
-    return BuyStatus.inProgress;
+    return BuyStatus.IN_PROGRESS;
   }
 
   if (isNil(paymentRecordData)) {
-    return BuyStatus.inProgress;
+    return BuyStatus.IN_PROGRESS;
   }
 
   if (fetchingStatus === fetchingStatusMap.ERROR) {
-    return BuyStatus.failed;
+    return BuyStatus.FAILED;
   }
 
   const { status } = paymentRecordData;
 
   if (isNil(status)) {
-    return BuyStatus.failed;
+    return BuyStatus.FAILED;
   }
 
   return recordStatusToBuyStatus[status];

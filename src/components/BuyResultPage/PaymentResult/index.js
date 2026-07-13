@@ -15,14 +15,14 @@ const PaymentResult = ({ paymentRecordBox, paymentRecordId }) => {
   const paymentRecordData = paymentRecordBox.data;
   const fetchingStatus = paymentRecordBox.status;
 
-  if (buyStatus === buyStatusMap.successful) {
+  if (buyStatus === buyStatusMap.SUCCESSFUL) {
     const {
       subscription: { expiredAt },
     } = paymentRecordData;
 
     return <Success expiredAt={new Date(expiredAt)} />;
   }
-  if (buyStatus === buyStatusMap.inProgress) {
+  if (buyStatus === buyStatusMap.IN_PROGRESS) {
     return (
       <InProgress
         paymentRecordId={paymentRecordId}
@@ -43,7 +43,7 @@ PaymentResult.propTypes = {
 
 PaymentResult.defaultProps = {
   publicId: '',
-  buyStatus: buyStatusMap.failed,
+  buyStatus: buyStatusMap.FAILED,
 };
 
 export default PaymentResult;
