@@ -4,7 +4,7 @@ import { pushErrorNotificationAndRollbarAndThrowError } from 'actions/toastNotif
 import facebookLoginApi from 'apis/facebookLogin';
 import googleLoginApi from 'apis/googleLogin';
 import queryMeApi from 'apis/queryMe';
-import AuthStatus from 'constants/authStatus';
+import { AuthStatus } from 'constants/authStatus';
 import {
   ER0001,
   ER0002,
