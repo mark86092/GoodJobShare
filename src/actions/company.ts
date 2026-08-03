@@ -1,46 +1,12 @@
-import { AnyAction } from 'redux';
-import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
-import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import R from 'ramda';
-<<<<<<< HEAD
-<<<<<<< HEAD:src/actions/company.ts
-=======
-
-import { getCompanyInterviewExperiences } from 'apis/company';
-import queryCompaniesApi from 'apis/queryCompanies';
->>>>>>> upstream/master:src/actions/company.js
-=======
 import { AnyAction } from 'redux';
 
 import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
->>>>>>> upstream/master
 import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
 } from 'apis/queryCompanyEsgSalaryData';
-<<<<<<< HEAD
-import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
-import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
-import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
-<<<<<<< HEAD:src/actions/company.ts
-import queryCompanyRatingStatisticsApi, {
-  RatingStatistics,
-} from 'apis/queryCompanyRatingStatistics';
-import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
-import queryCompanySalaryWorkTimeStatisticsApi, {
-  CompanySalaryWorkTimeStatistics,
-} from 'apis/queryCompanySalaryWorkTimeStatistics';
-import queryCompanyTopNJobTitlesApi, {
-  TopNJobTitles,
-} from 'apis/queryCompanyTopNJobTitles';
-=======
-import queryCompanyRatingStatisticsApi from 'apis/queryCompanyRatingStatistics';
-import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
-import queryCompanySalaryWorkTimeStatisticsApi from 'apis/queryCompanySalaryWorkTimeStatistics';
-import queryCompanyTopNJobTitlesApi from 'apis/queryCompanyTopNJobTitles';
->>>>>>> upstream/master:src/actions/company.js
-=======
 import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
 import queryCompanyIsSubscribedApi, {
   CompanyIsSubscribed,
@@ -55,7 +21,6 @@ import queryCompanySalaryWorkTimeStatisticsApi from 'apis/queryCompanySalaryWork
 import queryCompanyTopNJobTitlesApi, {
   TopNJobTitles,
 } from 'apis/queryCompanyTopNJobTitles';
->>>>>>> upstream/master
 import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
 import {
   DataTimeRange,
@@ -64,15 +29,10 @@ import {
 } from 'apis/salaryWorkTime';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
-<<<<<<< HEAD
-import { Thunk } from 'reducers';
-import {
-=======
 import { Aspect } from 'constants/companyJobTitle';
 import { Thunk } from 'reducers';
 import {
   CompanyAspectExperienceResult,
->>>>>>> upstream/master
   CompanyInterviewExperienceResult,
   CompanyOverview,
   CompanyOverviewStatistics,
@@ -194,6 +154,12 @@ export const queryRatingStatistics = (companyName: string): Thunk => async (
     const data = await queryCompanyRatingStatisticsApi({
       companyName,
     });
+
+    // Not found case
+    if (data == null) {
+      return dispatch(setRatingStatistcs(companyName, getFetched(data)));
+    }
+
     dispatch(setRatingStatistcs(companyName, getFetched(data)));
   } catch (error) {
     if (isGraphqlError(error)) {
@@ -218,11 +184,7 @@ const setOverview = (
 
 export const queryCompanyOverview = (
   companyName: string,
-<<<<<<< HEAD
-  { force = false } = {},
-=======
   { force = false }: { force?: boolean } = {},
->>>>>>> upstream/master
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyOverviewBoxSelectorByName(companyName)(getState());
   if (!force && (isFetching(box) || isFetched(box))) {
@@ -295,12 +257,7 @@ export const queryCompanyOverviewStatistics = (
       return dispatch(setOverviewStatistics(companyName, getFetched(data)));
     }
 
-<<<<<<< HEAD
-    // TODO: don't process default value
-    const model = {
-=======
     const model: CompanyOverviewStatistics = {
->>>>>>> upstream/master
       jobAverageSalaries:
         data.salary_work_time_statistics.job_average_salaries || [],
       averageWeekWorkTime:
@@ -342,15 +299,6 @@ export const queryCompanySalaryWorkTime = (
     jobTitle,
     start,
     limit,
-<<<<<<< HEAD
-  }: {
-    companyName: string;
-    jobTitle?: string | null;
-    start: number;
-    limit: number;
-  },
-  { force = false } = {},
-=======
     dataTimeRange,
     experienceInYearRange,
     gender,
@@ -366,7 +314,6 @@ export const queryCompanySalaryWorkTime = (
     sortBy?: string;
   },
   { force = false }: { force?: boolean } = {},
->>>>>>> upstream/master
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companySalaryWorkTimeBoxSelectorByName(companyName)(getState());
   if (
@@ -426,11 +373,7 @@ export const queryCompanySalaryWorkTime = (
 
 const setSalaryWorkTimeStatistics = (
   companyName: string,
-<<<<<<< HEAD
-  box: FetchBox<CompanySalaryWorkTimeStatistics | null>,
-=======
   box: FetchBox<OvertimeStats | null>,
->>>>>>> upstream/master
 ): AnyAction => ({
   type: SET_SALARY_WORK_TIME_STATISTICS,
   companyName,
@@ -528,13 +471,10 @@ export const queryCompanyTopNJobTitles = ({
     });
 
     // Not found case
-<<<<<<< HEAD
-    if (!data) {
-=======
     if (!data || !data.topNJobTitles) {
->>>>>>> upstream/master
       return dispatch(setCompanyTopNJobTitles(companyName, getFetched(null)));
     }
+
     dispatch(
       setCompanyTopNJobTitles(companyName, getFetched(data.topNJobTitles)),
     );
@@ -551,11 +491,7 @@ export const queryCompanyInterviewExperiences = ({
   sortBy,
 }: {
   companyName: string;
-<<<<<<< HEAD
-  jobTitle?: string | null;
-=======
   jobTitle?: string;
->>>>>>> upstream/master
   start: number;
   limit: number;
   sortBy?: string;
@@ -637,11 +573,7 @@ export const queryCompanyWorkExperiences = ({
   sortBy,
 }: {
   companyName: string;
-<<<<<<< HEAD
-  jobTitle?: string | null;
-=======
   jobTitle?: string;
->>>>>>> upstream/master
   start: number;
   limit: number;
   sortBy?: string;
@@ -813,14 +745,7 @@ export const queryCompanyWorkExperiencesAspectExperiences = ({
 
 const setIsSubscribed = (
   companyName: string,
-<<<<<<< HEAD
-  box: FetchBox<{
-    isSubscribed: boolean;
-    companyId: string | null;
-  }>,
-=======
   box: FetchBox<CompanyIsSubscribed>,
->>>>>>> upstream/master
 ): AnyAction => ({
   type: SET_IS_SUBSCRIBED,
   companyName,

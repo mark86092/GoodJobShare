@@ -3,10 +3,6 @@ export interface JobTitle {
   name: string;
 }
 
-export type QueryJobTitlesData = {
-  job_titles: JobTitle[];
-};
-
 export const queryJobTitles = /* GraphQL */ `
   query($key: String!) {
     job_titles(query: $key, page: 0) {
@@ -14,46 +10,3 @@ export const queryJobTitles = /* GraphQL */ `
     }
   }
 `;
-<<<<<<< HEAD
-
-export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
-  query(
-    $jobTitle: String!
-    $companyName: String
-    $start: Int!
-    $limit: Int!
-    $sortBy: DataResultSortOption
-  ) {
-    job_title(name: $jobTitle) {
-      name
-      interviewExperiencesResult(
-        companyQuery: $companyName
-        start: $start
-        limit: $limit
-        sortBy: $sortBy
-      ) {
-        count
-        interviewExperiences {
-          ${experiencePartialGql}
-          ${interviewExperiencePartialGql()}
-        }
-      }
-    }
-  }
-`;
-
-export type QueryJobTitlesHavingDataData = {
-  jobTitlesHavingData: JobTitle[];
-  jobTitlesHavingDataCount: number;
-};
-
-export const queryJobTitlesHavingDataGql = /* GraphQL */ `
-  query($start: Int!, $limit: Int!) {
-    jobTitlesHavingData(start: $start, limit: $limit) {
-      name
-    }
-    jobTitlesHavingDataCount
-  }
-`;
-=======
->>>>>>> upstream/master

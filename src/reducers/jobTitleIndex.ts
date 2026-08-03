@@ -22,16 +22,9 @@ import {
   SalaryDistributionBin,
   SalaryWorkTime,
 } from 'apis/salaryWorkTime';
-import { JobTitleInterviewExperience } from 'graphql/jobTitle';
 import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
 
-<<<<<<< HEAD
-// TODO: replace with proper JobTitleInIndex type
-export type JobTitleInIndex = { name: string };
-
-=======
->>>>>>> upstream/master
 // Flattened from QueryJobTitleOverviewData, so a type is defined here
 export type JobTitleOverview = {
   name: string;
@@ -52,13 +45,13 @@ export type JobTitleOverviewStatistics = {
 
 export type JobTitleSalaryWorkTimeResult = {
   name: string;
-  companyName?: string;
+  companyName: string | undefined;
   start: number;
   limit: number;
-  dataTimeRange?: DataTimeRange;
-  experienceInYearRange?: ExperienceInYearRange;
-  gender?: string;
-  sortBy?: string;
+  dataTimeRange: DataTimeRange | undefined;
+  experienceInYearRange: ExperienceInYearRange | undefined;
+  gender: string | undefined;
+  sortBy: string | undefined;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
 };
@@ -69,11 +62,7 @@ export type JobTitleInterviewExperienceResult = {
   start: number;
   limit: number;
   sortBy?: string;
-<<<<<<< HEAD
-  interviewExperiences: JobTitleInterviewExperience[];
-=======
   interviewExperiences: InterviewExperience[];
->>>>>>> upstream/master
   interviewExperiencesCount: number;
 };
 

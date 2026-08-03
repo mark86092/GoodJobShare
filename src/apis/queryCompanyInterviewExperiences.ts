@@ -1,9 +1,6 @@
 import R from 'ramda';
 
-<<<<<<< HEAD
-=======
 import { InterviewExperience } from 'apis/experience';
->>>>>>> upstream/master
 import { Company } from 'graphql/company';
 import {
   experiencePartialGql,
@@ -11,23 +8,6 @@ import {
 } from 'graphql/experience';
 import graphqlClient from 'utils/graphqlClient';
 
-<<<<<<< HEAD
-// TODO
-export type CompanyInterviewExperience = unknown;
-
-type QueryCompanyInterviewExperiencesData = {
-  company:
-    | (Company & {
-        interviewExperiencesResult: {
-          count: number;
-          interviewExperiences: CompanyInterviewExperience[];
-        };
-      })
-    | null;
-};
-
-=======
->>>>>>> upstream/master
 const queryCompanyInterviewExperiencesGql = /* GraphQL */ `
   query(
     $companyName: String!
@@ -54,8 +34,6 @@ const queryCompanyInterviewExperiencesGql = /* GraphQL */ `
   }
 `;
 
-<<<<<<< HEAD
-=======
 type QueryCompanyInterviewExperiencesData = {
   company:
     | (Company & {
@@ -67,7 +45,6 @@ type QueryCompanyInterviewExperiencesData = {
     | null;
 };
 
->>>>>>> upstream/master
 const queryCompanyInterviewExperiences = ({
   companyName,
   jobTitle,
@@ -76,11 +53,7 @@ const queryCompanyInterviewExperiences = ({
   sortBy,
 }: {
   companyName: string;
-<<<<<<< HEAD
-  jobTitle?: string | null;
-=======
   jobTitle?: string;
->>>>>>> upstream/master
   start: number;
   limit: number;
   sortBy?: string;

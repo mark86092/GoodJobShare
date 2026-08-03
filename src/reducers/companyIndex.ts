@@ -22,7 +22,6 @@ import {
 } from 'apis/overview';
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
-import { CompanyInterviewExperience } from 'apis/queryCompanyInterviewExperiences';
 import { CompanyIsSubscribed } from 'apis/queryCompanyIsSubscribed';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
@@ -58,41 +57,33 @@ export type CompanyOverviewStatistics = {
 
 export type CompanySalaryWorkTimeResult = {
   name: string;
-  jobTitle?: string;
+  jobTitle: string | undefined;
   start: number;
   limit: number;
-  dataTimeRange?: DataTimeRange;
-  experienceInYearRange?: ExperienceInYearRange;
-  gender?: string;
-  sortBy?: string;
+  dataTimeRange: DataTimeRange | undefined;
+  experienceInYearRange: ExperienceInYearRange | undefined;
+  gender: string | undefined;
+  sortBy: string | undefined;
   salaryWorkTimes: SalaryWorkTime[];
   salaryWorkTimesCount: number;
 };
 
 export type CompanyInterviewExperienceResult = {
   name: string;
-<<<<<<< HEAD
-  jobTitle?: string;
-  start: number;
-  limit: number;
-  sortBy?: string;
-  interviewExperiences: CompanyInterviewExperience[];
-=======
   jobTitle: string | undefined;
   start: number;
   limit: number;
   sortBy: string | undefined;
   interviewExperiences: InterviewExperience[];
->>>>>>> upstream/master
   interviewExperiencesCount: number;
 };
 
 export type CompanyWorkExperienceResult = {
   name: string;
-  jobTitle?: string;
+  jobTitle: string | undefined;
   start: number;
   limit: number;
-  sortBy?: string;
+  sortBy: string | undefined;
   workExperiences: WorkExperience[];
   workExperiencesCount: number;
 };
