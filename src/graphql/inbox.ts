@@ -1,10 +1,6 @@
-// QueryInbox
+import { ExperienceTypename } from 'constants/experienceTypename';
 
-// Enum for Experience __typename
-export enum ExperienceType {
-  INTERVIEW_EXPERIENCE = 'InterviewExperience',
-  WORK_EXPERIENCE = 'WorkExperience',
-}
+// QueryInbox
 
 export const queryInboxGql = /* GraphQL */ `
   query($start: Int, $limit: Int) {
@@ -51,7 +47,7 @@ type BaseNotification = {
 
 export type Experience = {
   id: string;
-  __typename: ExperienceType;
+  __typename: ExperienceTypename;
 };
 
 export type UserReplyMyExperienceNotification = BaseNotification & {

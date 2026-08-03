@@ -1,5 +1,6 @@
 import { identity, ifElse, isNil } from 'ramda';
 
+import { ExperienceTypename } from 'constants/experienceTypename';
 import {
   changeExperienceStatusGql,
   createExperienceLikeGql,
@@ -71,26 +72,33 @@ const resolveSubtitleInSection = ({
   work_subtitle,
 }) => {
   switch (__typename) {
-    case 'InterviewExperience':
+    case ExperienceTypename.INTERVIEW_EXPERIENCE:
       return interview_subtitle;
-    case 'WorkExperience':
+    case ExperienceTypename.WORK_EXPERIENCE:
       return work_subtitle;
     default:
       return null;
   }
 };
 
-const resolveSubtitlesInExperience = ({ __typename, sections, ...rest }) => ({
-  ...rest,
-  sections: sections.map(({ interview_subtitle, work_subtitle, ...rest }) => ({
-    ...rest,
-    subtitle: resolveSubtitleInSection({
-      __typename,
-      interview_subtitle,
-      work_subtitle,
-    }),
-  })),
-});
+// __typename is deliberately kept on the returned experience: it is the
+// discriminant consumers use to tell the Experience implementations apart.
+const resolveSubtitlesInExperience = experience => {
+  const { __typename, sections } = experience;
+  return {
+    ...experience,
+    sections: sections.map(
+      ({ interview_subtitle, work_subtitle, ...rest }) => ({
+        ...rest,
+        subtitle: resolveSubtitleInSection({
+          __typename,
+          interview_subtitle,
+          work_subtitle,
+        }),
+      }),
+    ),
+  };
+};
 
 export const queryExperience = ({ id }) =>
   graphqlClient({

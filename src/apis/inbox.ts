@@ -1,6 +1,6 @@
+import { ExperienceTypename } from 'constants/experienceTypename';
 import { InboxMessage } from 'constants/inbox';
 import {
-  ExperienceType,
   Notification,
   openInboxGql,
   OpenInboxResult,
@@ -16,9 +16,10 @@ import graphqlClient from 'utils/graphqlClient';
 
 // queries
 
-const typeToName: Record<ExperienceType, string> = {
-  InterviewExperience: '面試經驗',
-  WorkExperience: '評價',
+const typeToName: Record<ExperienceTypename, string> = {
+  [ExperienceTypename.WORK_EXPERIENCE]: '評價',
+  [ExperienceTypename.INTERVIEW_EXPERIENCE]: '面試經驗',
+  [ExperienceTypename.INTERN_EXPERIENCE]: '實習心得',
 };
 
 const mapToInboxMessage = (notification: Notification): InboxMessage | null => {
