@@ -8,11 +8,12 @@ import {
   SET_SALARY_WORK_TIME_STATISTICS,
   SET_WORK_EXPERIENCES,
 } from 'actions/jobTitle';
-import { WorkExperience } from 'apis/experience';
+import { InterviewExperience, WorkExperience } from 'apis/experience';
 import {
   InterviewExperienceInOverview,
   WorkExperienceInOverview,
 } from 'apis/overview';
+import { JobTitleInIndex } from 'apis/queryJobTitles';
 import {
   DataTimeRange,
   ExperienceInYearRange,
@@ -25,9 +26,12 @@ import { JobTitleInterviewExperience } from 'graphql/jobTitle';
 import createReducer from 'utils/createReducer';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
 
+<<<<<<< HEAD
 // TODO: replace with proper JobTitleInIndex type
 export type JobTitleInIndex = { name: string };
 
+=======
+>>>>>>> upstream/master
 // Flattened from QueryJobTitleOverviewData, so a type is defined here
 export type JobTitleOverview = {
   name: string;
@@ -65,7 +69,11 @@ export type JobTitleInterviewExperienceResult = {
   start: number;
   limit: number;
   sortBy?: string;
+<<<<<<< HEAD
   interviewExperiences: JobTitleInterviewExperience[];
+=======
+  interviewExperiences: InterviewExperience[];
+>>>>>>> upstream/master
   interviewExperiencesCount: number;
 };
 

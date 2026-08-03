@@ -2,16 +2,24 @@ import { AnyAction } from 'redux';
 import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import R from 'ramda';
+<<<<<<< HEAD
 <<<<<<< HEAD:src/actions/company.ts
 =======
 
 import { getCompanyInterviewExperiences } from 'apis/company';
 import queryCompaniesApi from 'apis/queryCompanies';
 >>>>>>> upstream/master:src/actions/company.js
+=======
+import { AnyAction } from 'redux';
+
+import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
+import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
+>>>>>>> upstream/master
 import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
 import queryCompanyEsgSalaryDataApi, {
   ESGSalaryData,
 } from 'apis/queryCompanyEsgSalaryData';
+<<<<<<< HEAD
 import queryCompanyIsSubscribedApi from 'apis/queryCompanyIsSubscribed';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
@@ -32,11 +40,39 @@ import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
 import queryCompanySalaryWorkTimeStatisticsApi from 'apis/queryCompanySalaryWorkTimeStatistics';
 import queryCompanyTopNJobTitlesApi from 'apis/queryCompanyTopNJobTitles';
 >>>>>>> upstream/master:src/actions/company.js
+=======
+import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
+import queryCompanyIsSubscribedApi, {
+  CompanyIsSubscribed,
+} from 'apis/queryCompanyIsSubscribed';
+import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
+import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
+import queryCompanyRatingStatisticsApi, {
+  RatingStatistics,
+} from 'apis/queryCompanyRatingStatistics';
+import queryCompanySalaryWorkTimeApi from 'apis/queryCompanySalaryWorkTime';
+import queryCompanySalaryWorkTimeStatisticsApi from 'apis/queryCompanySalaryWorkTimeStatistics';
+import queryCompanyTopNJobTitlesApi, {
+  TopNJobTitles,
+} from 'apis/queryCompanyTopNJobTitles';
+>>>>>>> upstream/master
 import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
+import {
+  DataTimeRange,
+  ExperienceInYearRange,
+  OvertimeStats,
+} from 'apis/salaryWorkTime';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
+<<<<<<< HEAD
 import { Thunk } from 'reducers';
 import {
+=======
+import { Aspect } from 'constants/companyJobTitle';
+import { Thunk } from 'reducers';
+import {
+  CompanyAspectExperienceResult,
+>>>>>>> upstream/master
   CompanyInterviewExperienceResult,
   CompanyOverview,
   CompanyOverviewStatistics,
@@ -182,7 +218,11 @@ const setOverview = (
 
 export const queryCompanyOverview = (
   companyName: string,
+<<<<<<< HEAD
   { force = false } = {},
+=======
+  { force = false }: { force?: boolean } = {},
+>>>>>>> upstream/master
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyOverviewBoxSelectorByName(companyName)(getState());
   if (!force && (isFetching(box) || isFetched(box))) {
@@ -204,7 +244,7 @@ export const queryCompanyOverview = (
       return dispatch(setOverview(companyName, getFetched(data)));
     }
 
-    const overviewData = {
+    const overviewData: CompanyOverview = {
       name: data.name,
       salaryWorkTimes: data.salaryWorkTimesResult.salaryWorkTimes,
       salaryWorkTimesCount: data.salaryWorkTimesResult.count,
@@ -255,8 +295,12 @@ export const queryCompanyOverviewStatistics = (
       return dispatch(setOverviewStatistics(companyName, getFetched(data)));
     }
 
+<<<<<<< HEAD
     // TODO: don't process default value
     const model = {
+=======
+    const model: CompanyOverviewStatistics = {
+>>>>>>> upstream/master
       jobAverageSalaries:
         data.salary_work_time_statistics.job_average_salaries || [],
       averageWeekWorkTime:
@@ -292,27 +336,13 @@ const setInterviewExperiences = (
   box,
 });
 
-/**
- * @type {(
- *   params: {
- *     companyName: string;
- *     jobTitle?: string;
- *     start: number;
- *     limit: number;
- *     dataTimeRange?: import('apis/salaryWorkTime').DataTimeRange;
- *     experienceInYearRange?: import('apis/salaryWorkTime').ExperienceInYearRange;
- *     gender?: string;
- *     sortBy?: string;
- *   },
- *   options?: { force?: boolean }
- * ) => (dispatch: any, getState: any) => Promise<void>}
- */
 export const queryCompanySalaryWorkTime = (
   {
     companyName,
     jobTitle,
     start,
     limit,
+<<<<<<< HEAD
   }: {
     companyName: string;
     jobTitle?: string | null;
@@ -320,6 +350,23 @@ export const queryCompanySalaryWorkTime = (
     limit: number;
   },
   { force = false } = {},
+=======
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  }: {
+    companyName: string;
+    jobTitle?: string;
+    start: number;
+    limit: number;
+    dataTimeRange?: DataTimeRange;
+    experienceInYearRange?: ExperienceInYearRange;
+    gender?: string;
+    sortBy?: string;
+  },
+  { force = false }: { force?: boolean } = {},
+>>>>>>> upstream/master
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companySalaryWorkTimeBoxSelectorByName(companyName)(getState());
   if (
@@ -358,7 +405,7 @@ export const queryCompanySalaryWorkTime = (
       return dispatch(setSalaryWorkTime(companyName, getFetched(data)));
     }
 
-    const salaryWorkTimeData = {
+    const salaryWorkTimeData: CompanySalaryWorkTimeResult = {
       name: data.name,
       jobTitle,
       start,
@@ -379,7 +426,11 @@ export const queryCompanySalaryWorkTime = (
 
 const setSalaryWorkTimeStatistics = (
   companyName: string,
+<<<<<<< HEAD
   box: FetchBox<CompanySalaryWorkTimeStatistics | null>,
+=======
+  box: FetchBox<OvertimeStats | null>,
+>>>>>>> upstream/master
 ): AnyAction => ({
   type: SET_SALARY_WORK_TIME_STATISTICS,
   companyName,
@@ -477,7 +528,11 @@ export const queryCompanyTopNJobTitles = ({
     });
 
     // Not found case
+<<<<<<< HEAD
     if (!data) {
+=======
+    if (!data || !data.topNJobTitles) {
+>>>>>>> upstream/master
       return dispatch(setCompanyTopNJobTitles(companyName, getFetched(null)));
     }
     dispatch(
@@ -496,7 +551,11 @@ export const queryCompanyInterviewExperiences = ({
   sortBy,
 }: {
   companyName: string;
+<<<<<<< HEAD
   jobTitle?: string | null;
+=======
+  jobTitle?: string;
+>>>>>>> upstream/master
   start: number;
   limit: number;
   sortBy?: string;
@@ -533,7 +592,7 @@ export const queryCompanyInterviewExperiences = ({
       return dispatch(setInterviewExperiences(companyName, getFetched(data)));
     }
 
-    const interviewExperiencesData = {
+    const interviewExperiencesData: CompanyInterviewExperienceResult = {
       name: data.name,
       jobTitle,
       start,
@@ -578,7 +637,11 @@ export const queryCompanyWorkExperiences = ({
   sortBy,
 }: {
   companyName: string;
+<<<<<<< HEAD
   jobTitle?: string | null;
+=======
+  jobTitle?: string;
+>>>>>>> upstream/master
   start: number;
   limit: number;
   sortBy?: string;
@@ -613,8 +676,7 @@ export const queryCompanyWorkExperiences = ({
       return dispatch(setWorkExperiences(companyName, getFetched(data)));
     }
 
-    /** @type {import('reducers/companyIndex').CompanyWorkExperienceResult} */
-    const workExperiencesData = {
+    const workExperiencesData: CompanyWorkExperienceResult = {
       name: data.name,
       jobTitle,
       start,
@@ -635,7 +697,10 @@ export const queryCompanyWorkExperiences = ({
   }
 };
 
-const setWorkExperiencesAspectStatistics = (companyName, box) => ({
+const setWorkExperiencesAspectStatistics = (
+  companyName: string,
+  box: FetchBox<AspectStatisticsData | null>,
+): AnyAction => ({
   type: SET_WORK_EXPERIENCES_ASPECT_STATISTICS,
   companyName,
   box,
@@ -643,7 +708,9 @@ const setWorkExperiencesAspectStatistics = (companyName, box) => ({
 
 export const queryCompanyWorkExperiencesAspectStatistics = ({
   companyName,
-}) => async (dispatch, getState) => {
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyWorkExperiencesAspectStatisticsBoxSelectorByName(
     companyName,
   )(getState());
@@ -664,7 +731,10 @@ export const queryCompanyWorkExperiencesAspectStatistics = ({
   }
 };
 
-const setWorkExperiencesAspectExperiences = (companyName, box) => ({
+const setWorkExperiencesAspectExperiences = (
+  companyName: string,
+  box: FetchBox<CompanyAspectExperienceResult | null>,
+): AnyAction => ({
   type: SET_WORK_EXPERIENCES_ASPECT_EXPERIENCES,
   companyName,
   box,
@@ -676,7 +746,13 @@ export const queryCompanyWorkExperiencesAspectExperiences = ({
   rating,
   start,
   limit,
-}) => async (dispatch, getState) => {
+}: {
+  companyName: string;
+  aspect: Aspect;
+  rating: number | null;
+  start: number;
+  limit: number;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
   const box = companyWorkExperiencesAspectExperiencesBoxSelectorByName(
     companyName,
   )(getState());
@@ -714,8 +790,7 @@ export const queryCompanyWorkExperiencesAspectExperiences = ({
       );
     }
 
-    /** @type {import('reducers/companyIndex').CompanyAspectExperienceResult} */
-    const workExperiencesAspectExperiencesData = {
+    const workExperiencesAspectExperiencesData: CompanyAspectExperienceResult = {
       name: companyName,
       aspect,
       rating,
@@ -738,10 +813,14 @@ export const queryCompanyWorkExperiencesAspectExperiences = ({
 
 const setIsSubscribed = (
   companyName: string,
+<<<<<<< HEAD
   box: FetchBox<{
     isSubscribed: boolean;
     companyId: string | null;
   }>,
+=======
+  box: FetchBox<CompanyIsSubscribed>,
+>>>>>>> upstream/master
 ): AnyAction => ({
   type: SET_IS_SUBSCRIBED,
   companyName,

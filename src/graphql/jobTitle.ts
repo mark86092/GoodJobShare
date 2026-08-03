@@ -1,8 +1,3 @@
-import {
-  experiencePartialGql,
-  interviewExperiencePartialGql,
-} from './experience';
-
 // TODO: 暫時放在這裡，之後搬回 api/
 export interface JobTitle {
   name: string;
@@ -19,6 +14,7 @@ export const queryJobTitles = /* GraphQL */ `
     }
   }
 `;
+<<<<<<< HEAD
 
 export const getJobTitleInterviewExperiencesQuery = /* GraphQL */ `
   query(
@@ -59,3 +55,5 @@ export const queryJobTitlesHavingDataGql = /* GraphQL */ `
     jobTitlesHavingDataCount
   }
 `;
+=======
+>>>>>>> upstream/master
