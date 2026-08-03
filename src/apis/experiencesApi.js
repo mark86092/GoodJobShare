@@ -70,12 +70,15 @@ const resolveSubtitleInSection = ({
   __typename,
   interview_subtitle,
   work_subtitle,
+  intern_subtitle,
 }) => {
   switch (__typename) {
     case ExperienceTypename.INTERVIEW_EXPERIENCE:
       return interview_subtitle;
     case ExperienceTypename.WORK_EXPERIENCE:
       return work_subtitle;
+    case ExperienceTypename.INTERN_EXPERIENCE:
+      return intern_subtitle;
     default:
       return null;
   }
@@ -83,17 +86,23 @@ const resolveSubtitleInSection = ({
 
 // __typename is deliberately kept on the returned experience: it is the
 // discriminant consumers use to tell the Experience implementations apart.
+//
+// `sections` is not on the Experience interface — it only arrives through the
+// per-implementation inline fragments. Default it so that an implementation we
+// have not written a fragment for yet degrades to an empty list instead of
+// throwing during SSR.
 const resolveSubtitlesInExperience = experience => {
-  const { __typename, sections } = experience;
+  const { __typename, sections = [] } = experience;
   return {
     ...experience,
     sections: sections.map(
-      ({ interview_subtitle, work_subtitle, ...rest }) => ({
+      ({ interview_subtitle, work_subtitle, intern_subtitle, ...rest }) => ({
         ...rest,
         subtitle: resolveSubtitleInSection({
           __typename,
           interview_subtitle,
           work_subtitle,
+          intern_subtitle,
         }),
       }),
     ),

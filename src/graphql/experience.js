@@ -69,6 +69,21 @@ export const workExperiencesPartialGql = ({
   jobLevel
 `;
 
+// InternExperience's sections are plain `Section`, so unlike the other two
+// implementations they carry no `aspect` / `rating`, and there is no
+// averageSectionRating. `starting_year` is intern-only.
+export const internExperiencePartialGql = ({
+  sectionTitleKey = 'subtitle',
+} = {}) => /* GraphQL */ `
+  sections {
+    ${sectionTitleKey}: subtitle
+    content
+  }
+  starting_year
+  reply_count
+  like_count
+`;
+
 export const queryExperienceGql = /* GraphQL */ `
   query($id: ID!) {
     experience(id: $id) {
@@ -82,6 +97,10 @@ export const queryExperienceGql = /* GraphQL */ `
 
       ... on WorkExperience {
         ${workExperiencesPartialGql({ sectionTitleKey: 'work_subtitle' })}
+      }
+
+      ... on InternExperience {
+        ${internExperiencePartialGql({ sectionTitleKey: 'intern_subtitle' })}
       }
     }
   }
@@ -171,6 +190,14 @@ export const queryRelatedExperiencesGql = /* GraphQL */ `
           week_work_time
           recommend_to_others
           averageSectionRating
+        }
+
+        ... on InternExperience {
+          sections {
+            intern_subtitle: subtitle
+            content
+          }
+          starting_year
         }
       }
     }
