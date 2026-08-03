@@ -1,5 +1,6 @@
 export const experiencePartialGql = /* GraphQL */ `
   id
+  __typename
   type
   originalCompanyName
   reportCount
@@ -72,8 +73,6 @@ export const queryExperienceGql = /* GraphQL */ `
   query($id: ID!) {
     experience(id: $id) {
       ${experiencePartialGql}
-
-      __typename
 
       ... on InterviewExperience {
         ${interviewExperiencePartialGql({
