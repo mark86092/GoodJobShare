@@ -3,18 +3,13 @@ import React from 'react';
 
 import { SalaryWorkTime } from 'apis/salaryWorkTime';
 import { BasicPermissionSimpleBlock } from 'common/PermissionBlock';
+import { TableRow } from 'common/table/Table';
 import { useShareLink } from 'hooks/experiments';
 
 import styles from './injectHideContentBlock.module.css';
 
-// Table 產出的 <tr>，children 是各欄的 <td>。這裡就地改寫那個陣列，
-// 因此把它標成可變的 element 陣列
-type Row = React.ReactElement<{
-  children: React.ReactElement<{ className?: string }>[];
-}>;
-
 type InjectHideContentBlockArgs = {
-  rows: Row[];
+  rows: TableRow[];
   data: SalaryWorkTime[];
   fromCol: number;
   toCol: number;

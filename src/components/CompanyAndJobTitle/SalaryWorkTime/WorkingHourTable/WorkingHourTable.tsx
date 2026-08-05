@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { SalaryWorkTime } from 'apis/salaryWorkTime';
 import ReportBadgeImpl from 'common/button/ReportBadge';
 import { InfoButton } from 'common/Modal';
-import TableImpl from 'common/table/Table';
+import Table, { TableRow } from 'common/table/Table';
 import ReportZone from 'components/ExperienceDetail/ReportZone';
 import { REPORT_TYPE } from 'components/ExperienceDetail/ReportZone/ReportForm/constants';
 import { PageType } from 'constants/companyJobTitle';
@@ -26,38 +26,13 @@ import { InfoSalaryModal, InfoTimeModal } from './InfoModal';
 import injectHideContentBlock from './injectHideContentBlock';
 import styles from './WorkingHourTable.module.css';
 
-// ReportBadge 與 Table 都還是 JS，TS 會把它們解構到的每個參數都當成必填。
-// 比照 common/FormBuilder 的 OptionPill 用 cast 收斂成實際會用到的那幾個
+// ReportBadge 還是 JS，TS 會把它解構到的每個參數都當成必填，用 cast 收斂
 const ReportBadge = (ReportBadgeImpl as unknown) as React.FC<{
   reportCount?: number;
 }>;
 
-type ColumnComponentProps = React.PropsWithChildren<{
-  title?: string;
-  className?: string;
-  alignRight?: boolean;
-}>;
-
-type TableComponentProps = React.PropsWithChildren<{
-  className?: string;
-  // 每一列的形狀由 Column 的 dataField / dataFormatter 決定，Table 本身不看
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any[];
-  primaryKey: string;
-  postProcessRows?: (rows: TableRow[], data: Row[]) => TableRow[];
-}>;
-
-const Table = (TableImpl as unknown) as React.FC<TableComponentProps> & {
-  Column: React.FC<ColumnComponentProps>;
-};
-
 // 每一列額外掛上 onCloseReport，供「回報」欄的 formatter 取用
 type Row = SalaryWorkTime & { onCloseReport: () => void };
-
-// Table 產出的 <tr>，injectHideContentBlock 會就地改寫它的 children
-type TableRow = React.ReactElement<{
-  children: React.ReactElement<{ className?: string }>[];
-}>;
 
 // 四個 modal 開關由 WorkingHourTable 持有，一律傳給每個欄位的 Children，
 // 各自取自己要的那兩個
