@@ -1,13 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { SalaryWorkTime } from 'apis/salaryWorkTime';
 import { formatSalaryAmount, formatSalaryType } from 'common/formatter';
 import { generatePageURL, PageType } from 'constants/companyJobTitle';
-import { employmentTypeTranslation } from 'constants/employmentType';
+import {
+  EmploymentType,
+  employmentTypeTranslation,
+} from 'constants/employmentType';
 
 import styles from './formatter.module.css';
 
-export const getNameAsCompanyName = (o, row) => (
+export const getNameAsCompanyName = (
+  o: SalaryWorkTime['company'],
+  row: SalaryWorkTime,
+): React.ReactElement => (
   <Link
     to={generatePageURL({
       pageType: PageType.COMPANY,
@@ -19,7 +26,10 @@ export const getNameAsCompanyName = (o, row) => (
   </Link>
 );
 
-export const getNameAsJobTitle = (o, row) => (
+export const getNameAsJobTitle = (
+  o: SalaryWorkTime['job_title'],
+  row: SalaryWorkTime,
+): React.ReactElement => (
   <Link
     to={generatePageURL({
       pageType: PageType.JOB_TITLE,
@@ -30,10 +40,13 @@ export const getNameAsJobTitle = (o, row) => (
   </Link>
 );
 
-export const getEmploymentType = type =>
+export const getEmploymentType = (type: EmploymentType | null): string =>
   type ? employmentTypeTranslation[type] : '';
 
-export const getWorkingHour = (val, row) => (
+export const getWorkingHour = (
+  val: number | null,
+  row: SalaryWorkTime,
+): React.ReactElement => (
   <div>{`${val === undefined || val === null ? '-' : val} / ${
     row.day_real_work_time === undefined || row.day_real_work_time === null
       ? '-'
@@ -41,7 +54,7 @@ export const getWorkingHour = (val, row) => (
   }`}</div>
 );
 
-export const getYear = val => {
+export const getYear = (val: number | null): string => {
   if (typeof val === 'number') {
     if (!val) return '-';
     return `${Math.round(val)} 年`;
@@ -49,7 +62,7 @@ export const getYear = val => {
   return '-';
 };
 
-const getFrequencyText = item => {
+const getFrequencyText = (item: SalaryWorkTime): string => {
   switch (item.overtime_frequency) {
     case 0:
       return '幾乎不';
@@ -64,7 +77,7 @@ const getFrequencyText = item => {
   }
 };
 
-const getFrequencyStyle = item => {
+const getFrequencyStyle = (item: SalaryWorkTime): string => {
   switch (item.overtime_frequency) {
     case 0:
       return styles.hardly;
@@ -79,7 +92,7 @@ const getFrequencyStyle = item => {
   }
 };
 
-export const getFrequency = item => {
+export const getFrequency = (item: SalaryWorkTime): React.ReactElement => {
   const style = getFrequencyStyle(item);
   const text = getFrequencyText(item);
   return (
@@ -90,7 +103,7 @@ export const getFrequency = item => {
   );
 };
 
-export const getWeekWorkTime = item =>
+export const getWeekWorkTime = (item: SalaryWorkTime): React.ReactNode =>
   item.week_work_time ? (
     <div
       className={styles.bar}
@@ -104,7 +117,7 @@ export const getWeekWorkTime = item =>
     '-'
   );
 
-export const getSalary = item => {
+export const getSalary = (item: SalaryWorkTime): string => {
   if (!item.salary) {
     return '-';
   }
@@ -114,7 +127,7 @@ export const getSalary = item => {
   return `${formatSalaryAmount(amount)} / ${formatSalaryType(type)}`;
 };
 
-export const formatWage = wage => {
+export const formatWage = (wage: number | null): string => {
   if (typeof wage === 'number') {
     if (!wage) return '-';
     return `${Math.round(wage)} 元`;
@@ -122,5 +135,8 @@ export const formatWage = wage => {
   return '';
 };
 
-export const formatDate = ({ year, month }) =>
+export const formatDate = ({
+  year,
+  month,
+}: SalaryWorkTime['data_time']): string =>
   `${year}.${month >= 10 ? '' : 0}${month}`;

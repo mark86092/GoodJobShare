@@ -1,12 +1,35 @@
 import cn from 'classnames';
 import React from 'react';
 
+import { SalaryWorkTime } from 'apis/salaryWorkTime';
 import { BasicPermissionSimpleBlock } from 'common/PermissionBlock';
 import { useShareLink } from 'hooks/experiments';
 
 import styles from './injectHideContentBlock.module.css';
 
-export default ({ rows, data, fromCol, toCol, canViewPublishId }) => {
+// Table 產出的 <tr>，children 是各欄的 <td>。這裡就地改寫那個陣列，
+// 因此把它標成可變的 element 陣列
+type Row = React.ReactElement<{
+  children: React.ReactElement<{ className?: string }>[];
+}>;
+
+type InjectHideContentBlockArgs = {
+  rows: Row[];
+  data: SalaryWorkTime[];
+  fromCol: number;
+  toCol: number;
+  canViewPublishId: (id: string) => boolean;
+};
+
+// 注意：這支在 render 期間被 Table 的 postProcessRows 呼叫，內部又用了
+// useShareLink()。名字不以 use 開頭，但實際上受 hook 規則約束
+export default ({
+  rows,
+  data,
+  fromCol,
+  toCol,
+  canViewPublishId,
+}: InjectHideContentBlockArgs): void => {
   const nHides = toCol - fromCol + 1;
   const shareLink = useShareLink();
 

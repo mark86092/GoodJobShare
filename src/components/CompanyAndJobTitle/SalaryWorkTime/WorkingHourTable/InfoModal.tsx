@@ -1,16 +1,41 @@
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import { P } from 'common/base';
-import Button from 'common/button/Button';
+import ButtonImpl from 'common/button/Button';
 import editorStyles from 'common/Editor.module.css';
 import Question from 'common/icons/Question';
 import Modal from 'common/Modal';
 
 import styles from './InfoModal.module.css';
 
-const InfoModal = ({ isOpen, close, title, children }) => (
+// Button 還是 JS，TS 會把它解構到的每個參數都當成必填。比照
+// common/FormBuilder 的 OptionPill 用 cast 收斂成實際會用到的那幾個
+type ButtonProps = {
+  btnStyle?: string;
+  circleSize?: string;
+  onClick?: () => void;
+  children?: React.ReactNode;
+};
+const Button = ButtonImpl as React.FC<ButtonProps>;
+
+type InfoModalOwnProps = {
+  isOpen: boolean;
+  close: () => void;
+};
+
+type InfoModalProps = React.PropsWithChildren<
+  InfoModalOwnProps & {
+    title: string;
+  }
+>;
+
+const InfoModal: React.FC<InfoModalProps> = ({
+  isOpen,
+  close,
+  title,
+  children,
+}) => (
   <Modal
     isOpen={isOpen}
     hasClose
@@ -53,14 +78,7 @@ const InfoModal = ({ isOpen, close, title, children }) => (
   </Modal>
 );
 
-InfoModal.propTypes = {
-  children: PropTypes.node.isRequired,
-  close: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-};
-
-export const InfoTimeModal = props => (
+export const InfoTimeModal: React.FC<InfoModalOwnProps> = props => (
   <InfoModal title="參考時間" {...props}>
     若分享該筆資料的使用者已離職，則參考時間為
     <strong>離職年、月</strong>。<br />
@@ -69,7 +87,7 @@ export const InfoTimeModal = props => (
   </InfoModal>
 );
 
-export const InfoSalaryModal = props => (
+export const InfoSalaryModal: React.FC<InfoModalOwnProps> = props => (
   <InfoModal title="時薪估計方式" {...props}>
     <ul>
       <li>當薪資種類為「時薪」：無需估算</li>
