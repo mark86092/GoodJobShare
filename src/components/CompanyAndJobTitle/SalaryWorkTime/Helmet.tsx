@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactHelmet from 'react-helmet';
+import { useSelector } from 'react-redux';
 
 import {
   generateTabURL,
@@ -9,6 +10,7 @@ import {
 } from 'constants/companyJobTitle';
 import { SITE_NAME } from 'constants/helmetData';
 import SalaryWorkTimeOgImage from 'images/og/salary-work-time.jpg';
+import { companyTopNJobTitlesBoxSelectorByName } from 'selectors/companyAndJobTitle';
 import { formatCanonicalPath, formatTitle } from 'utils/helmetHelper';
 
 const formatKeyword = (name: string): string =>
@@ -18,13 +20,20 @@ type CompanySalaryWorkTimeHelmetProps = {
   companyName: string;
   page: number;
   totalCount: number;
-  // 只有公司頁會查 top N 職稱，且查回來之前是 undefined
-  topNJobTitles?: { name: string }[];
 };
 
 export const CompanySalaryWorkTimeHelmet: React.FC<
   CompanySalaryWorkTimeHelmetProps
-> = ({ companyName, page, totalCount, topNJobTitles }) => {
+> = ({ companyName, page, totalCount }) => {
+  // top N 職稱由 Provider dispatch、這裡直接讀 store，與 Overview 的
+  // CompanyOverviewHelmet 一致，不必讓它一路當 prop 穿過 SalaryWorkTime
+  const topNJobTitlesBox = useSelector(
+    companyTopNJobTitlesBoxSelectorByName(companyName),
+  );
+  const topNJobTitles = topNJobTitlesBox.data
+    ? topNJobTitlesBox.data.salary
+    : [];
+
   // title
   const title =
     page === 1
@@ -36,9 +45,7 @@ export const CompanySalaryWorkTimeHelmet: React.FC<
   // description
   let description = `目前還沒有${companyName}的薪水、加班狀況資料。分享你的薪水、加班狀況，一起讓職場更透明。`;
   if (totalCount > 0) {
-    const jobTitles = topNJobTitles
-      ? topNJobTitles.map(item => item.name).join('、')
-      : '';
+    const jobTitles = topNJobTitles.map(item => item.name).join('、');
     description = `${companyName}薪水如何？${companyName}的${jobTitles}薪水大概多少？立即查看${totalCount}筆由${companyName}內部員工提供的薪水、加班狀況資料。`;
   }
 

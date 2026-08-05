@@ -44,7 +44,6 @@ type Props = {
   salaryWorkTimeStatisticsBox: FetchBox<OvertimeStats | null>;
   page: number;
   pageSize: number;
-  topNJobTitles?: { name: string }[];
   onCloseReport: () => void;
   esgSalaryDataBox: FetchBox<ESGSalaryData | null>;
 };
@@ -55,7 +54,6 @@ const SalaryWorkTime: React.FC<Props> = ({
   salaryWorkTimeStatisticsBox,
   page,
   pageSize,
-  topNJobTitles,
   onCloseReport,
   esgSalaryDataBox,
 }) => {
@@ -119,7 +117,6 @@ const SalaryWorkTime: React.FC<Props> = ({
                     companyName={pageName}
                     totalCount={totalCount}
                     page={page}
-                    topNJobTitles={topNJobTitles}
                   />
                 ) : pageType === PageType.JOB_TITLE ? (
                   <JobTitleSalaryWorkTimeHelmet
