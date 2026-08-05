@@ -1,16 +1,30 @@
-import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 
+import { SalaryWorkTime } from 'apis/salaryWorkTime';
 import { Section } from 'common/base';
 import Pagination from 'common/Pagination';
 import NotFoundStatus from 'common/routing/NotFound';
+import { PageType, TabType } from 'constants/companyJobTitle';
 import usePermission from 'hooks/usePermission';
 
 import EmptyView from '../EmptyView';
 import ViewLog from './ViewLog';
 import WorkingHourBlock from './WorkingHourBlock';
 
-const SalaryWorkTimeSection = ({
+type SalaryWorkTimeSectionProps = {
+  salaryWorkTimes: SalaryWorkTime[];
+  pageType: PageType;
+  pageName: string;
+  tabType: TabType;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  onCloseReport: () => void;
+  // 轉手給 Pagination，回傳值是 react-router 的 location descriptor
+  createPageLinkTo: (p: number) => object;
+};
+
+const SalaryWorkTimeSection: React.FC<SalaryWorkTimeSectionProps> = ({
   salaryWorkTimes,
   pageType,
   pageName,
@@ -28,7 +42,7 @@ const SalaryWorkTimeSection = ({
 
   return (
     <Section Tag="main" paddingBottom>
-      {(salaryWorkTimes.length > 0 && (
+      {salaryWorkTimes.length > 0 ? (
         <React.Fragment>
           <WorkingHourBlock
             data={salaryWorkTimes}
@@ -42,7 +56,7 @@ const SalaryWorkTimeSection = ({
             createPageLinkTo={createPageLinkTo}
           />
         </React.Fragment>
-      )) || (
+      ) : (
         <NotFoundStatus>
           <EmptyView pageName={pageName} tabType={tabType} />
         </NotFoundStatus>
@@ -54,18 +68,6 @@ const SalaryWorkTimeSection = ({
       />
     </Section>
   );
-};
-
-SalaryWorkTimeSection.propTypes = {
-  createPageLinkTo: PropTypes.func.isRequired,
-  onCloseReport: PropTypes.func.isRequired,
-  page: PropTypes.number,
-  pageName: PropTypes.string,
-  pageSize: PropTypes.number.isRequired,
-  pageType: PropTypes.string,
-  salaryWorkTimes: PropTypes.array,
-  tabType: PropTypes.string,
-  totalCount: PropTypes.number.isRequired,
 };
 
 export default SalaryWorkTimeSection;
