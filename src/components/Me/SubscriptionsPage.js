@@ -50,6 +50,31 @@ const formatStatus = (status, d) => {
   );
 };
 
+const columns = [
+  {
+    className: styles.m,
+    title: '日期',
+    render: d => formatCreatedAt(d.createdAt),
+  },
+  {
+    className: styles.m,
+    title: '訂單編號',
+    render: d => d.paymentRecord && d.paymentRecord.publicId,
+  },
+  { className: styles.l, title: '項目', render: formatTitle },
+  { className: styles.l, title: '有效期間', render: formatDuration },
+  {
+    className: styles.m,
+    title: '金額',
+    render: d => formatAmount(d.paymentRecord && d.paymentRecord.amount),
+  },
+  {
+    className: styles.m,
+    title: '狀態',
+    render: d => formatStatus(d.status, d),
+  },
+];
+
 const Subscriptions = () => {
   const [mySubscriptions, setMySubscriptions] = useState(getUnfetched());
   const token = useToken();
@@ -78,37 +103,12 @@ const Subscriptions = () => {
   const { data } = mySubscriptions;
 
   return (
-    <Table className={styles.subscriptions} data={data} primaryKey="id">
-      <Table.Column
-        className={styles.m}
-        title="日期"
-        dataField="createdAt"
-        dataFormatter={formatCreatedAt}
-      />
-      <Table.Column
-        className={styles.m}
-        title="訂單編號"
-        dataField="paymentRecord.publicId"
-      />
-      <Table.Column className={styles.l} title="項目" dataField={formatTitle} />
-      <Table.Column
-        className={styles.l}
-        title="有效期間"
-        dataField={formatDuration}
-      />
-      <Table.Column
-        className={styles.m}
-        title="金額"
-        dataField="paymentRecord.amount"
-        dataFormatter={formatAmount}
-      />
-      <Table.Column
-        className={styles.m}
-        title="狀態"
-        dataField="status"
-        dataFormatter={formatStatus}
-      />
-    </Table>
+    <Table
+      className={styles.subscriptions}
+      data={data}
+      columns={columns}
+      rowKey={d => d.id}
+    />
   );
 };
 

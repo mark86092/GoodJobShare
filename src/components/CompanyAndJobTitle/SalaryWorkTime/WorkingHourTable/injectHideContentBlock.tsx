@@ -1,77 +1,49 @@
 import cn from 'classnames';
 import React from 'react';
 
-import { SalaryWorkTime } from 'apis/salaryWorkTime';
 import { BasicPermissionSimpleBlock } from 'common/PermissionBlock';
-import { TableRow } from 'common/table/Table';
-import { useShareLink } from 'hooks/experiments';
 
 import styles from './injectHideContentBlock.module.css';
 
 type InjectHideContentBlockArgs = {
-  rows: TableRow[];
-  data: SalaryWorkTime[];
+  cells: React.ReactNode[];
   fromCol: number;
   toCol: number;
-  canViewPublishId: (id: string) => boolean;
+  shareLink: string;
 };
 
-// 注意：這支在 render 期間被 Table 的 postProcessRows 呼叫，內部又用了
-// useShareLink()。名字不以 use 開頭，但實際上受 hook 規則約束
+// 把 [fromCol, toCol] 這段欄位遮起來。手機與桌機的做法不同，兩者同時輸出、
+// 由 CSS 決定顯示哪一種：手機把原本的格子逐一換成鎖住的格子，桌機另外插入
+// 一個橫跨這幾欄的格子
 export default ({
-  rows,
-  data,
+  cells,
   fromCol,
   toCol,
-  canViewPublishId,
-}: InjectHideContentBlockArgs): void => {
+  shareLink,
+}: InjectHideContentBlockArgs): React.ReactNode[] => {
   const nHides = toCol - fromCol + 1;
-  const shareLink = useShareLink();
 
-  // Replace original cells with locked cells
-  // on small screens
-  rows.forEach((row, i) => {
-    const d = data[i];
-    const isMyPublish = canViewPublishId(d.id);
-    if (isMyPublish) return;
-
-    row.props.children.splice(
-      fromCol,
-      nHides,
-      ...row.props.children.slice(fromCol, fromCol + nHides).map(col => {
-        return React.cloneElement(
-          col,
-          {
-            className: cn(col.props.className, styles.cell, styles.mobile),
-          },
-          <BasicPermissionSimpleBlock
-            to={shareLink}
-            rootClassName={styles.hideContentBlock}
-          />,
-        );
-      }),
+  const masked = cells.map((cell, i) => {
+    if (i < fromCol || i > toCol) return cell;
+    const col = cell as React.ReactElement<{ className?: string }>;
+    return React.cloneElement(
+      col,
+      { className: cn(col.props.className, styles.cell, styles.mobile) },
+      <BasicPermissionSimpleBlock
+        to={shareLink}
+        rootClassName={styles.hideContentBlock}
+      />,
     );
   });
 
-  // Add locked cells on regular screens
-  // that spans multiple columns
-  if (rows.length > 0) {
-    for (let i = 0; i < rows.length; i++) {
-      const d = data[i];
-      const isMyPublish = canViewPublishId(d.id);
-      if (isMyPublish) continue;
-
-      const row = rows[i];
-      row.props.children.splice(
-        fromCol,
-        0,
-        <td key="__hideContent" colSpan={nHides} className={styles.cell}>
-          <BasicPermissionSimpleBlock
-            to={shareLink}
-            rootClassName={styles.hideContentBlock}
-          />
-        </td>,
-      );
-    }
-  }
+  return [
+    ...masked.slice(0, fromCol),
+    <td key="__hideContent" colSpan={nHides} className={styles.cell}>
+      <BasicPermissionSimpleBlock
+        to={shareLink}
+        rootClassName={styles.hideContentBlock}
+      />
+    </td>,
+    ...masked.slice(fromCol),
+  ];
 };
