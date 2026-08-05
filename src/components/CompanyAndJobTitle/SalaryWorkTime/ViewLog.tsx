@@ -1,9 +1,15 @@
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 
 import { useViewSalaryWorkTimes } from 'hooks/viewLog';
 
-const ViewLog = ({ pageName, page, contentIds }) => {
+type ViewLogProps = {
+  // pageName 與 page 只當作 effect 的 key，切換公司／職稱或換頁時重送
+  pageName: string;
+  page: number;
+  contentIds: string[];
+};
+
+const ViewLog = ({ pageName, page, contentIds }: ViewLogProps): null => {
   // Send view to backend
   const viewSalaryWorkTimes = useViewSalaryWorkTimes();
   useEffect(() => {
@@ -13,14 +19,6 @@ const ViewLog = ({ pageName, page, contentIds }) => {
   }, [pageName, page, viewSalaryWorkTimes]);
 
   return null;
-};
-
-ViewLog.propTypes = {
-  contentIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  page: PropTypes.number.isRequired,
-
-  // key
-  pageName: PropTypes.string.isRequired,
 };
 
 export default ViewLog;
