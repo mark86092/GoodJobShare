@@ -22,7 +22,7 @@ type CompanySalaryWorkTimeHelmetProps = {
   topNJobTitles?: { name: string }[];
 };
 
-const CompanySalaryWorkTimeHelmet: React.FC<
+export const CompanySalaryWorkTimeHelmet: React.FC<
   CompanySalaryWorkTimeHelmetProps
 > = ({ companyName, page, totalCount, topNJobTitles }) => {
   // title
@@ -72,7 +72,7 @@ type JobTitleSalaryWorkTimeHelmetProps = {
   totalCount: number;
 };
 
-const JobTitleSalaryWorkTimeHelmet: React.FC<
+export const JobTitleSalaryWorkTimeHelmet: React.FC<
   JobTitleSalaryWorkTimeHelmetProps
 > = ({ jobTitle, page, totalCount }) => {
   // title
@@ -109,42 +109,3 @@ const JobTitleSalaryWorkTimeHelmet: React.FC<
     </ReactHelmet>
   );
 };
-
-type HelmetProps = {
-  pageType: PageType;
-  pageName: string;
-  page: number;
-  totalCount: number;
-  topNJobTitles?: { name: string }[];
-};
-
-const Helmet: React.FC<HelmetProps> = ({
-  pageType,
-  pageName,
-  page,
-  totalCount,
-  topNJobTitles,
-}) => {
-  if (pageType === PageType.JOB_TITLE) {
-    return (
-      <JobTitleSalaryWorkTimeHelmet
-        jobTitle={pageName}
-        page={page}
-        totalCount={totalCount}
-      />
-    );
-  }
-  if (pageType === PageType.COMPANY) {
-    return (
-      <CompanySalaryWorkTimeHelmet
-        companyName={pageName}
-        page={page}
-        totalCount={totalCount}
-        topNJobTitles={topNJobTitles}
-      />
-    );
-  }
-  return null;
-};
-
-export default Helmet;

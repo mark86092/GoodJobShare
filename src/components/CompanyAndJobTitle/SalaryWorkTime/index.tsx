@@ -20,7 +20,10 @@ import FetchBox from 'utils/fetchBox';
 import PageBoxRenderer from '../PageBoxRenderer';
 import { usePageContext } from '../PageContextProvider';
 import EsgBlock from './EsgBlock';
-import Helmet from './Helmet';
+import {
+  CompanySalaryWorkTimeHelmet,
+  JobTitleSalaryWorkTimeHelmet,
+} from './Helmet';
 import OvertimeSection from './OvertimeSection';
 import SalaryFilter from './SalaryFilter';
 import SalaryWorkTimeSection from './SalaryWorkTimeSection';
@@ -111,13 +114,20 @@ const SalaryWorkTime: React.FC<Props> = ({
           }): React.ReactNode => {
             return (
               <>
-                <Helmet
-                  pageType={pageType}
-                  pageName={pageName}
-                  totalCount={totalCount}
-                  page={page}
-                  topNJobTitles={topNJobTitles}
-                />
+                {pageType === PageType.COMPANY ? (
+                  <CompanySalaryWorkTimeHelmet
+                    companyName={pageName}
+                    totalCount={totalCount}
+                    page={page}
+                    topNJobTitles={topNJobTitles}
+                  />
+                ) : pageType === PageType.JOB_TITLE ? (
+                  <JobTitleSalaryWorkTimeHelmet
+                    jobTitle={pageName}
+                    totalCount={totalCount}
+                    page={page}
+                  />
+                ) : null}
                 <SalaryWorkTimeSection
                   pageType={pageType}
                   pageName={pageName}
