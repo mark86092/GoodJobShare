@@ -2,22 +2,12 @@ import cn from 'classnames';
 import React from 'react';
 
 import { P } from 'common/base';
-import ButtonImpl from 'common/button/Button';
+import Button from 'common/button/Button';
 import editorStyles from 'common/Editor.module.css';
 import Question from 'common/icons/Question';
 import Modal from 'common/Modal';
 
 import styles from './InfoModal.module.css';
-
-// Button 還是 JS，TS 會把它解構到的每個參數都當成必填。比照
-// common/FormBuilder 的 OptionPill 用 cast 收斂成實際會用到的那幾個
-type ButtonProps = {
-  btnStyle?: string;
-  circleSize?: string;
-  onClick?: () => void;
-  children?: React.ReactNode;
-};
-const Button = ButtonImpl as React.FC<ButtonProps>;
 
 type InfoModalOwnProps = {
   isOpen: boolean;
