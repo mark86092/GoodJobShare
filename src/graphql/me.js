@@ -26,6 +26,7 @@ export const queryMyPublishesGql = /* GraphQL */ `
     me {
       experiences {
         id
+        __typename
         type
         title
         status
