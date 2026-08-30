@@ -1,9 +1,9 @@
 import { ParsedQs } from 'qs';
 
 // query from ?q=xxx
-export const queryFromQuerySelector = (query: ParsedQs): string => {
+export const queryFromQuerySelector = (query: ParsedQs): string | undefined => {
   const keyword = query.q;
-  return typeof keyword === 'string' ? keyword : '';
+  return typeof keyword === 'string' && keyword !== '' ? keyword : undefined;
 };
 
 // page from ?p=xxx

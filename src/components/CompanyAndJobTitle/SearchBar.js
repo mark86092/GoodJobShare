@@ -18,15 +18,17 @@ import { queryFromQuerySelector } from 'selectors/routing';
 
 import styles from './SearchBar.module.css';
 
+// TODO: 將來自 query 的值標準化、並且檢視讀取、設定後會有的變化
 export const useSearchTextFromQuery = () => {
   const history = useHistory();
   const query = useQuery();
   const searchText = queryFromQuerySelector(query);
   const setSearchText = useCallback(
     nextSearchText => {
-      if (searchText === nextSearchText) return;
+      // avoid pushing a history entry when the effective filter hasn't changed
+      if ((searchText || undefined) === (nextSearchText || undefined)) return;
       const { q, p, ...restQuery } = query; // remove page when search text changes
-      const nextQuery = { ...restQuery, q: nextSearchText };
+      const nextQuery = { ...restQuery, q: nextSearchText || undefined };
       const nextUrl = qs.stringify(nextQuery, { addQueryPrefix: true });
       history.push(nextUrl);
     },

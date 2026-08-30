@@ -48,7 +48,7 @@ function getLinkForData(query, data) {
 const SearchPage = () => {
   const dispath = useDispatch();
   const query = useQuery();
-  const keyword = useMemo(() => queryFromQuerySelector(query), [query]);
+  const keyword = useMemo(() => queryFromQuerySelector(query) || '', [query]);
   const page = usePage();
   const box = useSelector(searchByKeywordSelector(keyword));
 
@@ -113,7 +113,7 @@ const SearchPage = () => {
 
 SearchPage.fetchData = ({ store: { dispatch }, ...props }) => {
   const query = querySelector(props);
-  const keyword = queryFromQuerySelector(query);
+  const keyword = queryFromQuerySelector(query) || '';
   return dispatch(queryKeyword({ keyword }));
 };
 
