@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import { P } from 'common/base';
@@ -10,7 +9,23 @@ import Modal from 'common/Modal';
 
 import styles from './InfoModal.module.css';
 
-const InfoModal = ({ isOpen, close, title, children }) => (
+type InfoModalOwnProps = {
+  isOpen: boolean;
+  close: () => void;
+};
+
+type InfoModalProps = React.PropsWithChildren<
+  InfoModalOwnProps & {
+    title: string;
+  }
+>;
+
+const InfoModal: React.FC<InfoModalProps> = ({
+  isOpen,
+  close,
+  title,
+  children,
+}) => (
   <Modal
     isOpen={isOpen}
     hasClose
@@ -53,14 +68,7 @@ const InfoModal = ({ isOpen, close, title, children }) => (
   </Modal>
 );
 
-InfoModal.propTypes = {
-  children: PropTypes.node.isRequired,
-  close: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-};
-
-export const InfoTimeModal = props => (
+export const InfoTimeModal: React.FC<InfoModalOwnProps> = props => (
   <InfoModal title="參考時間" {...props}>
     若分享該筆資料的使用者已離職，則參考時間為
     <strong>離職年、月</strong>。<br />
@@ -69,7 +77,7 @@ export const InfoTimeModal = props => (
   </InfoModal>
 );
 
-export const InfoSalaryModal = props => (
+export const InfoSalaryModal: React.FC<InfoModalOwnProps> = props => (
   <InfoModal title="時薪估計方式" {...props}>
     <ul>
       <li>當薪資種類為「時薪」：無需估算</li>

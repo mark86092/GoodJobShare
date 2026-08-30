@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactHelmet from 'react-helmet';
+import { useSelector } from 'react-redux';
 
 import {
   generateTabURL,
@@ -10,14 +10,30 @@ import {
 } from 'constants/companyJobTitle';
 import { SITE_NAME } from 'constants/helmetData';
 import SalaryWorkTimeOgImage from 'images/og/salary-work-time.jpg';
+import { companyTopNJobTitlesBoxSelectorByName } from 'selectors/companyAndJobTitle';
 import { formatCanonicalPath, formatTitle } from 'utils/helmetHelper';
 
-const CompanySalaryWorkTimeHelmet = ({
-  companyName,
-  page,
-  totalCount,
-  topNJobTitles,
-}) => {
+const formatKeyword = (name: string): string =>
+  `${name}薪水, ${name}薪資, ${name}加班狀況, ${name}工時`;
+
+type CompanySalaryWorkTimeHelmetProps = {
+  companyName: string;
+  page: number;
+  totalCount: number;
+};
+
+export const CompanySalaryWorkTimeHelmet: React.FC<
+  CompanySalaryWorkTimeHelmetProps
+> = ({ companyName, page, totalCount }) => {
+  // top N 職稱由 Provider dispatch、這裡直接讀 store，與 Overview 的
+  // CompanyOverviewHelmet 一致，不必讓它一路當 prop 穿過 SalaryWorkTime
+  const topNJobTitlesBox = useSelector(
+    companyTopNJobTitlesBoxSelectorByName(companyName),
+  );
+  const topNJobTitles = topNJobTitlesBox.data
+    ? topNJobTitlesBox.data.salary
+    : [];
+
   // title
   const title =
     page === 1
@@ -29,9 +45,7 @@ const CompanySalaryWorkTimeHelmet = ({
   // description
   let description = `目前還沒有${companyName}的薪水、加班狀況資料。分享你的薪水、加班狀況，一起讓職場更透明。`;
   if (totalCount > 0) {
-    const jobTitles = topNJobTitles
-      ? topNJobTitles.map(item => item.name).join('、')
-      : '';
+    const jobTitles = topNJobTitles.map(item => item.name).join('、');
     description = `${companyName}薪水如何？${companyName}的${jobTitles}薪水大概多少？立即查看${totalCount}筆由${companyName}內部員工提供的薪水、加班狀況資料。`;
   }
 
@@ -51,10 +65,7 @@ const CompanySalaryWorkTimeHelmet = ({
       <meta name="description" content={description} />
       <meta property="og:title" content={formatTitle(title, SITE_NAME)} />
       <meta property="og:description" content={description} />
-      <meta
-        name="keywords"
-        content={`${companyName}薪水, ${companyName}薪資, ${companyName}加班狀況, ${companyName}工時`}
-      />
+      <meta name="keywords" content={formatKeyword(companyName)} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={SalaryWorkTimeOgImage} />
       <link rel="canonical" href={url} />
@@ -62,18 +73,15 @@ const CompanySalaryWorkTimeHelmet = ({
   );
 };
 
-CompanySalaryWorkTimeHelmet.propTypes = {
-  companyName: PropTypes.string.isRequired,
-  page: PropTypes.number.isRequired,
-  topNJobTitles: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  totalCount: PropTypes.number.isRequired,
+type JobTitleSalaryWorkTimeHelmetProps = {
+  jobTitle: string;
+  page: number;
+  totalCount: number;
 };
 
-const JobTitleSalaryWorkTimeHelmet = ({ jobTitle, page, totalCount }) => {
+export const JobTitleSalaryWorkTimeHelmet: React.FC<
+  JobTitleSalaryWorkTimeHelmetProps
+> = ({ jobTitle, page, totalCount }) => {
   // title
   const title = `${jobTitle} ${
     TAB_TYPE_DETAIL_TRANSLATION[TabType.TIME_AND_SALARY]
@@ -101,47 +109,10 @@ const JobTitleSalaryWorkTimeHelmet = ({ jobTitle, page, totalCount }) => {
       <meta name="description" content={description} />
       <meta property="og:title" content={formatTitle(title, SITE_NAME)} />
       <meta property="og:description" content={description} />
-      <meta
-        name="keywords"
-        content={`${jobTitle}薪水, ${jobTitle}薪資, ${jobTitle}加班狀況, ${jobTitle}工時`}
-      />
+      <meta name="keywords" content={formatKeyword(jobTitle)} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={SalaryWorkTimeOgImage} />
       <link rel="canonical" href={url} />
     </ReactHelmet>
   );
 };
-
-JobTitleSalaryWorkTimeHelmet.propTypes = {
-  jobTitle: PropTypes.string.isRequired,
-  page: PropTypes.number.isRequired,
-  totalCount: PropTypes.number.isRequired,
-};
-
-const Helmet = props => {
-  if (props.pageType === PageType.JOB_TITLE) {
-    return (
-      <JobTitleSalaryWorkTimeHelmet {...props} jobTitle={props.pageName} />
-    );
-  } else if (props.pageType === PageType.COMPANY) {
-    return (
-      <CompanySalaryWorkTimeHelmet {...props} companyName={props.pageName} />
-    );
-  } else {
-    return null;
-  }
-};
-
-Helmet.propTypes = {
-  page: PropTypes.number.isRequired,
-  pageName: PropTypes.string.isRequired,
-  pageType: PropTypes.string.isRequired,
-  topNJobTitles: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  ),
-  totalCount: PropTypes.number.isRequired,
-};
-
-export default Helmet;

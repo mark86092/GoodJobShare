@@ -21,7 +21,10 @@ import SummaryBlock from '../Overview/SummaryBlock';
 import PageBoxRenderer from '../PageBoxRenderer';
 import { usePageContext } from '../PageContextProvider';
 import EsgBlock from './EsgBlock';
-import Helmet from './Helmet';
+import {
+  CompanySalaryWorkTimeHelmet,
+  JobTitleSalaryWorkTimeHelmet,
+} from './Helmet';
 import OvertimeSection from './OvertimeSection';
 import SalaryFilter from './SalaryFilter';
 import SalaryWorkTimeSection from './SalaryWorkTimeSection';
@@ -42,7 +45,6 @@ type Props = {
   salaryWorkTimeStatisticsBox: FetchBox<OvertimeStats | null>;
   page: number;
   pageSize: number;
-  topNJobTitles?: { name: string }[];
   onCloseReport: () => void;
   esgSalaryDataBox: FetchBox<ESGSalaryData | null>;
 };
@@ -53,7 +55,6 @@ const SalaryWorkTime: React.FC<Props> = ({
   salaryWorkTimeStatisticsBox,
   page,
   pageSize,
-  topNJobTitles,
   onCloseReport,
   esgSalaryDataBox,
 }) => {
@@ -117,13 +118,19 @@ const SalaryWorkTime: React.FC<Props> = ({
           }): React.ReactNode => {
             return (
               <>
-                <Helmet
-                  pageType={pageType}
-                  pageName={pageName}
-                  totalCount={totalCount}
-                  page={page}
-                  topNJobTitles={topNJobTitles}
-                />
+                {pageType === PageType.COMPANY ? (
+                  <CompanySalaryWorkTimeHelmet
+                    companyName={pageName}
+                    totalCount={totalCount}
+                    page={page}
+                  />
+                ) : pageType === PageType.JOB_TITLE ? (
+                  <JobTitleSalaryWorkTimeHelmet
+                    jobTitle={pageName}
+                    totalCount={totalCount}
+                    page={page}
+                  />
+                ) : null}
                 <SalaryWorkTimeSection
                   pageType={pageType}
                   pageName={pageName}
