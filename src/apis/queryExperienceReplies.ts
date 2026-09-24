@@ -1,4 +1,3 @@
-import { Reply } from 'apis/reply';
 import graphqlClient from 'utils/graphqlClient';
 
 const queryExperienceRepliesGql = /* GraphQL */ `
@@ -16,14 +15,20 @@ const queryExperienceRepliesGql = /* GraphQL */ `
   }
 `;
 
-// TODO: need check whether experience is not null
-type QueryExperienceRepliesData = {
-  experience: {
-    replies: Reply[];
-  };
+export type Reply = {
+  id: string;
+  content: string;
+  like_count: number;
+  floor: number;
+  created_at: string;
+  liked: boolean;
 };
 
-const queryExperienceReplies = async ({
+type QueryExperienceRepliesData = {
+  experience: { replies: Reply[] } | null;
+};
+
+const queryExperienceReplies = ({
   id,
   token,
 }: {
@@ -34,6 +39,11 @@ const queryExperienceReplies = async ({
     query: queryExperienceRepliesGql,
     variables: { id },
     token,
-  }).then(data => data.experience.replies);
+  }).then(data => {
+    if (data.experience === null) {
+      throw new Error(`Experience ${id} not found`);
+    }
+    return data.experience.replies;
+  });
 
 export default queryExperienceReplies;

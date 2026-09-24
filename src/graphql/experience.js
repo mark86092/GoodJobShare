@@ -68,26 +68,6 @@ export const workExperiencesPartialGql = ({
   jobLevel
 `;
 
-export const queryExperienceGql = /* GraphQL */ `
-  query($id: ID!) {
-    experience(id: $id) {
-      ${experiencePartialGql}
-
-      __typename
-
-      ... on InterviewExperience {
-        ${interviewExperiencePartialGql({
-          sectionTitleKey: 'interview_subtitle',
-        })}
-      }
-
-      ... on WorkExperience {
-        ${workExperiencesPartialGql({ sectionTitleKey: 'work_subtitle' })}
-      }
-    }
-  }
-`;
-
 export const createInterviewExperienceWithRating = /* GraphQL */ `
   mutation($input: CreateInterviewExperienceWithRatingInput!) {
     createInterviewExperienceWithRating(input: $input) {
@@ -99,89 +79,12 @@ export const createInterviewExperienceWithRating = /* GraphQL */ `
   }
 `;
 
-export const createWorkExperienceWithRating = /* GraphQL */ `
-  mutation CreateWorkExperienceWithRating(
-    $input: CreateWorkExperienceWithRatingInput!
-  ) {
-    createWorkExperienceWithRating(input: $input) {
-      success
-      experience {
-        id
-      }
-    }
-  }
-`;
-
-export const queryRelatedExperiencesGql = /* GraphQL */ `
-  query($id: ID!, $start: Int!, $limit: Int!) {
-    experience(id: $id) {
+export const createWorkExperienceWithRating = `
+mutation CreateWorkExperienceWithRating($input: CreateWorkExperienceWithRatingInput!) {
+  createWorkExperienceWithRating(input: $input) {
+    success
+    experience {
       id
-      relatedExperiences(start: $start, limit: $limit) {
-        id
-        type
-        originalCompanyName
-        company {
-          name
-        }
-        job_title {
-          name
-        }
-        created_at
-        salary {
-          type
-          amount
-        }
-
-        __typename
-
-        ... on InterviewExperience {
-          sections {
-            interview_subtitle: subtitle
-            content
-          }
-          averageSectionRating
-        }
-
-        ... on WorkExperience {
-          sections {
-            work_subtitle: subtitle
-            content
-            aspect
-            rating
-          }
-          week_work_time
-          recommend_to_others
-          averageSectionRating
-        }
-      }
     }
   }
-`;
-
-export const createExperienceLikeGql = /* GraphQL */ `
-  mutation($input: CreateExperienceLikeInput!) {
-    createExperienceLike(input: $input) {
-      experienceLike {
-        id
-      }
-    }
-  }
-`;
-
-export const deleteExpereinceLikeGql = /* GraphQL */ `
-  mutation($input: DeleteExperienceLikeInput!) {
-    deleteExperienceLike(input: $input) {
-      deletedExperienceId
-    }
-  }
-`;
-
-export const changeExperienceStatusGql = /* GraphQL */ `
-  mutation($input: ChangeExperienceStatusInput!) {
-    changeExperienceStatus(input: $input) {
-      experience {
-        id
-      }
-    }
-  }
-`;
+}`;
