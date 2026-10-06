@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useState } from 'react';
 import { useLocalStorage } from 'react-use';
 
-import { postUserFeedback } from 'apis/userFeedbackApi';
+import createUserFeedback from 'apis/createUserFeedback';
 import { LS_USER_FEEDBACK_SUBMISSION_TIME_KEY } from 'constants/localStorageKey';
 import { useToken } from 'hooks/auth';
 
@@ -47,7 +47,7 @@ const ExpandedModal = ({ handleToggleModalOpen }) => {
   const handleSubmit = useCallback(async () => {
     const lastSubmissionTime = new Date().getTime();
     setLocalStorageValue(lastSubmissionTime);
-    await postUserFeedback({ ...userFeedback, token });
+    await createUserFeedback({ ...userFeedback, token });
   }, [setLocalStorageValue, token, userFeedback]);
 
   const handleNext = useCallback(() => {
