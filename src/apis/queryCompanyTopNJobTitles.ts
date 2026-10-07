@@ -1,9 +1,16 @@
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import { Company } from 'graphql/company';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanyTopNJobTitlesGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
+const queryCompanyTopNJobTitlesGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
+  query(${companyVariableDef(companyKey)}) {
+    ${companyField(companyKey)} {
       name
       topNJobTitles {
         work {
@@ -44,8 +51,8 @@ const queryCompanyTopNJobTitles = ({
   companyName: string;
 }): Promise<QueryCompanyTopNJobTitlesData['company']> =>
   graphqlClient<QueryCompanyTopNJobTitlesData>({
-    query: queryCompanyTopNJobTitlesGql,
-    variables: { companyName },
+    query: queryCompanyTopNJobTitlesGql(companyName),
+    variables: companyVariables(companyName),
   }).then(data => data.company);
 
 export default queryCompanyTopNJobTitles;

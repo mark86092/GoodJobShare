@@ -1,5 +1,10 @@
 import R from 'ramda';
 
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import { Company } from 'graphql/company';
 import graphqlClient from 'utils/graphqlClient';
 
@@ -8,9 +13,11 @@ import {
   fragmentAspectRatingStatisticsFields,
 } from './aspectRatingStatistics';
 
-const queryCompanyAspectRatingStatisticsGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
+const queryCompanyAspectRatingStatisticsGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
+  query(${companyVariableDef(companyKey)}) {
+    ${companyField(companyKey)} {
       name
       companyAspectRatingStatistics {
         ...aspectRatingStatisticsFields
@@ -34,8 +41,8 @@ const queryCompanyAspectRatingStatistics = ({
   companyName: string;
 }): Promise<QueryCompanyAspectRatingStatisticsData['company']> =>
   graphqlClient<QueryCompanyAspectRatingStatisticsData>({
-    query: queryCompanyAspectRatingStatisticsGql,
-    variables: { companyName },
+    query: queryCompanyAspectRatingStatisticsGql(companyName),
+    variables: companyVariables(companyName),
   }).then(R.prop('company'));
 
 export default queryCompanyAspectRatingStatistics;

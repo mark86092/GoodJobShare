@@ -1,8 +1,15 @@
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanyIsSubscribedGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
+const queryCompanyIsSubscribedGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
+  query(${companyVariableDef(companyKey)}) {
+    ${companyField(companyKey)} {
       id
       isSubscribed
     }
@@ -31,9 +38,9 @@ const queryCompanyIsSubscribed = async ({
   token?: string;
 }): Promise<CompanyIsSubscribed> => {
   const data = await graphqlClient<QueryCompanyIsSubscribedData>({
-    query: queryCompanyIsSubscribedGql,
+    query: queryCompanyIsSubscribedGql(companyName),
     token,
-    variables: { companyName },
+    variables: companyVariables(companyName),
   });
 
   if (!data.company) {

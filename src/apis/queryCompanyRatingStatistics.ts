@@ -1,9 +1,16 @@
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import { Company } from 'graphql/company';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanyRatingStatisticsGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
+const queryCompanyRatingStatisticsGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
+  query(${companyVariableDef(companyKey)}) {
+    ${companyField(companyKey)} {
       name
       companyRatingStatistics {
         averageRating
@@ -40,8 +47,8 @@ const queryCompanyRatingStatistics = ({
   companyName: string;
 }): Promise<RatingStatistics | null> =>
   graphqlClient<QueryCompanyRatingStatisticsData>({
-    query: queryCompanyRatingStatisticsGql,
-    variables: { companyName },
+    query: queryCompanyRatingStatisticsGql(companyName),
+    variables: companyVariables(companyName),
   }).then(data => (data.company ? data.company.companyRatingStatistics : null));
 
 export default queryCompanyRatingStatistics;

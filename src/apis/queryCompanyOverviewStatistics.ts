@@ -1,11 +1,18 @@
 import R from 'ramda';
 
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import { SalaryWorkTimeStatistics } from 'apis/salaryWorkTime';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanyOverviewStatisticsGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
+const queryCompanyOverviewStatisticsGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
+  query(${companyVariableDef(companyKey)}) {
+    ${companyField(companyKey)} {
       salary_work_time_statistics {
         average_week_work_time
         overtime_frequency_count {
@@ -46,9 +53,9 @@ const queryCompanyOverviewStatistics = ({
   companyName: string;
 }): Promise<QueryCompanyOverviewStatisticsData['company']> =>
   graphqlClient<QueryCompanyOverviewStatisticsData>({
-    query: queryCompanyOverviewStatisticsGql,
+    query: queryCompanyOverviewStatisticsGql(companyName),
     variables: {
-      companyName,
+      ...companyVariables(companyName),
     },
   }).then(R.prop('company'));
 

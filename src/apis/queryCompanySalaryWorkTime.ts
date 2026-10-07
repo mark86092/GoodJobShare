@@ -1,6 +1,11 @@
 import R from 'ramda';
 
 import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
+import {
   DataTimeRange,
   ExperienceInYearRange,
   fragmentSalaryWorkTimeFields,
@@ -9,9 +14,11 @@ import {
 import { Company } from 'graphql/company';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanySalaryWorkTimeGql = /* GraphQL */ `
+const queryCompanySalaryWorkTimeGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
   query(
-    $companyName: String!
+    ${companyVariableDef(companyKey)}
     $jobTitle: String
     $start: Int!
     $limit: Int!
@@ -20,7 +27,7 @@ const queryCompanySalaryWorkTimeGql = /* GraphQL */ `
     $gender: Gender
     $sortBy: SalaryResultSortOption
   ) {
-    company(name: $companyName) {
+    ${companyField(companyKey)} {
       name
       salaryWorkTimesResult(
         jobTitle: $jobTitle
@@ -72,9 +79,9 @@ const queryCompanySalaryWorkTime = ({
   sortBy?: string;
 }): Promise<QueryCompanySalaryWorkTimeData['company']> =>
   graphqlClient<QueryCompanySalaryWorkTimeData>({
-    query: queryCompanySalaryWorkTimeGql,
+    query: queryCompanySalaryWorkTimeGql(companyName),
     variables: {
-      companyName,
+      ...companyVariables(companyName),
       jobTitle,
       start,
       limit,
