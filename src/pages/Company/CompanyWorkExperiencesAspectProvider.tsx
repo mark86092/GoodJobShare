@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
+  queryCompanyDisplayName,
   queryCompanyWorkExperiencesAspectExperiences,
   queryCompanyWorkExperiencesAspectStatistics,
 } from 'actions/company';
@@ -31,6 +32,7 @@ import useAspect, { aspectSelector } from './useAspect';
 import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
+import useQueryCompanyDisplayName from './useQueryCompanyDisplayName';
 
 const useWorkExperiencesAspectExperiencesBoxSelector = (
   pageName: string,
@@ -70,6 +72,7 @@ const CompanyWorkExperiencesAspectProvider: React.FC &
   const dispatch = useDispatch();
   const pageType = PageType.COMPANY;
   const companyName = useCompanyNameParam();
+  useQueryCompanyDisplayName(companyName);
   const aspect = useAspect();
   const [rating] = useRating();
   const page = usePage();
@@ -136,15 +139,18 @@ CompanyWorkExperiencesAspectProvider.fetchData = async ({
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
 
-  return dispatch(
-    queryCompanyWorkExperiencesAspectExperiences({
-      companyName,
-      aspect,
-      rating,
-      start,
-      limit,
-    }),
-  );
+  return Promise.all([
+    dispatch(queryCompanyDisplayName({ companyName })),
+    dispatch(
+      queryCompanyWorkExperiencesAspectExperiences({
+        companyName,
+        aspect,
+        rating,
+        start,
+        limit,
+      }),
+    ),
+  ]);
 };
 
 export default CompanyWorkExperiencesAspectProvider;

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
+  queryCompanyDisplayName,
   queryCompanyWorkExperiences,
   queryCompanyWorkExperiencesAspectStatistics,
   queryRatingStatistics,
@@ -28,6 +29,7 @@ import { getFetched, isFetched } from 'utils/fetchBox';
 import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
+import useQueryCompanyDisplayName from './useQueryCompanyDisplayName';
 
 const useWorkExperiencesBoxSelector = pageName => {
   return useCallback(
@@ -54,6 +56,7 @@ const CompanyWorkExperiencesProvider = () => {
   const dispatch = useDispatch();
   const pageType = PageType.COMPANY;
   const companyName = useCompanyNameParam();
+  useQueryCompanyDisplayName(companyName);
   const [jobTitle] = useSearchTextFromQuery();
   const [sortBy] = useSortByFromQuery();
   const page = usePage();
@@ -115,6 +118,7 @@ CompanyWorkExperiencesProvider.fetchData = ({
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
   return Promise.all([
+    dispatch(queryCompanyDisplayName({ companyName })),
     dispatch(
       queryCompanyWorkExperiences({
         companyName,

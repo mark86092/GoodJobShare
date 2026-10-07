@@ -7,6 +7,7 @@ import BoxRenderer from 'common/StatusRenderer';
 import { generateTabURL, PageType, TabType } from 'constants/companyJobTitle';
 import { RootState } from 'reducers';
 import FetchBox from 'utils/fetchBox';
+import { isObjectId } from 'utils/objectId';
 
 import EmptyView from './EmptyView';
 
@@ -33,7 +34,7 @@ const PageBoxRenderer = <T extends PageData>({
   /* 處理
    * 1. 當 fetching                   --> 應顯示 Loading (目前由 BoxRenderer 處理)
    * 2. 當 box.data === null          --> 應顯示 NotFoundStatus (後端無公司)
-   * 3. 當 box.data.name !== pageName --> 應 Redirect (done)
+   * 3. 當 box.data.name !== pageName --> 應 Redirect (done；pageName 是 ObjectId 時不轉址)
    * 4. 當 box.data.dataCount === 0   --> 應顯示 NotFoundStatus (後端無資料)
    * 5. 當 box.data.資料 === []       --> 應顯示 NotFoundStatus (通常是 pagination 超出範圍) (交給 render 處理)
    */
@@ -49,7 +50,8 @@ const PageBoxRenderer = <T extends PageData>({
             </NotFoundStatus>
           );
         }
-        if (data.name !== pageName) {
+        // 以 ObjectId 定位的頁面，data.name 與 pageName 本來就不同，不轉址
+        if (!isObjectId(pageName) && data.name !== pageName) {
           const path = generateTabURL({
             pageType,
             pageName: data.name,

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+  queryCompanyDisplayName,
   queryCompanyOverview,
   queryCompanyOverviewStatistics,
   queryCompanyTopNJobTitles,
@@ -27,6 +28,7 @@ import FetchBox from 'utils/fetchBox';
 import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
+import useQueryCompanyDisplayName from './useQueryCompanyDisplayName';
 
 // Matches the React Router route params for Company pages
 type Params = { companyName: string };
@@ -50,6 +52,7 @@ const CompanyOverviewProvider: React.FC & ServerSideRender<Params> = () => {
   const dispatch = useDispatch();
   const pageType = PageType.COMPANY;
   const companyName = useCompanyNameParam();
+  useQueryCompanyDisplayName(companyName);
 
   const handleQueryCompanyOverview = useCallback(
     ({ force = false }: { force?: boolean } = {}) => {
@@ -107,6 +110,7 @@ CompanyOverviewProvider.fetchData = ({
 }): Promise<unknown> => {
   const companyName = companyNameSelector(params);
   return Promise.all([
+    dispatch(queryCompanyDisplayName({ companyName })),
     dispatch(queryCompanyOverview(companyName)),
     dispatch(queryCompanyOverviewStatistics(companyName)),
     dispatch(queryRatingStatistics(companyName)),

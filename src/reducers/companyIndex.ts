@@ -1,5 +1,6 @@
 import {
   SET_COMPANY_ESG_SALARY_DATA,
+  SET_COMPANY_NAME,
   SET_COMPANY_TOP_N_JOB_TITLES,
   SET_INDEX,
   SET_INDEX_COUNT,
@@ -130,6 +131,8 @@ type State = {
     FetchBox<CompanyAspectExperienceResult | null>
   >;
   isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed>>;
+  // key 為 URL 上的公司 key（ObjectId）；值為該 id 對應的公司名
+  nameByKey: Record<string, FetchBox<string | null>>;
   topNJobTitlesByName: Record<string, FetchBox<TopNJobTitles | null>>;
   esgSalaryData: Record<string, FetchBox<EsgYearStatistics[] | null>>;
 };
@@ -151,6 +154,7 @@ const preloadedState: State = {
   isSubscribedByName: {},
   // companyName --> box
   // box.data: null | {all, interview, work, salary}
+  nameByKey: {},
   topNJobTitlesByName: {},
   esgSalaryData: {},
 };
@@ -322,6 +326,18 @@ const reducer = createReducer(preloadedState, {
       workExperiencesAspectExperiencesByName: {
         ...state.workExperiencesAspectExperiencesByName,
         [companyName]: box,
+      },
+    };
+  },
+  [SET_COMPANY_NAME]: (
+    state,
+    { companyKey, box }: { companyKey: string; box: FetchBox<string | null> },
+  ) => {
+    return {
+      ...state,
+      nameByKey: {
+        ...state.nameByKey,
+        [companyKey]: box,
       },
     };
   },

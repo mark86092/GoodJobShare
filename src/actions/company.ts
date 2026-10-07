@@ -9,6 +9,7 @@ import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExper
 import queryCompanyIsSubscribedApi, {
   CompanyIsSubscribed,
 } from 'apis/queryCompanyIsSubscribed';
+import queryCompanyNameApi from 'apis/queryCompanyName';
 import queryCompanyOverviewApi from 'apis/queryCompanyOverview';
 import queryCompanyOverviewStatisticsApi from 'apis/queryCompanyOverviewStatistics';
 import queryCompanyRatingStatisticsApi, {
@@ -43,6 +44,7 @@ import {
   companyIndexesBoxSelectorAtPage,
   companyInterviewExperiencesBoxSelectorByName,
   companyIsSubscribedBoxSelectorByName,
+  companyNameBoxSelectorByKey,
   companyOverviewBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
   companyRatingStatisticsBoxSelectorByName,
@@ -62,6 +64,7 @@ import FetchBox, {
   isFetching,
   toFetching,
 } from 'utils/fetchBox';
+import { isObjectId } from 'utils/objectId';
 
 import { setExperience } from './experience';
 
@@ -79,6 +82,7 @@ export const SET_WORK_EXPERIENCES_ASPECT_EXPERIENCES =
   '@@COMPANY/SET_WORK_EXPERIENCES_ASPECT_EXPERIENCES';
 export const SET_INDEX = '@@COMPANY/SET_INDEX';
 export const SET_INDEX_COUNT = '@@COMPANY/SET_INDEX_COUNT';
+export const SET_COMPANY_NAME = '@@COMPANY/SET_COMPANY_NAME';
 export const SET_COMPANY_TOP_N_JOB_TITLES =
   '@@COMPANY/SET_COMPANY_TOP_N_JOB_TITLES';
 export const SET_COMPANY_ESG_SALARY_DATA =
@@ -379,6 +383,15 @@ const setSalaryWorkTimeStatistics = (
   box,
 });
 
+const setCompanyName = (
+  companyKey: string,
+  box: FetchBox<string | null>,
+): AnyAction => ({
+  type: SET_COMPANY_NAME,
+  companyKey,
+  box,
+});
+
 const setCompanyTopNJobTitles = (
   companyName: string,
   box: FetchBox<TopNJobTitles | null>,
@@ -450,6 +463,33 @@ export const queryCompanyEsgSalaryData = ({
     );
   } catch (error) {
     dispatch(setEsgSalaryData(companyName, getError(error)));
+  }
+};
+
+// URL 上的 key 是 ObjectId 時，標題、麵包屑要顯示的公司名得另外查；
+// 用名稱定位的頁面 key 本身就是公司名，不需要查
+export const queryCompanyDisplayName = ({
+  companyName,
+}: {
+  companyName: string;
+}): Thunk => async (dispatch, getState): Promise<unknown> => {
+  if (!isObjectId(companyName)) {
+    return;
+  }
+
+  const box = companyNameBoxSelectorByKey(companyName)(getState());
+
+  if (isFetching(box) || isFetched(box)) {
+    return;
+  }
+
+  dispatch(setCompanyName(companyName, toFetching()));
+
+  try {
+    const name = await queryCompanyNameApi({ companyName });
+    dispatch(setCompanyName(companyName, getFetched(name)));
+  } catch (error) {
+    dispatch(setCompanyName(companyName, getError(error)));
   }
 };
 
