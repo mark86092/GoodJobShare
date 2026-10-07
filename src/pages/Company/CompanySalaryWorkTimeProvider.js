@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+  queryCompanyDisplayName,
   queryCompanyEsgSalaryData,
   queryCompanyOverviewStatistics,
   queryCompanySalaryWorkTime,
@@ -42,6 +43,7 @@ import {
 import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
+import useQueryCompanyDisplayName from './useQueryCompanyDisplayName';
 import { useTopNJobTitles } from './useTopNJobTitles';
 
 const useOverviewStatisticsBox = pageName => {
@@ -85,6 +87,7 @@ const CompanySalaryWorkTimeProvider = () => {
   const dispatch = useDispatch();
   const pageType = PageType.COMPANY;
   const companyName = useCompanyNameParam();
+  useQueryCompanyDisplayName(companyName);
   const [jobTitle] = useSearchTextFromQuery();
   const page = usePage();
   const start = (page - 1) * PAGE_SIZE;
@@ -220,6 +223,7 @@ CompanySalaryWorkTimeProvider.fetchData = ({
   const dataTimeRange = getDataTimeRange(dataTime);
   const experienceInYearRange = getExperienceInYearRange(experience);
   return Promise.all([
+    dispatch(queryCompanyDisplayName({ companyName })),
     dispatch(
       queryCompanySalaryWorkTime({
         companyName,

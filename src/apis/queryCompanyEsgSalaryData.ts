@@ -1,8 +1,15 @@
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanyEsgSalaryDataGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
+const queryCompanyEsgSalaryDataGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
+  query(${companyVariableDef(companyKey)}) {
+    ${companyField(companyKey)} {
       esgSalaryData {
         avgSalaryStatistics {
           year
@@ -62,8 +69,8 @@ const queryCompanyEsgSalaryData = ({
   companyName: string;
 }): Promise<ESGSalaryData | null> =>
   graphqlClient<QueryCompanyEsgSalaryDataData>({
-    query: queryCompanyEsgSalaryDataGql,
-    variables: { companyName },
+    query: queryCompanyEsgSalaryDataGql(companyName),
+    variables: companyVariables(companyName),
   }).then(data => (data.company ? data.company.esgSalaryData : null));
 
 export default queryCompanyEsgSalaryData;

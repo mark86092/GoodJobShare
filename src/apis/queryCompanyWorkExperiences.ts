@@ -1,5 +1,10 @@
 import R from 'ramda';
 
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import { WorkExperience } from 'apis/experience';
 import { Company } from 'graphql/company';
 import {
@@ -8,16 +13,18 @@ import {
 } from 'graphql/experience';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanyWorkExperiencesGql = /* GraphQL */ `
+const queryCompanyWorkExperiencesGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
   query(
-    $companyName: String!
+    ${companyVariableDef(companyKey)}
     $jobTitle: String
     $start: Int!
     $limit: Int!
     $sortBy: DataResultSortOption
     $aspectFilter: AspectFilter
   ) {
-    company(name: $companyName) {
+    ${companyField(companyKey)} {
       name
       workExperiencesResult(
         jobTitle: $jobTitle
@@ -69,8 +76,15 @@ const queryCompanyWorkExperiences = ({
   aspectFilter?: AspectFilter;
 }): Promise<QueryCompanyWorkExperiencesData['company']> =>
   graphqlClient<QueryCompanyWorkExperiencesData>({
-    query: queryCompanyWorkExperiencesGql,
-    variables: { companyName, jobTitle, start, limit, sortBy, aspectFilter },
+    query: queryCompanyWorkExperiencesGql(companyName),
+    variables: {
+      ...companyVariables(companyName),
+      jobTitle,
+      start,
+      limit,
+      sortBy,
+      aspectFilter,
+    },
   }).then(R.prop('company'));
 
 export default queryCompanyWorkExperiences;

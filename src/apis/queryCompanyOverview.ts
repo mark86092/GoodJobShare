@@ -1,6 +1,11 @@
 import R from 'ramda';
 
 import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
+import {
   fragmentInterviewExperienceFields,
   fragmentWorkExperienceFields,
   InterviewExperienceInOverview,
@@ -13,14 +18,14 @@ import {
 import { Company } from 'graphql/company';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanyOverviewGql = /* GraphQL */ `
+const queryCompanyOverviewGql = (companyKey: string): string => /* GraphQL */ `
   query(
-    $companyName: String!
+    ${companyVariableDef(companyKey)}
     $interviewExperiencesLimit: Int!
     $workExperiencesLimit: Int!
     $salaryWorkTimesLimit: Int!
   ) {
-    company(name: $companyName) {
+    ${companyField(companyKey)} {
       name
       interviewExperiencesResult(start: 0, limit: $interviewExperiencesLimit) {
         count
@@ -78,9 +83,9 @@ const queryCompanyOverview = ({
   salaryWorkTimesLimit: number;
 }): Promise<QueryCompanyOverviewData['company']> =>
   graphqlClient<QueryCompanyOverviewData>({
-    query: queryCompanyOverviewGql,
+    query: queryCompanyOverviewGql(companyName),
     variables: {
-      companyName,
+      ...companyVariables(companyName),
       interviewExperiencesLimit,
       workExperiencesLimit,
       salaryWorkTimesLimit,

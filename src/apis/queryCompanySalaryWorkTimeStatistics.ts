@@ -1,9 +1,16 @@
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import { OvertimeStats } from 'apis/salaryWorkTime';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanySalaryWorkTimeStatisticsGql = /* GraphQL */ `
-  query($companyName: String!) {
-    company(name: $companyName) {
+const queryCompanySalaryWorkTimeStatisticsGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
+  query(${companyVariableDef(companyKey)}) {
+    ${companyField(companyKey)} {
       salary_work_time_statistics {
         count
         is_overtime_salary_legal_count {
@@ -36,8 +43,8 @@ const queryCompanySalaryWorkTimeStatistics = ({
   companyName: string;
 }): Promise<OvertimeStats | null> =>
   graphqlClient<QueryCompanySalaryWorkTimeStatisticsData>({
-    query: queryCompanySalaryWorkTimeStatisticsGql,
-    variables: { companyName },
+    query: queryCompanySalaryWorkTimeStatisticsGql(companyName),
+    variables: companyVariables(companyName),
   }).then(data =>
     data.company ? data.company.salary_work_time_statistics : null,
   );

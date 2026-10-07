@@ -17,6 +17,7 @@ import {
 
 import styles from './CompanyAndJobTitleWrapper.module.css';
 import { PageContextProvider } from './PageContextProvider';
+import useCompanyDisplayName from './useCompanyDisplayName';
 import { generateBreadCrumbData } from './utils';
 
 type CompanyAndJobTitleWrapperProps = React.PropsWithChildren<{
@@ -49,16 +50,21 @@ const CompanyAndJobTitleWrapper: React.FC<CompanyAndJobTitleWrapperProps> = ({
     [pageType, pageName],
   );
 
+  // 只有公司頁會用 ObjectId 定位；職稱頁的 pageName 一律是名稱
+  const companyDisplayName = useCompanyDisplayName(pageName);
+  const displayName =
+    pageType === PageType.COMPANY ? companyDisplayName : pageName;
+
   const pageH1 = useMemo(() => {
     switch (tabType) {
       case TabType.WORK_EXPERIENCE:
       case TabType.INTERVIEW_EXPERIENCE:
       case TabType.TIME_AND_SALARY:
-        return `${pageName} ${TAB_TYPE_DETAIL_TRANSLATION[tabType]}`;
+        return `${displayName} ${TAB_TYPE_DETAIL_TRANSLATION[tabType]}`;
       default:
-        return pageName;
+        return displayName;
     }
-  }, [pageName, tabType]);
+  }, [displayName, tabType]);
 
   return (
     <PageContextProvider
@@ -70,7 +76,12 @@ const CompanyAndJobTitleWrapper: React.FC<CompanyAndJobTitleWrapperProps> = ({
         <Wrapper size="l">
           <div style={{ marginBottom: '20px' }}>
             <BreadCrumb
-              data={generateBreadCrumbData({ pageType, pageName, tabType })}
+              data={generateBreadCrumbData({
+                pageType,
+                pageName,
+                pageDisplayName: displayName,
+                tabType,
+              })}
             />
           </div>
           <div>

@@ -1,5 +1,10 @@
 import R from 'ramda';
 
+import {
+  companyField,
+  companyVariableDef,
+  companyVariables,
+} from 'apis/companyKey';
 import { InterviewExperience } from 'apis/experience';
 import { Company } from 'graphql/company';
 import {
@@ -8,15 +13,17 @@ import {
 } from 'graphql/experience';
 import graphqlClient from 'utils/graphqlClient';
 
-const queryCompanyInterviewExperiencesGql = /* GraphQL */ `
+const queryCompanyInterviewExperiencesGql = (
+  companyKey: string,
+): string => /* GraphQL */ `
   query(
-    $companyName: String!
+    ${companyVariableDef(companyKey)}
     $jobTitle: String
     $start: Int!
     $limit: Int!
     $sortBy: DataResultSortOption
   ) {
-    company(name: $companyName) {
+    ${companyField(companyKey)} {
       name
       interviewExperiencesResult(
         jobTitle: $jobTitle
@@ -59,8 +66,14 @@ const queryCompanyInterviewExperiences = ({
   sortBy?: string;
 }): Promise<QueryCompanyInterviewExperiencesData['company']> =>
   graphqlClient<QueryCompanyInterviewExperiencesData>({
-    query: queryCompanyInterviewExperiencesGql,
-    variables: { companyName, jobTitle, start, limit, sortBy },
+    query: queryCompanyInterviewExperiencesGql(companyName),
+    variables: {
+      ...companyVariables(companyName),
+      jobTitle,
+      start,
+      limit,
+      sortBy,
+    },
   }).then(R.prop('company'));
 
 export default queryCompanyInterviewExperiences;
