@@ -42,37 +42,39 @@ const IndexList: React.FC<IndexListProps> = ({
   getPageLink,
 }) => {
   return (
-    <BoxRenderer
-      box={indexesBox}
-      render={(indexes): React.ReactNode => (
-        <Fragment>
-          <IndexHelmet pageType={pageType} page={page} />
-          <div className={styles.container}>
-            <div className={styles.title}>
-              所有{pageTypeTranslation[pageType]}資料 - 第 {page} 頁
-            </div>
-            <div className={styles.index}>
-              {indexes.map((pageIndex, i) => (
-                <CompanyJobTitleBlock
-                  key={i}
-                  pageType={pageType}
-                  name={pageIndex.name}
-                  businessNumber={businessNumberOf(pageIndex)}
-                  dataCount={dataCountOf(pageIndex)}
-                  to={generatePageURL({ pageType, pageName: pageIndex.name })}
-                />
-              ))}
-            </div>
-            <Pagination
-              totalCount={totalCount}
-              unit={PAGE_SIZE}
-              currentPage={page}
-              createPageLinkTo={getPageLink}
-            />
-          </div>
-        </Fragment>
-      )}
-    />
+    <Fragment>
+      <IndexHelmet pageType={pageType} page={page} />
+      <div className={styles.container}>
+        <div className={styles.title}>
+          所有{pageTypeTranslation[pageType]}資料 - 第 {page} 頁
+        </div>
+        <BoxRenderer
+          box={indexesBox}
+          render={(indexes): React.ReactNode => (
+            <Fragment>
+              <div className={styles.index}>
+                {indexes.map((pageIndex, i) => (
+                  <CompanyJobTitleBlock
+                    key={i}
+                    pageType={pageType}
+                    name={pageIndex.name}
+                    businessNumber={businessNumberOf(pageIndex)}
+                    dataCount={dataCountOf(pageIndex)}
+                    to={generatePageURL({ pageType, pageName: pageIndex.name })}
+                  />
+                ))}
+              </div>
+              <Pagination
+                totalCount={totalCount}
+                unit={PAGE_SIZE}
+                currentPage={page}
+                createPageLinkTo={getPageLink}
+              />
+            </Fragment>
+          )}
+        />
+      </div>
+    </Fragment>
   );
 };
 
