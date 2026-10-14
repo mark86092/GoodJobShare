@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { queryJobTitleInterviewExperiences } from 'actions/jobTitle';
+import { ExperienceType, InterviewExperience } from 'apis/experience';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
 import CompanyAndJobTitleWrapper from 'components/CompanyAndJobTitle/CompanyAndJobTitleWrapper';
 import InterviewExperiences from 'components/CompanyAndJobTitle/InterviewExperiences';
@@ -14,16 +15,28 @@ import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
 import usePreviousBox from 'hooks/usePreviousBox';
-import { jobTitleInterviewExperiencesBoxSelectorByName } from 'selectors/companyAndJobTitle';
+import { RootState } from 'reducers';
+import { JobTitleInterviewExperienceResult } from 'reducers/jobTitleIndex';
+import {
+  JobTitleExperiencesQuery,
+  jobTitleInterviewExperiencesBoxSelectorByName,
+} from 'selectors/companyAndJobTitle';
 import { experienceBoxSelectorAtId } from 'selectors/experienceSelector';
 import {
   pageFromQuerySelector,
   queryFromQuerySelector,
 } from 'selectors/routing';
+import { ServerSideRender } from 'types/serverSideRender';
+import FetchBox from 'utils/fetchBox';
 
 import useJobTitleParam, { jobTitleSelector } from './useJobTitleParam';
 
-const useInterviewExperiencesBoxSelector = (pageName, query) => {
+const useInterviewExperiencesBoxSelector = (
+  pageName: string,
+  query: JobTitleExperiencesQuery,
+): ((
+  state: RootState,
+) => FetchBox<JobTitleInterviewExperienceResult | null>) => {
   const { companyName, start, limit, sortBy } = query;
   const selector = useMemo(
     () =>
@@ -38,7 +51,7 @@ const useInterviewExperiencesBoxSelector = (pageName, query) => {
   // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
   const rawBox = usePreviousBox(useSelector(selector), pageName);
   return useCallback(
-    state => {
+    (state: RootState): FetchBox<JobTitleInterviewExperienceResult | null> => {
       if (rawBox.data) {
         // Get experience data from state.experiences, which serves
         // as the source of truth of experiences.
@@ -47,7 +60,14 @@ const useInterviewExperiencesBoxSelector = (pageName, query) => {
           data: {
             ...rawBox.data,
             interviewExperiences: rawBox.data.interviewExperiences.map(
-              e => experienceBoxSelectorAtId(e.id)(state).data || e,
+              (e: InterviewExperience) => {
+                const cached = experienceBoxSelectorAtId(e.id)(state).data;
+                // experienceById is keyed across all experience types, so narrow
+                // back to InterviewExperience before using the cached copy.
+                return cached && cached.type === ExperienceType.INTERVIEW
+                  ? cached
+                  : e;
+              },
             ),
           },
         };
@@ -58,7 +78,11 @@ const useInterviewExperiencesBoxSelector = (pageName, query) => {
   );
 };
 
-const JobTitleInterviewExperiencesProvider = () => {
+// Matches the React Router route params for JobTitle pages
+type Params = { jobTitle: string };
+
+const JobTitleInterviewExperiencesProvider: React.FC &
+  ServerSideRender<Params> = () => {
   const dispatch = useDispatch();
   const pageType = PageType.JOB_TITLE;
   const jobTitle = useJobTitleParam();
@@ -107,11 +131,11 @@ const JobTitleInterviewExperiencesProvider = () => {
   );
 };
 
-JobTitleInterviewExperiencesProvider.fetchData = ({
+JobTitleInterviewExperiencesProvider.fetchData = async ({
   store: { dispatch },
   ...props
-}) => {
-  const params = paramsSelector(props);
+}): Promise<unknown> => {
+  const params = paramsSelector<Params>(props);
   const jobTitle = jobTitleSelector(params);
   const query = querySelector(props);
   const page = pageFromQuerySelector(query);

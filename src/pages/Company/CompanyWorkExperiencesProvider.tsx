@@ -2,39 +2,49 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  queryCompanyInterviewExperiences,
-  queryCompanyTopNJobTitles,
+  queryCompanyWorkExperiences,
+  queryCompanyWorkExperiencesAspectStatistics,
   queryRatingStatistics,
 } from 'actions/company';
+import { ExperienceType, WorkExperience } from 'apis/experience';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
 import CompanyAndJobTitleWrapper from 'components/CompanyAndJobTitle/CompanyAndJobTitleWrapper';
-import InterviewExperiences from 'components/CompanyAndJobTitle/InterviewExperiences';
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
 import {
   sortByFromQuerySelector,
   useSortByFromQuery,
 } from 'components/CompanyAndJobTitle/Sorter';
+import WorkExperiences from 'components/CompanyAndJobTitle/WorkExperiences';
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
 import usePreviousBox from 'hooks/usePreviousBox';
-import { companyInterviewExperiencesBoxSelectorByName } from 'selectors/companyAndJobTitle';
+import { RootState } from 'reducers';
+import { CompanyWorkExperienceResult } from 'reducers/companyIndex';
+import {
+  CompanyExperiencesQuery,
+  companyWorkExperiencesBoxSelectorByName as workExperiencesBoxSelectorByName,
+} from 'selectors/companyAndJobTitle';
 import { experienceBoxSelectorAtId } from 'selectors/experienceSelector';
 import {
   pageFromQuerySelector,
   queryFromQuerySelector,
 } from 'selectors/routing';
+import { ServerSideRender } from 'types/serverSideRender';
+import FetchBox from 'utils/fetchBox';
 
 import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
-import { useTopNJobTitles } from './useTopNJobTitles';
 
-const useInterviewExperiencesBoxSelector = (pageName, query) => {
+const useWorkExperiencesBoxSelector = (
+  pageName: string,
+  query: CompanyExperiencesQuery,
+): ((state: RootState) => FetchBox<CompanyWorkExperienceResult | null>) => {
   const { jobTitle, start, limit, sortBy } = query;
   const selector = useMemo(
     () =>
-      companyInterviewExperiencesBoxSelectorByName(pageName, {
+      workExperiencesBoxSelectorByName(pageName, {
         jobTitle,
         start,
         limit,
@@ -45,7 +55,7 @@ const useInterviewExperiencesBoxSelector = (pageName, query) => {
   // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
   const rawBox = usePreviousBox(useSelector(selector), pageName);
   return useCallback(
-    state => {
+    (state: RootState): FetchBox<CompanyWorkExperienceResult | null> => {
       if (rawBox.data) {
         // Get experience data from state.experiences, which serves
         // as the source of truth of experiences.
@@ -53,8 +63,15 @@ const useInterviewExperiencesBoxSelector = (pageName, query) => {
           ...rawBox,
           data: {
             ...rawBox.data,
-            interviewExperiences: rawBox.data.interviewExperiences.map(
-              e => experienceBoxSelectorAtId(e.id)(state).data || e,
+            workExperiences: rawBox.data.workExperiences.map(
+              (e: WorkExperience) => {
+                const cached = experienceBoxSelectorAtId(e.id)(state).data;
+                // experienceById is keyed across all experience types, so narrow
+                // back to WorkExperience before using the cached copy.
+                return cached && cached.type === ExperienceType.WORK
+                  ? cached
+                  : e;
+              },
             ),
           },
         };
@@ -65,7 +82,11 @@ const useInterviewExperiencesBoxSelector = (pageName, query) => {
   );
 };
 
-const CompanyInterviewExperiencesProvider = () => {
+// Matches the React Router route params for Company pages
+type Params = { companyName: string };
+
+const CompanyWorkExperiencesProvider: React.FC &
+  ServerSideRender<Params> = () => {
   const dispatch = useDispatch();
   const pageType = PageType.COMPANY;
   const companyName = useCompanyNameParam();
@@ -80,12 +101,12 @@ const CompanyInterviewExperiencesProvider = () => {
   }, [dispatch, companyName]);
 
   useEffect(() => {
-    dispatch(queryCompanyTopNJobTitles({ companyName }));
+    dispatch(queryCompanyWorkExperiencesAspectStatistics({ companyName }));
   }, [dispatch, companyName]);
 
   useEffect(() => {
     dispatch(
-      queryCompanyInterviewExperiences({
+      queryCompanyWorkExperiences({
         companyName,
         jobTitle: jobTitle || undefined,
         start,
@@ -100,46 +121,43 @@ const CompanyInterviewExperiencesProvider = () => {
     fetchPermission();
   }, [pageType, companyName, fetchPermission]);
 
-  const boxSelector = useInterviewExperiencesBoxSelector(companyName, {
+  const boxSelector = useWorkExperiencesBoxSelector(companyName, {
     jobTitle: jobTitle || undefined,
     start,
     limit,
     sortBy,
   });
 
-  const topNJobTitles = useTopNJobTitles(companyName);
-
   return (
     <CompanyAndJobTitleWrapper
       pageType={pageType}
       pageName={companyName}
-      tabType={TabType.INTERVIEW_EXPERIENCE}
+      tabType={TabType.WORK_EXPERIENCE}
     >
-      <InterviewExperiences
+      <WorkExperiences
         page={page}
         pageSize={PAGE_SIZE}
-        topNJobTitles={topNJobTitles.interview}
         boxSelector={boxSelector}
       />
     </CompanyAndJobTitleWrapper>
   );
 };
 
-CompanyInterviewExperiencesProvider.fetchData = ({
+CompanyWorkExperiencesProvider.fetchData = ({
   store: { dispatch },
   ...props
-}) => {
-  const params = paramsSelector(props);
+}): Promise<unknown> => {
+  const params = paramsSelector<Params>(props);
   const companyName = companyNameSelector(params);
   const query = querySelector(props);
   const page = pageFromQuerySelector(query);
-  const sortBy = sortByFromQuerySelector(query);
   const jobTitle = queryFromQuerySelector(query) || undefined;
+  const sortBy = sortByFromQuerySelector(query);
   const start = (page - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
   return Promise.all([
     dispatch(
-      queryCompanyInterviewExperiences({
+      queryCompanyWorkExperiences({
         companyName,
         jobTitle,
         start,
@@ -148,12 +166,8 @@ CompanyInterviewExperiencesProvider.fetchData = ({
       }),
     ),
     dispatch(queryRatingStatistics(companyName)),
-    dispatch(
-      queryCompanyTopNJobTitles({
-        companyName,
-      }),
-    ),
+    dispatch(queryCompanyWorkExperiencesAspectStatistics({ companyName })),
   ]);
 };
 
-export default CompanyInterviewExperiencesProvider;
+export default CompanyWorkExperiencesProvider;
