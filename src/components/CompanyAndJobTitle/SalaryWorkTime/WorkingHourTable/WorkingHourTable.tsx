@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types';
-import R from 'ramda';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import ReportBadge from 'common/button/ReportBadge';
+import { SalaryWorkTime } from 'apis/salaryWorkTime';
+import ReportBadgeImpl from 'common/button/ReportBadge';
 import { InfoButton } from 'common/Modal';
-import Table from 'common/table/Table';
+import Table, { TableRow } from 'common/table/Table';
 import ReportZone from 'components/ExperienceDetail/ReportZone';
 import { REPORT_TYPE } from 'components/ExperienceDetail/ReportZone/ReportForm/constants';
 import { PageType } from 'constants/companyJobTitle';
-import { genderTranslation } from 'constants/gender';
+import { Gender, genderTranslation } from 'constants/gender';
 import usePermission from 'hooks/usePermission';
 
 import {
@@ -27,9 +26,33 @@ import { InfoSalaryModal, InfoTimeModal } from './InfoModal';
 import injectHideContentBlock from './injectHideContentBlock';
 import styles from './WorkingHourTable.module.css';
 
-const formatGender = gender => genderTranslation[gender] ?? '-';
+// ReportBadge 還是 JS，TS 會把它解構到的每個參數都當成必填，用 cast 收斂
+const ReportBadge = (ReportBadgeImpl as unknown) as React.FC<{
+  reportCount?: number;
+}>;
 
-const SalaryHeader = ({ isInfoSalaryModalOpen, toggleInfoSalaryModal }) => (
+// 每一列額外掛上 onCloseReport，供「回報」欄的 formatter 取用
+type Row = SalaryWorkTime & { onCloseReport: () => void };
+
+// 四個 modal 開關由 WorkingHourTable 持有，一律傳給每個欄位的 Children，
+// 各自取自己要的那兩個
+type HeaderProps = {
+  isInfoSalaryModalOpen: boolean;
+  toggleInfoSalaryModal: () => void;
+  isInfoTimeModalOpen: boolean;
+  toggleInfoTimeModal: () => void;
+};
+
+// SalaryWorkTime.gender 是任意字串，對不到翻譯就顯示 '-'
+// （這裡不用 ?? 是因為專案的 prettier 版本在 .tsx 解析不了）
+const formatGender = (gender: string | null): string => {
+  if (gender === null) return '-';
+  return genderTranslation[gender as Gender] || '-';
+};
+
+const SalaryHeader: React.FC<
+  Pick<HeaderProps, 'isInfoSalaryModalOpen' | 'toggleInfoSalaryModal'>
+> = ({ isInfoSalaryModalOpen, toggleInfoSalaryModal }) => (
   <React.Fragment>
     <InfoSalaryModal
       isOpen={isInfoSalaryModalOpen}
@@ -39,24 +62,30 @@ const SalaryHeader = ({ isInfoSalaryModalOpen, toggleInfoSalaryModal }) => (
   </React.Fragment>
 );
 
-SalaryHeader.propTypes = {
-  isInfoSalaryModalOpen: PropTypes.bool.isRequired,
-  toggleInfoSalaryModal: PropTypes.func.isRequired,
-};
-
-const TimeHeader = ({ isInfoTimeModalOpen, toggleInfoTimeModal }) => (
+const TimeHeader: React.FC<
+  Pick<HeaderProps, 'isInfoTimeModalOpen' | 'toggleInfoTimeModal'>
+> = ({ isInfoTimeModalOpen, toggleInfoTimeModal }) => (
   <React.Fragment>
     <InfoTimeModal isOpen={isInfoTimeModalOpen} close={toggleInfoTimeModal} />
     <InfoButton onClick={toggleInfoTimeModal}>參考時間</InfoButton>
   </React.Fragment>
 );
 
-TimeHeader.propTypes = {
-  isInfoTimeModalOpen: PropTypes.bool.isRequired,
-  toggleInfoTimeModal: PropTypes.func.isRequired,
+type ColumnProp = {
+  className: string;
+  title: string;
+  // 字串代表取 row 的該欄位，函式代表直接由整列算出內容
+  dataField: string | ((row: Row) => React.ReactNode);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dataFormatter?: (value: any, row: Row) => React.ReactNode;
+  alignRight?: boolean;
+  Children: React.FC<HeaderProps> | (() => string);
+  isEnabled?: (args: { pageType: PageType }) => boolean;
+  permissionRequiredStart?: boolean;
+  permissionRequiredEnd?: boolean;
 };
 
-const columnProps = [
+const columnProps: ColumnProp[] = [
   {
     className: styles.colPosition,
     title: '職稱',
@@ -124,10 +153,7 @@ const columnProps = [
   {
     className: styles.colHourly,
     title: '估計時薪',
-    dataField: R.compose(
-      formatWage,
-      R.prop('estimated_hourly_wage'),
-    ),
+    dataField: (row: Row) => formatWage(row.estimated_hourly_wage),
     alignRight: true,
     Children: SalaryHeader,
     permissionRequiredEnd: true,
@@ -135,33 +161,38 @@ const columnProps = [
   {
     className: styles.colDataTime,
     title: '參考時間',
-    dataField: R.compose(
-      formatDate,
-      R.prop('data_time'),
-    ),
+    dataField: (row: Row) => formatDate(row.data_time),
     Children: TimeHeader,
   },
   {
     className: styles.colDataTime,
     title: '回報',
-    dataField: R.compose(({ id, reportCount, reports, onCloseReport }) => {
-      return (
-        <ReportZone
-          reportType={REPORT_TYPE.SALARY}
-          id={id}
-          reports={reports}
-          reportCount={reportCount}
-          onCloseReport={onCloseReport}
-        >
-          <ReportBadge reportCount={reportCount} />
-        </ReportZone>
-      );
-    }),
+    dataField: ({ id, reportCount, reports, onCloseReport }: Row) => (
+      <ReportZone
+        reportType={REPORT_TYPE.SALARY}
+        id={id}
+        reports={reports}
+        reportCount={reportCount}
+        onCloseReport={onCloseReport}
+      >
+        <ReportBadge reportCount={reportCount} />
+      </ReportZone>
+    ),
     Children: () => '回報',
   },
 ];
 
-const WorkingHourTable = ({ data, pageType, onCloseReport }) => {
+type WorkingHourTableProps = {
+  data: SalaryWorkTime[];
+  pageType: PageType;
+  onCloseReport: () => void;
+};
+
+const WorkingHourTable: React.FC<WorkingHourTableProps> = ({
+  data,
+  pageType,
+  onCloseReport,
+}) => {
   const [isInfoSalaryModalOpen, setInfoSalaryModalOpen] = useState(false);
   const [isInfoTimeModalOpen, setInfoTiimeModalOpen] = useState(false);
 
@@ -183,10 +214,8 @@ const WorkingHourTable = ({ data, pageType, onCloseReport }) => {
 
   const [fromCol, toCol] = useMemo(
     () => [
-      R.findIndex(R.propEq('permissionRequiredStart', true))(
-        filteredColumnProps,
-      ),
-      R.findIndex(R.propEq('permissionRequiredEnd', true))(filteredColumnProps),
+      filteredColumnProps.findIndex(c => c.permissionRequiredStart === true),
+      filteredColumnProps.findIndex(c => c.permissionRequiredEnd === true),
     ],
     [filteredColumnProps],
   );
@@ -194,7 +223,7 @@ const WorkingHourTable = ({ data, pageType, onCloseReport }) => {
   const [, , canViewPublishId] = usePermission();
 
   const postProcessRows = useCallback(
-    (rows, data) => {
+    (rows: TableRow[], data: Row[]) => {
       injectHideContentBlock({
         rows,
         data,
@@ -207,7 +236,7 @@ const WorkingHourTable = ({ data, pageType, onCloseReport }) => {
     [canViewPublishId, fromCol, toCol],
   );
 
-  const memoizedData = useMemo(
+  const memoizedData: Row[] = useMemo(
     () => data.map(row => ({ ...row, onCloseReport })),
     [data, onCloseReport],
   );
@@ -219,27 +248,19 @@ const WorkingHourTable = ({ data, pageType, onCloseReport }) => {
       primaryKey="created_at"
       postProcessRows={postProcessRows}
     >
-      {columnProps
-        .filter(({ isEnabled }) => (isEnabled ? isEnabled({ pageType }) : true))
-        .map(({ Children, ...props }) => (
-          // eslint-disable-next-line react/prop-types
-          <Table.Column key={props.title} {...props}>
-            <Children
-              isInfoSalaryModalOpen={isInfoSalaryModalOpen}
-              toggleInfoSalaryModal={toggleInfoSalaryModal}
-              isInfoTimeModalOpen={isInfoTimeModalOpen}
-              toggleInfoTimeModal={toggleInfoTimeModal}
-            />
-          </Table.Column>
-        ))}
+      {filteredColumnProps.map(({ Children, ...props }) => (
+        // eslint-disable-next-line react/prop-types
+        <Table.Column key={props.title} {...props}>
+          <Children
+            isInfoSalaryModalOpen={isInfoSalaryModalOpen}
+            toggleInfoSalaryModal={toggleInfoSalaryModal}
+            isInfoTimeModalOpen={isInfoTimeModalOpen}
+            toggleInfoTimeModal={toggleInfoTimeModal}
+          />
+        </Table.Column>
+      ))}
     </Table>
   );
-};
-
-WorkingHourTable.propTypes = {
-  data: PropTypes.array.isRequired,
-  onCloseReport: PropTypes.func.isRequired,
-  pageType: PropTypes.oneOf([PageType.COMPANY, PageType.JOB_TITLE]),
 };
 
 export default WorkingHourTable;

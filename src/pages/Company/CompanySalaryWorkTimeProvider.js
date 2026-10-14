@@ -42,7 +42,6 @@ import {
 import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
-import { useTopNJobTitles } from './useTopNJobTitles';
 
 const useOverviewStatisticsBox = pageName => {
   const selector = useMemo(
@@ -177,7 +176,6 @@ const CompanySalaryWorkTimeProvider = () => {
   const salaryWorkTimeStatisticsBox = useSalaryWorkTimeStatisticsBox(
     companyName,
   );
-  const topNJobTitles = useTopNJobTitles(companyName);
   const esgSalaryDataBox = useEsgSalaryDataBox(companyName);
 
   const boxSelector = useSalaryWorkTimeBoxSelector(companyName);
@@ -191,7 +189,6 @@ const CompanySalaryWorkTimeProvider = () => {
       <SalaryWorkTime
         page={page}
         pageSize={PAGE_SIZE}
-        topNJobTitles={topNJobTitles.salary}
         esgSalaryDataBox={esgSalaryDataBox}
         salaryWorkTimeStatisticsBox={salaryWorkTimeStatisticsBox}
         boxSelector={boxSelector}

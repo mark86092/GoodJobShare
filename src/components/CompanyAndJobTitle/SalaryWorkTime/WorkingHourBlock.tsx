@@ -1,11 +1,23 @@
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+
+import { SalaryWorkTime } from 'apis/salaryWorkTime';
+import { PageType } from 'constants/companyJobTitle';
 
 import styles from './WorkingHourBlock.module.css';
 import WorkingHourTable from './WorkingHourTable';
 
-const WorkingHourBlock = ({ data, pageType, onCloseReport }) => {
+type WorkingHourBlockProps = {
+  data: SalaryWorkTime[];
+  pageType: PageType;
+  onCloseReport: () => void;
+};
+
+const WorkingHourBlock: React.FC<WorkingHourBlockProps> = ({
+  data,
+  pageType,
+  onCloseReport,
+}) => {
   return (
     <section className={styles.container}>
       <div className={cn(styles.content, styles.expanded)}>
@@ -17,12 +29,6 @@ const WorkingHourBlock = ({ data, pageType, onCloseReport }) => {
       </div>
     </section>
   );
-};
-
-WorkingHourBlock.propTypes = {
-  data: PropTypes.array,
-  onCloseReport: PropTypes.func.isRequired,
-  pageType: PropTypes.string,
 };
 
 export default WorkingHourBlock;
