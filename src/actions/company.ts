@@ -115,7 +115,8 @@ export const fetchCompanyNames = ({
   }
 
   dispatch(setIndex(page, toFetching()));
-  dispatch(setIndexCount(toFetching()));
+  // 帶入現有的總數 box，重抓期間才不會丟掉舊的總數
+  dispatch(setIndexCount(toFetching(getState().companyIndex.indexCountBox)));
 
   try {
     const data = await queryCompaniesApi({
