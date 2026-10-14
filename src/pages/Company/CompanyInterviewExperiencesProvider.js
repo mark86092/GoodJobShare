@@ -16,8 +16,8 @@ import {
 } from 'components/CompanyAndJobTitle/Sorter';
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
-import useKeepPreviousBox from 'hooks/useKeepPreviousBox';
 import usePermission from 'hooks/usePermission';
+import usePreviousBox from 'hooks/usePreviousBox';
 import { companyInterviewExperiencesBoxSelectorByName } from 'selectors/companyAndJobTitle';
 import { experienceBoxSelectorAtId } from 'selectors/experienceSelector';
 import {
@@ -43,7 +43,7 @@ const useInterviewExperiencesBoxSelector = (pageName, query) => {
     [pageName, jobTitle, start, limit, sortBy],
   );
   // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
-  const rawBox = useKeepPreviousBox(useSelector(selector), pageName);
+  const rawBox = usePreviousBox(useSelector(selector), pageName);
   return useCallback(
     state => {
       if (rawBox.data) {

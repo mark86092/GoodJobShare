@@ -24,8 +24,8 @@ import {
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
-import useKeepPreviousBox from 'hooks/useKeepPreviousBox';
 import usePermission from 'hooks/usePermission';
+import usePreviousBox from 'hooks/usePreviousBox';
 import {
   jobTitleOverviewStatisticsBoxSelectorByName,
   jobTitleSalaryWorktimeBoxSelectorByName,
@@ -87,7 +87,7 @@ const useSalaryWorkTimeBoxSelector = (jobTitle, query) => {
       sortBy,
     ],
   );
-  const box = useKeepPreviousBox(useSelector(selector), jobTitle);
+  const box = usePreviousBox(useSelector(selector), jobTitle);
   return useCallback(() => box, [box]);
 };
 

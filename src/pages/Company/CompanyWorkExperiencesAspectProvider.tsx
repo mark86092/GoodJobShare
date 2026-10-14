@@ -22,8 +22,8 @@ import {
   TabType,
 } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
-import useKeepPreviousBox from 'hooks/useKeepPreviousBox';
 import usePermission from 'hooks/usePermission';
+import usePreviousBox from 'hooks/usePreviousBox';
 import { RootState } from 'reducers';
 import { CompanyAspectExperienceResult } from 'reducers/companyIndex';
 import {
@@ -60,7 +60,7 @@ const useWorkExperiencesAspectExperiencesBoxSelector = (
     [pageName, aspect, rating, start, limit],
   );
   // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
-  const rawBox = useKeepPreviousBox(useSelector(selector), pageName);
+  const rawBox = usePreviousBox(useSelector(selector), pageName);
   return useCallback(
     (state: RootState): FetchBox<CompanyAspectExperienceResult | null> => {
       if (rawBox.data) {
