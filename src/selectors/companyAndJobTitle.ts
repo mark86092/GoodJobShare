@@ -26,7 +26,7 @@ import {
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
 import { EsgYearStatistics } from 'utils/esgYearUtils';
-import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
+import FetchBox, { getUnfetched } from 'utils/fetchBox';
 import toQueryKey from 'utils/queryKey';
 
 export const companyIndexesBoxSelectorAtPage = (page: number) => (
@@ -35,8 +35,9 @@ export const companyIndexesBoxSelectorAtPage = (page: number) => (
   state.companyIndex.indexesByPage[page] || getUnfetched();
 
 export const companiesCountSelector = (state: RootState): number => {
-  const indexCountBox = state.companyIndex.indexCountBox;
-  return isFetched(indexCountBox) ? indexCountBox.data : 0;
+  // 換頁重抓時 box 為 FETCHING 但仍保有上次的 data，總數沿用以免分頁列縮成 0
+  const { data } = state.companyIndex.indexCountBox;
+  return data === undefined ? 0 : data;
 };
 
 export const companyRatingStatisticsBoxSelectorByName = (
@@ -141,8 +142,9 @@ export const jobTitleIndexesBoxSelectorAtPage = (page: number) => (
   state.jobTitleIndex.indexesByPage[page] || getUnfetched();
 
 export const jobTitlesCountSelector = (state: RootState): number => {
-  const indexCountBox = state.jobTitleIndex.indexCountBox;
-  return isFetched(indexCountBox) ? indexCountBox.data : 0;
+  // 換頁重抓時 box 為 FETCHING 但仍保有上次的 data，總數沿用以免分頁列縮成 0
+  const { data } = state.jobTitleIndex.indexCountBox;
+  return data === undefined ? 0 : data;
 };
 
 export const jobTitleOverviewBoxSelectorByName = (jobTitle: string) => (

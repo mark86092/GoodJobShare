@@ -2,15 +2,15 @@ import React, { Fragment } from 'react';
 
 import { CompanyInIndex } from 'apis/queryCompanies';
 import { JobTitleInIndex } from 'apis/queryJobTitles';
-import Loader from 'common/Loader';
 import Pagination from 'common/Pagination';
+import BoxRenderer from 'common/StatusRenderer';
 import {
   generatePageURL,
   PAGE_SIZE,
   PageType,
   pageTypeTranslation,
 } from 'constants/companyJobTitle';
-import FetchBox, { isFetched } from 'utils/fetchBox';
+import FetchBox from 'utils/fetchBox';
 
 import CompanyJobTitleBlock from '../CompanyJobTitleBlock';
 import IndexHelmet from './IndexHelmet';
@@ -41,37 +41,38 @@ const IndexList: React.FC<IndexListProps> = ({
   page,
   getPageLink,
 }) => {
-  if (!isFetched(indexesBox)) {
-    return <Loader />;
-  }
-
   return (
-    <Fragment>
-      <IndexHelmet pageType={pageType} page={page} />
-      <div className={styles.container}>
-        <div className={styles.title}>
-          所有{pageTypeTranslation[pageType]}資料 - 第 {page} 頁
-        </div>
-        <div className={styles.index}>
-          {indexesBox.data.map((pageIndex, i) => (
-            <CompanyJobTitleBlock
-              key={i}
-              pageType={pageType}
-              name={pageIndex.name}
-              businessNumber={businessNumberOf(pageIndex)}
-              dataCount={dataCountOf(pageIndex)}
-              to={generatePageURL({ pageType, pageName: pageIndex.name })}
+    <BoxRenderer
+      box={indexesBox}
+      render={(indexes): React.ReactNode => (
+        <Fragment>
+          <IndexHelmet pageType={pageType} page={page} />
+          <div className={styles.container}>
+            <div className={styles.title}>
+              所有{pageTypeTranslation[pageType]}資料 - 第 {page} 頁
+            </div>
+            <div className={styles.index}>
+              {indexes.map((pageIndex, i) => (
+                <CompanyJobTitleBlock
+                  key={i}
+                  pageType={pageType}
+                  name={pageIndex.name}
+                  businessNumber={businessNumberOf(pageIndex)}
+                  dataCount={dataCountOf(pageIndex)}
+                  to={generatePageURL({ pageType, pageName: pageIndex.name })}
+                />
+              ))}
+            </div>
+            <Pagination
+              totalCount={totalCount}
+              unit={PAGE_SIZE}
+              currentPage={page}
+              createPageLinkTo={getPageLink}
             />
-          ))}
-        </div>
-        <Pagination
-          totalCount={totalCount}
-          unit={PAGE_SIZE}
-          currentPage={page}
-          createPageLinkTo={getPageLink}
-        />
-      </div>
-    </Fragment>
+          </div>
+        </Fragment>
+      )}
+    />
   );
 };
 
