@@ -1,7 +1,12 @@
 import { renderHook, RenderHookResult } from '@testing-library/react-hooks';
 
 import { FetchStatus } from 'constants/fetchStatus';
-import FetchBox, { getFetched, getUnfetched, toFetching } from 'utils/fetchBox';
+import FetchBox, {
+  getError,
+  getFetched,
+  getUnfetched,
+  toFetching,
+} from 'utils/fetchBox';
 
 import useKeepPreviousBox from './useKeepPreviousBox';
 
@@ -24,6 +29,25 @@ describe('useKeepPreviousBox', () => {
     rerender({ box: toFetching<string>(), scope: 'x' });
     expect(result.current).toEqual({
       status: FetchStatus.FETCHING,
+      data: 'a',
+    });
+  });
+
+  it('treats an unfetched box as fetching when previous data is kept', () => {
+    const { result, rerender } = setup({ box: getFetched('a'), scope: 'x' });
+    rerender({ box: getUnfetched<string>(), scope: 'x' });
+    expect(result.current).toEqual({
+      status: FetchStatus.FETCHING,
+      data: 'a',
+    });
+  });
+
+  it('keeps error status when keeping previous data', () => {
+    const { result, rerender } = setup({ box: getFetched('a'), scope: 'x' });
+    rerender({ box: getError<string>('oops'), scope: 'x' });
+    expect(result.current).toEqual({
+      status: FetchStatus.ERROR,
+      error: 'oops',
       data: 'a',
     });
   });
