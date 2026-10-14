@@ -28,6 +28,7 @@ import {
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
+import useKeepPreviousBox from 'hooks/useKeepPreviousBox';
 import usePermission from 'hooks/usePermission';
 import {
   companyEsgSalaryDataBoxSelectorByName,
@@ -61,12 +62,14 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
   return useSelector(selector);
 };
 
+// 換查詢參數時，新 key 的 box 還沒資料，先沿用同公司上一次的資料避免閃 Loader
 const useSalaryWorkTimeBoxSelector = (companyName, queryKey) => {
-  return useCallback(
-    state =>
-      companySalaryWorkTimeBoxSelectorByName(companyName, queryKey)(state),
+  const selector = useMemo(
+    () => companySalaryWorkTimeBoxSelectorByName(companyName, queryKey),
     [companyName, queryKey],
   );
+  const box = useKeepPreviousBox(useSelector(selector), companyName);
+  return useCallback(() => box, [box]);
 };
 
 const useEsgSalaryDataBox = companyName => {
