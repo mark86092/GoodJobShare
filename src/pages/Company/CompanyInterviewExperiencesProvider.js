@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   queryCompanyInterviewExperiences,
@@ -16,6 +16,7 @@ import {
 } from 'components/CompanyAndJobTitle/Sorter';
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
+import useKeepPreviousBox from 'hooks/useKeepPreviousBox';
 import usePermission from 'hooks/usePermission';
 import { companyInterviewExperiencesBoxSelectorByName } from 'selectors/companyAndJobTitle';
 import { experienceBoxSelectorAtId } from 'selectors/experienceSelector';
@@ -23,33 +24,44 @@ import {
   pageFromQuerySelector,
   queryFromQuerySelector,
 } from 'selectors/routing';
-import { getFetched, isFetched } from 'utils/fetchBox';
 
 import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
 import { useTopNJobTitles } from './useTopNJobTitles';
 
-const useInterviewExperiencesBoxSelector = companyName => {
+const useInterviewExperiencesBoxSelector = (pageName, query) => {
+  const { jobTitle, start, limit, sortBy } = query;
+  const selector = useMemo(
+    () =>
+      companyInterviewExperiencesBoxSelectorByName(pageName, {
+        jobTitle,
+        start,
+        limit,
+        sortBy,
+      }),
+    [pageName, jobTitle, start, limit, sortBy],
+  );
+  // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
+  const rawBox = useKeepPreviousBox(useSelector(selector), pageName);
   return useCallback(
     state => {
-      const box = companyInterviewExperiencesBoxSelectorByName(companyName)(
-        state,
-      );
-      if (isFetched(box) && box.data) {
+      if (rawBox.data) {
         // Get experience data from state.experiences, which serves
         // as the source of truth of experiences.
-        const data = {
-          ...box.data,
-          interviewExperiences: box.data.interviewExperiences.map(
-            e => experienceBoxSelectorAtId(e.id)(state).data || e,
-          ),
+        return {
+          ...rawBox,
+          data: {
+            ...rawBox.data,
+            interviewExperiences: rawBox.data.interviewExperiences.map(
+              e => experienceBoxSelectorAtId(e.id)(state).data || e,
+            ),
+          },
         };
-        return getFetched(data);
       }
-      return box;
+      return rawBox;
     },
-    [companyName],
+    [rawBox],
   );
 };
 
@@ -88,7 +100,12 @@ const CompanyInterviewExperiencesProvider = () => {
     fetchPermission();
   }, [pageType, companyName, fetchPermission]);
 
-  const boxSelector = useInterviewExperiencesBoxSelector(companyName);
+  const boxSelector = useInterviewExperiencesBoxSelector(companyName, {
+    jobTitle: jobTitle || undefined,
+    start,
+    limit,
+    sortBy,
+  });
 
   const topNJobTitles = useTopNJobTitles(companyName);
 

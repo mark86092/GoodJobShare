@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   queryCompanyWorkExperiencesAspectExperiences,
@@ -22,10 +22,12 @@ import {
   TabType,
 } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
+import useKeepPreviousBox from 'hooks/useKeepPreviousBox';
 import usePermission from 'hooks/usePermission';
 import { RootState } from 'reducers';
 import { CompanyAspectExperienceResult } from 'reducers/companyIndex';
 import {
+  CompanyAspectExperiencesQuery,
   companyWorkExperiencesAspectExperiencesBoxSelectorByName as workExperiencesAspectExperiencesBoxSelectorByName,
   companyWorkExperiencesAspectStatisticsBoxSelectorByName as workExperiencesAspectStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
@@ -35,7 +37,7 @@ import {
   ratingFromQuerySelector,
 } from 'selectors/routing';
 import { ServerSideRender } from 'types/serverSideRender';
-import FetchBox, { getFetched, isFetched } from 'utils/fetchBox';
+import FetchBox from 'utils/fetchBox';
 
 import { aspectSelector, useAspectSlugParam } from './useAspectParam';
 import useCompanyNameParam, {
@@ -44,29 +46,42 @@ import useCompanyNameParam, {
 
 const useWorkExperiencesAspectExperiencesBoxSelector = (
   pageName: string,
+  query: CompanyAspectExperiencesQuery,
 ): ((state: RootState) => FetchBox<CompanyAspectExperienceResult | null>) => {
+  const { aspect, rating, start, limit } = query;
+  const selector = useMemo(
+    () =>
+      workExperiencesAspectExperiencesBoxSelectorByName(pageName, {
+        aspect,
+        rating,
+        start,
+        limit,
+      }),
+    [pageName, aspect, rating, start, limit],
+  );
+  // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
+  const rawBox = useKeepPreviousBox(useSelector(selector), pageName);
   return useCallback(
     (state: RootState): FetchBox<CompanyAspectExperienceResult | null> => {
-      const box = workExperiencesAspectExperiencesBoxSelectorByName(pageName)(
-        state,
-      );
-      if (isFetched(box) && box.data) {
+      if (rawBox.data) {
         // Get experience data from state.experiences, which serves
         // as the source of truth of experiences.
         const data: CompanyAspectExperienceResult = {
-          ...box.data,
-          workExperiences: box.data.workExperiences.map((e: WorkExperience) => {
-            const cached = experienceBoxSelectorAtId(e.id)(state).data;
-            // experienceById is keyed across all experience types, so narrow
-            // back to WorkExperience before using the cached copy.
-            return cached && cached.type === ExperienceType.WORK ? cached : e;
-          }),
+          ...rawBox.data,
+          workExperiences: rawBox.data.workExperiences.map(
+            (e: WorkExperience) => {
+              const cached = experienceBoxSelectorAtId(e.id)(state).data;
+              // experienceById is keyed across all experience types, so narrow
+              // back to WorkExperience before using the cached copy.
+              return cached && cached.type === ExperienceType.WORK ? cached : e;
+            },
+          ),
         };
-        return getFetched(data);
+        return { ...rawBox, data };
       }
-      return box;
+      return rawBox;
     },
-    [pageName],
+    [rawBox],
   );
 };
 
@@ -113,6 +128,7 @@ const CompanyWorkExperiencesAspectPage: React.FC<{ aspect: Aspect }> = ({
 
   const experiencesBoxSelector = useWorkExperiencesAspectExperiencesBoxSelector(
     companyName,
+    { aspect, rating, start, limit },
   );
 
   return (

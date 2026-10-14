@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   queryCompanyWorkExperiences,
@@ -16,6 +16,7 @@ import {
 import WorkExperiences from 'components/CompanyAndJobTitle/WorkExperiences';
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
+import useKeepPreviousBox from 'hooks/useKeepPreviousBox';
 import usePermission from 'hooks/usePermission';
 import { companyWorkExperiencesBoxSelectorByName as workExperiencesBoxSelectorByName } from 'selectors/companyAndJobTitle';
 import { experienceBoxSelectorAtId } from 'selectors/experienceSelector';
@@ -23,30 +24,43 @@ import {
   pageFromQuerySelector,
   queryFromQuerySelector,
 } from 'selectors/routing';
-import { getFetched, isFetched } from 'utils/fetchBox';
 
 import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
 
-const useWorkExperiencesBoxSelector = pageName => {
+const useWorkExperiencesBoxSelector = (pageName, query) => {
+  const { jobTitle, start, limit, sortBy } = query;
+  const selector = useMemo(
+    () =>
+      workExperiencesBoxSelectorByName(pageName, {
+        jobTitle,
+        start,
+        limit,
+        sortBy,
+      }),
+    [pageName, jobTitle, start, limit, sortBy],
+  );
+  // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
+  const rawBox = useKeepPreviousBox(useSelector(selector), pageName);
   return useCallback(
     state => {
-      const box = workExperiencesBoxSelectorByName(pageName)(state);
-      if (isFetched(box) && box.data) {
+      if (rawBox.data) {
         // Get experience data from state.experiences, which serves
         // as the source of truth of experiences.
-        const data = {
-          ...box.data,
-          workExperiences: box.data.workExperiences.map(
-            e => experienceBoxSelectorAtId(e.id)(state).data || e,
-          ),
+        return {
+          ...rawBox,
+          data: {
+            ...rawBox.data,
+            workExperiences: rawBox.data.workExperiences.map(
+              e => experienceBoxSelectorAtId(e.id)(state).data || e,
+            ),
+          },
         };
-        return getFetched(data);
       }
-      return box;
+      return rawBox;
     },
-    [pageName],
+    [rawBox],
   );
 };
 
@@ -85,7 +99,12 @@ const CompanyWorkExperiencesProvider = () => {
     fetchPermission();
   }, [pageType, companyName, fetchPermission]);
 
-  const boxSelector = useWorkExperiencesBoxSelector(companyName);
+  const boxSelector = useWorkExperiencesBoxSelector(companyName, {
+    jobTitle: jobTitle || undefined,
+    start,
+    limit,
+    sortBy,
+  });
 
   return (
     <CompanyAndJobTitleWrapper

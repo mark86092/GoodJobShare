@@ -8,6 +8,7 @@ import {
   ExperienceInYearRange,
   OvertimeStats,
 } from 'apis/salaryWorkTime';
+import { Aspect } from 'constants/companyJobTitle';
 import { RootState } from 'reducers';
 import {
   AspectStatisticsDataInIndex,
@@ -28,6 +29,39 @@ import {
 import { EsgYearStatistics } from 'utils/esgYearUtils';
 import FetchBox, { getUnfetched } from 'utils/fetchBox';
 import toQueryKey from 'utils/queryKey';
+
+export type CompanyExperiencesQuery = {
+  jobTitle?: string;
+  start: number;
+  limit: number;
+  sortBy?: string;
+};
+
+export type CompanyAspectExperiencesQuery = {
+  aspect: Aspect;
+  rating: number | null;
+  start: number;
+  limit: number;
+};
+
+export type JobTitleExperiencesQuery = {
+  companyName?: string;
+  start: number;
+  limit: number;
+  sortBy?: string;
+};
+
+export const getCompanyExperiencesQueryKey = (
+  query: CompanyExperiencesQuery,
+): string => toQueryKey({ ...query });
+
+export const getCompanyAspectExperiencesQueryKey = (
+  query: CompanyAspectExperiencesQuery,
+): string => toQueryKey({ ...query });
+
+export const getJobTitleExperiencesQueryKey = (
+  query: JobTitleExperiencesQuery,
+): string => toQueryKey({ ...query });
 
 export const companyIndexesBoxSelectorAtPage = (page: number) => (
   state: RootState,
@@ -111,13 +145,19 @@ export const companyEsgSalaryDataBoxSelectorByName = (companyName: string) => (
 
 export const companyInterviewExperiencesBoxSelectorByName = (
   companyName: string,
+  query: CompanyExperiencesQuery,
 ) => (state: RootState): FetchBox<CompanyInterviewExperienceResult | null> =>
-  state.companyIndex.interviewExperiencesByName[companyName] || getUnfetched();
+  (state.companyIndex.interviewExperiencesByName[companyName] || {})[
+    getCompanyExperiencesQueryKey(query)
+  ] || getUnfetched();
 
 export const companyWorkExperiencesBoxSelectorByName = (
   companyName: string,
+  query: CompanyExperiencesQuery,
 ) => (state: RootState): FetchBox<CompanyWorkExperienceResult | null> =>
-  state.companyIndex.workExperiencesByName[companyName] || getUnfetched();
+  (state.companyIndex.workExperiencesByName[companyName] || {})[
+    getCompanyExperiencesQueryKey(query)
+  ] || getUnfetched();
 
 export const companyWorkExperiencesAspectStatisticsBoxSelectorByName = (
   companyName: string,
@@ -127,9 +167,10 @@ export const companyWorkExperiencesAspectStatisticsBoxSelectorByName = (
 
 export const companyWorkExperiencesAspectExperiencesBoxSelectorByName = (
   companyName: string,
+  query: CompanyAspectExperiencesQuery,
 ) => (state: RootState): FetchBox<CompanyAspectExperienceResult | null> =>
-  state.companyIndex.workExperiencesAspectExperiencesByName[companyName] ||
-  getUnfetched();
+  (state.companyIndex.workExperiencesAspectExperiencesByName[companyName] ||
+    {})[getCompanyAspectExperiencesQueryKey(query)] || getUnfetched();
 
 export const companyIsSubscribedBoxSelectorByName = (companyName: string) => (
   state: RootState,
@@ -201,10 +242,16 @@ export const jobTitleSalaryWorkTimeStatisticsBoxSelectorByName = (
 
 export const jobTitleInterviewExperiencesBoxSelectorByName = (
   jobTitle: string,
+  query: JobTitleExperiencesQuery,
 ) => (state: RootState): FetchBox<JobTitleInterviewExperienceResult | null> =>
-  state.jobTitleIndex.interviewExperiencesByName[jobTitle] || getUnfetched();
+  (state.jobTitleIndex.interviewExperiencesByName[jobTitle] || {})[
+    getJobTitleExperiencesQueryKey(query)
+  ] || getUnfetched();
 
-export const jobTitleWorkExperiencesBoxSelectorByName = (jobTitle: string) => (
-  state: RootState,
-): FetchBox<JobTitleWorkExperienceResult | null> =>
-  state.jobTitleIndex.workExperiencesByName[jobTitle] || getUnfetched();
+export const jobTitleWorkExperiencesBoxSelectorByName = (
+  jobTitle: string,
+  query: JobTitleExperiencesQuery,
+) => (state: RootState): FetchBox<JobTitleWorkExperienceResult | null> =>
+  (state.jobTitleIndex.workExperiencesByName[jobTitle] || {})[
+    getJobTitleExperiencesQueryKey(query)
+  ] || getUnfetched();
