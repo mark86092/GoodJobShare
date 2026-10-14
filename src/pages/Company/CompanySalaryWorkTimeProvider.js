@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  getSalaryWorkTimeQueryKey,
   queryCompanyEsgSalaryData,
   queryCompanyOverviewStatistics,
   queryCompanySalaryWorkTime,
@@ -63,10 +62,37 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
 };
 
 // 換查詢參數時，新 key 的 box 還沒資料，先沿用同公司上一次的資料避免閃 Loader
-const useSalaryWorkTimeBoxSelector = (companyName, queryKey) => {
+const useSalaryWorkTimeBoxSelector = (companyName, query) => {
+  const {
+    jobTitle,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  } = query;
   const selector = useMemo(
-    () => companySalaryWorkTimeBoxSelectorByName(companyName, queryKey),
-    [companyName, queryKey],
+    () =>
+      companySalaryWorkTimeBoxSelectorByName(companyName, {
+        jobTitle,
+        start,
+        limit,
+        dataTimeRange,
+        experienceInYearRange,
+        gender,
+        sortBy,
+      }),
+    [
+      companyName,
+      jobTitle,
+      start,
+      limit,
+      dataTimeRange,
+      experienceInYearRange,
+      gender,
+      sortBy,
+    ],
   );
   const box = useKeepPreviousBox(useSelector(selector), companyName);
   return useCallback(() => box, [box]);
@@ -180,7 +206,7 @@ const CompanySalaryWorkTimeProvider = () => {
   const topNJobTitles = useTopNJobTitles(companyName);
   const esgSalaryDataBox = useEsgSalaryDataBox(companyName);
 
-  const queryKey = getSalaryWorkTimeQueryKey({
+  const boxSelector = useSalaryWorkTimeBoxSelector(companyName, {
     jobTitle: jobTitle || undefined,
     start,
     limit,
@@ -189,7 +215,6 @@ const CompanySalaryWorkTimeProvider = () => {
     gender: gender || undefined,
     sortBy: sortBy || undefined,
   });
-  const boxSelector = useSalaryWorkTimeBoxSelector(companyName, queryKey);
 
   return (
     <CompanyAndJobTitleWrapper

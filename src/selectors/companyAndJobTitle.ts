@@ -3,7 +3,11 @@ import { CompanyIsSubscribed } from 'apis/queryCompanyIsSubscribed';
 import { RatingStatistics } from 'apis/queryCompanyRatingStatistics';
 import { TopNJobTitles } from 'apis/queryCompanyTopNJobTitles';
 import { JobTitleInIndex } from 'apis/queryJobTitles';
-import { OvertimeStats } from 'apis/salaryWorkTime';
+import {
+  DataTimeRange,
+  ExperienceInYearRange,
+  OvertimeStats,
+} from 'apis/salaryWorkTime';
 import { RootState } from 'reducers';
 import {
   AspectStatisticsDataInIndex,
@@ -23,6 +27,7 @@ import {
 } from 'reducers/jobTitleIndex';
 import { EsgYearStatistics } from 'utils/esgYearUtils';
 import FetchBox, { getUnfetched, isFetched } from 'utils/fetchBox';
+import toQueryKey from 'utils/queryKey';
 
 export const companyIndexesBoxSelectorAtPage = (page: number) => (
   state: RootState,
@@ -49,12 +54,43 @@ export const companyOverviewStatisticsBoxSelectorByName = (
 ) => (state: RootState): FetchBox<CompanyOverviewStatistics | null> =>
   state.companyIndex.overviewStatisticsByName[companyName] || getUnfetched();
 
+export type CompanySalaryWorkTimeQuery = {
+  jobTitle?: string;
+  start: number;
+  limit: number;
+  dataTimeRange?: DataTimeRange;
+  experienceInYearRange?: ExperienceInYearRange;
+  gender?: string;
+  sortBy?: string;
+};
+
+// 每組查詢參數各自一個 box，不同參數的請求互不覆蓋、互不跳過
+export const getCompanySalaryWorkTimeQueryKey = ({
+  jobTitle,
+  start,
+  limit,
+  dataTimeRange,
+  experienceInYearRange,
+  gender,
+  sortBy,
+}: CompanySalaryWorkTimeQuery): string =>
+  toQueryKey({
+    jobTitle,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  });
+
 export const companySalaryWorkTimeBoxSelectorByName = (
   companyName: string,
-  queryKey: string,
+  query: CompanySalaryWorkTimeQuery,
 ) => (state: RootState): FetchBox<CompanySalaryWorkTimeResult | null> =>
-  (state.companyIndex.timeAndSalaryByName[companyName] || {})[queryKey] ||
-  getUnfetched();
+  (state.companyIndex.timeAndSalaryByName[companyName] || {})[
+    getCompanySalaryWorkTimeQueryKey(query)
+  ] || getUnfetched();
 
 export const companySalaryWorkTimeStatisticsBoxSelectorByName = (
   companyName: string,

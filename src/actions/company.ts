@@ -19,11 +19,7 @@ import queryCompanyTopNJobTitlesApi, {
   TopNJobTitles,
 } from 'apis/queryCompanyTopNJobTitles';
 import queryCompanyWorkExperiencesApi from 'apis/queryCompanyWorkExperiences';
-import {
-  DataTimeRange,
-  ExperienceInYearRange,
-  OvertimeStats,
-} from 'apis/salaryWorkTime';
+import { OvertimeStats } from 'apis/salaryWorkTime';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
 import {
@@ -52,11 +48,13 @@ import {
   companyOverviewStatisticsBoxSelectorByName,
   companyRatingStatisticsBoxSelectorByName,
   companySalaryWorkTimeBoxSelectorByName,
+  CompanySalaryWorkTimeQuery,
   companySalaryWorkTimeStatisticsBoxSelectorByName,
   companyTopNJobTitlesBoxSelectorByName,
   companyWorkExperiencesAspectExperiencesBoxSelectorByName,
   companyWorkExperiencesAspectStatisticsBoxSelectorByName,
   companyWorkExperiencesBoxSelectorByName,
+  getCompanySalaryWorkTimeQueryKey,
 } from 'selectors/companyAndJobTitle';
 import { isGraphqlError } from 'utils/errors';
 import { EsgYearStatistics, toEsgYearStatisticsList } from 'utils/esgYearUtils';
@@ -67,7 +65,6 @@ import FetchBox, {
   isFetching,
   toFetching,
 } from 'utils/fetchBox';
-import toQueryKey from 'utils/queryKey';
 
 import { setExperience } from './experience';
 
@@ -291,34 +288,6 @@ const setSalaryWorkTime = (
   box,
 });
 
-// 每組查詢參數各自一個 box，不同參數的請求互不覆蓋、互不跳過
-export const getSalaryWorkTimeQueryKey = ({
-  jobTitle,
-  start,
-  limit,
-  dataTimeRange,
-  experienceInYearRange,
-  gender,
-  sortBy,
-}: {
-  jobTitle?: string;
-  start: number;
-  limit: number;
-  dataTimeRange?: DataTimeRange;
-  experienceInYearRange?: ExperienceInYearRange;
-  gender?: string;
-  sortBy?: string;
-}): string =>
-  toQueryKey({
-    jobTitle,
-    start,
-    limit,
-    dataTimeRange,
-    experienceInYearRange,
-    gender,
-    sortBy,
-  });
-
 const setInterviewExperiences = (
   companyName: string,
   box: FetchBox<CompanyInterviewExperienceResult | null>,
@@ -338,19 +307,10 @@ export const queryCompanySalaryWorkTime = (
     experienceInYearRange,
     gender,
     sortBy,
-  }: {
-    companyName: string;
-    jobTitle?: string;
-    start: number;
-    limit: number;
-    dataTimeRange?: DataTimeRange;
-    experienceInYearRange?: ExperienceInYearRange;
-    gender?: string;
-    sortBy?: string;
-  },
+  }: { companyName: string } & CompanySalaryWorkTimeQuery,
   { force = false }: { force?: boolean } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const queryKey = getSalaryWorkTimeQueryKey({
+  const queryKey = getCompanySalaryWorkTimeQueryKey({
     jobTitle,
     start,
     limit,
@@ -359,9 +319,15 @@ export const queryCompanySalaryWorkTime = (
     gender,
     sortBy,
   });
-  const box = companySalaryWorkTimeBoxSelectorByName(companyName, queryKey)(
-    getState(),
-  );
+  const box = companySalaryWorkTimeBoxSelectorByName(companyName, {
+    jobTitle,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  })(getState());
   if (!force && (isFetching(box) || isFetched(box))) {
     return;
   }
