@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+  getSalaryWorkTimeQueryKey,
   queryCompanyEsgSalaryData,
   queryCompanyOverviewStatistics,
   queryCompanySalaryWorkTime,
@@ -60,15 +61,11 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
   return useSelector(selector);
 };
 
-const useSalaryWorkTimeBoxSelector = companyName => {
+const useSalaryWorkTimeBoxSelector = (companyName, queryKey) => {
   return useCallback(
-    state => {
-      const company = companySalaryWorkTimeBoxSelectorByName(companyName)(
-        state,
-      );
-      return company;
-    },
-    [companyName],
+    state =>
+      companySalaryWorkTimeBoxSelectorByName(companyName, queryKey)(state),
+    [companyName, queryKey],
   );
 };
 
@@ -180,7 +177,16 @@ const CompanySalaryWorkTimeProvider = () => {
   const topNJobTitles = useTopNJobTitles(companyName);
   const esgSalaryDataBox = useEsgSalaryDataBox(companyName);
 
-  const boxSelector = useSalaryWorkTimeBoxSelector(companyName);
+  const queryKey = getSalaryWorkTimeQueryKey({
+    jobTitle: jobTitle || undefined,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender: gender || undefined,
+    sortBy: sortBy || undefined,
+  });
+  const boxSelector = useSalaryWorkTimeBoxSelector(companyName, queryKey);
 
   return (
     <CompanyAndJobTitleWrapper

@@ -127,9 +127,10 @@ type State = {
     string,
     FetchBox<CompanyOverviewStatistics | null>
   >;
+  // companyName --> queryKey --> box
   timeAndSalaryByName: Record<
     string,
-    FetchBox<CompanySalaryWorkTimeResult | null>
+    Record<string, FetchBox<CompanySalaryWorkTimeResult | null>>
   >;
   timeAndSalaryStatisticsByName: Record<string, FetchBox<OvertimeStats | null>>;
   interviewExperiencesByName: Record<
@@ -240,9 +241,11 @@ const reducer = createReducer(preloadedState, {
     state,
     {
       companyName,
+      queryKey,
       box,
     }: {
       companyName: string;
+      queryKey: string;
       box: FetchBox<CompanySalaryWorkTimeResult | null>;
     },
   ) => {
@@ -250,7 +253,10 @@ const reducer = createReducer(preloadedState, {
       ...state,
       timeAndSalaryByName: {
         ...state.timeAndSalaryByName,
-        [companyName]: box,
+        [companyName]: {
+          ...state.timeAndSalaryByName[companyName],
+          [queryKey]: box,
+        },
       },
     };
   },

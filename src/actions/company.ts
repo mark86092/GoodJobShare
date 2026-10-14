@@ -1,4 +1,3 @@
-import R from 'ramda';
 import { AnyAction } from 'redux';
 
 import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
@@ -68,6 +67,7 @@ import FetchBox, {
   isFetching,
   toFetching,
 } from 'utils/fetchBox';
+import toQueryKey from 'utils/queryKey';
 
 import { setExperience } from './experience';
 
@@ -282,12 +282,42 @@ export const queryCompanyOverviewStatistics = (
 
 const setSalaryWorkTime = (
   companyName: string,
+  queryKey: string,
   box: FetchBox<CompanySalaryWorkTimeResult | null>,
 ): AnyAction => ({
   type: SET_SALARY_WORK_TIME,
   companyName,
+  queryKey,
   box,
 });
+
+// 每組查詢參數各自一個 box，不同參數的請求互不覆蓋、互不跳過
+export const getSalaryWorkTimeQueryKey = ({
+  jobTitle,
+  start,
+  limit,
+  dataTimeRange,
+  experienceInYearRange,
+  gender,
+  sortBy,
+}: {
+  jobTitle?: string;
+  start: number;
+  limit: number;
+  dataTimeRange?: DataTimeRange;
+  experienceInYearRange?: ExperienceInYearRange;
+  gender?: string;
+  sortBy?: string;
+}): string =>
+  toQueryKey({
+    jobTitle,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  });
 
 const setInterviewExperiences = (
   companyName: string,
@@ -320,25 +350,23 @@ export const queryCompanySalaryWorkTime = (
   },
   { force = false }: { force?: boolean } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = companySalaryWorkTimeBoxSelectorByName(companyName)(getState());
-  if (
-    !force &&
-    (isFetching(box) ||
-      (isFetched(box) &&
-        box.data &&
-        box.data.name === companyName &&
-        box.data.jobTitle === jobTitle &&
-        box.data.start === start &&
-        box.data.limit === limit &&
-        R.equals(box.data.dataTimeRange, dataTimeRange) &&
-        R.equals(box.data.experienceInYearRange, experienceInYearRange) &&
-        box.data.gender === gender &&
-        box.data.sortBy === sortBy))
-  ) {
+  const queryKey = getSalaryWorkTimeQueryKey({
+    jobTitle,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  });
+  const box = companySalaryWorkTimeBoxSelectorByName(companyName, queryKey)(
+    getState(),
+  );
+  if (!force && (isFetching(box) || isFetched(box))) {
     return;
   }
 
-  dispatch(setSalaryWorkTime(companyName, toFetching(box)));
+  dispatch(setSalaryWorkTime(companyName, queryKey, toFetching(box)));
 
   try {
     const data = await queryCompanySalaryWorkTimeApi({
@@ -354,7 +382,9 @@ export const queryCompanySalaryWorkTime = (
 
     // Not found case
     if (data == null) {
-      return dispatch(setSalaryWorkTime(companyName, getFetched(data)));
+      return dispatch(
+        setSalaryWorkTime(companyName, queryKey, getFetched(data)),
+      );
     }
 
     const salaryWorkTimeData: CompanySalaryWorkTimeResult = {
@@ -370,9 +400,11 @@ export const queryCompanySalaryWorkTime = (
       salaryWorkTimesCount: data.salaryWorkTimesResult.count,
     };
 
-    dispatch(setSalaryWorkTime(companyName, getFetched(salaryWorkTimeData)));
+    dispatch(
+      setSalaryWorkTime(companyName, queryKey, getFetched(salaryWorkTimeData)),
+    );
   } catch (error) {
-    dispatch(setSalaryWorkTime(companyName, getError(error)));
+    dispatch(setSalaryWorkTime(companyName, queryKey, getError(error)));
   }
 };
 
