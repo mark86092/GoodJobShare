@@ -341,7 +341,7 @@ export const queryCompanySalaryWorkTime = (
     return;
   }
 
-  dispatch(setSalaryWorkTime(companyName, toFetching(box)));
+  dispatch(setSalaryWorkTime(companyName, toFetching()));
 
   try {
     const data = await queryCompanySalaryWorkTimeApi({
