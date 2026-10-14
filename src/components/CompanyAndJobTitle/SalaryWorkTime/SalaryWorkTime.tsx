@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { ESGSalaryData } from 'apis/queryCompanyEsgSalaryData';
 import { OvertimeStats } from 'apis/salaryWorkTime';
 import { Wrapper } from 'common/base';
 import { useCreatePageLinkTo } from 'common/Pagination/Pagination';
@@ -15,6 +14,7 @@ import {
   JobTitleOverviewStatistics,
   JobTitleSalaryWorkTimeResult,
 } from 'reducers/jobTitleIndex';
+import { EsgYearStatistics } from 'utils/esgYearUtils';
 import FetchBox from 'utils/fetchBox';
 
 import SummaryBlock from '../Overview/SummaryBlock';
@@ -46,7 +46,7 @@ type Props = {
   page: number;
   pageSize: number;
   onCloseReport: () => void;
-  esgSalaryDataBox: FetchBox<ESGSalaryData | null>;
+  esgSalaryDataBox: FetchBox<EsgYearStatistics[] | null>;
 };
 
 const SalaryWorkTime: React.FC<Props> = ({
@@ -67,7 +67,7 @@ const SalaryWorkTime: React.FC<Props> = ({
         <BoxRenderer
           box={esgSalaryDataBox}
           render={(data): React.ReactNode => {
-            if (!data) return null;
+            if (!data || data.length === 0) return null;
             return (
               <Wrapper size="l">
                 <EsgBlock data={data} />

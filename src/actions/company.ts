@@ -4,9 +4,7 @@ import { AnyAction } from 'redux';
 import { AspectStatisticsData } from 'apis/aspectRatingStatistics';
 import queryCompaniesApi, { CompanyInIndex } from 'apis/queryCompanies';
 import queryCompanyAspectRatingStatisticsApi from 'apis/queryCompanyAspectRatingStatistics';
-import queryCompanyEsgSalaryDataApi, {
-  ESGSalaryData,
-} from 'apis/queryCompanyEsgSalaryData';
+import queryCompanyEsgSalaryDataApi from 'apis/queryCompanyEsgSalaryData';
 import queryCompanyInterviewExperiencesApi from 'apis/queryCompanyInterviewExperiences';
 import queryCompanyIsSubscribedApi, {
   CompanyIsSubscribed,
@@ -29,9 +27,15 @@ import {
 } from 'apis/salaryWorkTime';
 import subscribeCompanyApi from 'apis/subscribeCompany';
 import unsubscribeCompanyApi from 'apis/unsubscribeCompany';
-import { Aspect } from 'constants/companyJobTitle';
-import { Thunk } from 'reducers';
 import {
+  Aspect,
+  aspectFromAPIValue,
+  aspectToAPIValue,
+} from 'constants/companyJobTitle';
+import { AppThunk, Thunk } from 'reducers';
+import {
+  AspectRatingStatisticsInIndex,
+  AspectStatisticsDataInIndex,
   CompanyAspectExperienceResult,
   CompanyInterviewExperienceResult,
   CompanyOverview,
@@ -56,6 +60,7 @@ import {
   companyWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
 import { isGraphqlError } from 'utils/errors';
+import { EsgYearStatistics, toEsgYearStatisticsList } from 'utils/esgYearUtils';
 import FetchBox, {
   getError,
   getFetched,
@@ -113,7 +118,10 @@ export const fetchCompanyNames = ({
   }
 
   dispatch(setIndex(page, toFetching()));
-  dispatch(setIndexCount(toFetching()));
+  // 總數不隨頁碼變，抓過就沿用，不必每次換頁都標成 fetching
+  if (!isFetched(getState().companyIndex.indexCountBox)) {
+    dispatch(setIndexCount(toFetching()));
+  }
 
   try {
     const data = await queryCompaniesApi({
@@ -416,7 +424,7 @@ export const queryCompanySalaryWorkTimeStatistics = ({
 
 const setEsgSalaryData = (
   companyName: string,
-  box: FetchBox<ESGSalaryData | null>,
+  box: FetchBox<EsgYearStatistics[] | null>,
 ): AnyAction => ({
   type: SET_COMPANY_ESG_SALARY_DATA,
   companyName,
@@ -446,7 +454,9 @@ export const queryCompanyEsgSalaryData = ({
       return dispatch(setEsgSalaryData(companyName, getFetched(null)));
     }
 
-    dispatch(setEsgSalaryData(companyName, getFetched(data)));
+    dispatch(
+      setEsgSalaryData(companyName, getFetched(toEsgYearStatisticsList(data))),
+    );
   } catch (error) {
     dispatch(setEsgSalaryData(companyName, getError(error)));
   }
@@ -629,9 +639,25 @@ export const queryCompanyWorkExperiences = ({
   }
 };
 
+// 後端的 aspect 是 wire 值（中文）。在此正規化成 Aspect，store 之後一律是 enum；
+// 未知的值捨棄，不讓它冒充 Aspect
+const normalizeAspectStatistics = (
+  data: AspectStatisticsData | null,
+): AspectStatisticsDataInIndex | null => {
+  if (data === null) return null;
+  const companyAspectRatingStatistics = data.companyAspectRatingStatistics.reduce(
+    (acc: AspectRatingStatisticsInIndex[], stat) => {
+      const aspect = aspectFromAPIValue(stat.aspect);
+      return aspect === undefined ? acc : [...acc, { ...stat, aspect }];
+    },
+    [],
+  );
+  return { ...data, companyAspectRatingStatistics };
+};
+
 const setWorkExperiencesAspectStatistics = (
   companyName: string,
-  box: FetchBox<AspectStatisticsData | null>,
+  box: FetchBox<AspectStatisticsDataInIndex | null>,
 ): AnyAction => ({
   type: SET_WORK_EXPERIENCES_ASPECT_STATISTICS,
   companyName,
@@ -657,7 +683,12 @@ export const queryCompanyWorkExperiencesAspectStatistics = ({
     const data = await queryCompanyAspectRatingStatisticsApi({
       companyName,
     });
-    dispatch(setWorkExperiencesAspectStatistics(companyName, getFetched(data)));
+    dispatch(
+      setWorkExperiencesAspectStatistics(
+        companyName,
+        getFetched(normalizeAspectStatistics(data)),
+      ),
+    );
   } catch (error) {
     dispatch(setWorkExperiencesAspectStatistics(companyName, getError(error)));
   }
@@ -710,7 +741,7 @@ export const queryCompanyWorkExperiencesAspectExperiences = ({
       start,
       limit,
       aspectFilter: {
-        aspect,
+        aspect: aspectToAPIValue(aspect),
         rating: rating === null ? undefined : rating,
       },
     });
@@ -756,7 +787,7 @@ const subscribeCompany = ({
   companyName,
 }: {
   companyName: string;
-}): Thunk => async (dispatch, getState): Promise<unknown> => {
+}): AppThunk<Promise<void>> => async (dispatch, getState) => {
   const state = getState();
   const token = tokenSelector(state);
   const box = companyIsSubscribedBoxSelectorByName(companyName)(state);
@@ -812,7 +843,7 @@ const unsubscribeCompany = ({
   companyName,
 }: {
   companyName: string;
-}): Thunk => async (dispatch, getState): Promise<unknown> => {
+}): AppThunk<Promise<void>> => async (dispatch, getState) => {
   const state = getState();
   const token = tokenSelector(state);
   const box = companyIsSubscribedBoxSelectorByName(companyName)(state);
@@ -868,7 +899,7 @@ export const toggleSubscribeCompany = ({
   companyName,
 }: {
   companyName: string;
-}): Thunk => async (dispatch, getState): Promise<unknown> => {
+}): AppThunk<Promise<void>> => async (dispatch, getState) => {
   const state = getState();
   const box = companyIsSubscribedBoxSelectorByName(companyName)(state);
   if (!isFetched(box) || !box.data) {
@@ -887,7 +918,7 @@ export const queryCompanyIsSubscribed = ({
   companyName,
 }: {
   companyName: string;
-}): Thunk => async (dispatch, getState): Promise<unknown> => {
+}): AppThunk<Promise<void>> => async (dispatch, getState) => {
   const box = companyIsSubscribedBoxSelectorByName(companyName)(getState());
   if (isFetching(box) || isFetched(box)) {
     return;

@@ -11,7 +11,9 @@ export type CompanyOverview = { ... };
 
 // ✓ interface when extension is the intent
 export interface ServerSideRender<Params> { fetchData: ... }
-export interface Thunk<A extends Action> { ... }
+
+// ✓ function types
+export type Thunk<A extends Action> = (dispatch: Dispatch<A>, getState: GetState) => unknown;
 ```
 
 ## Where types live
@@ -24,6 +26,31 @@ Listed by priority — prefer the first location that fits:
 4. **`src/types/`** — cross-cutting types (e.g. `ServerSideRender`)
 
 For API-specific rules see [apis.md](apis.md).
+
+## Placement within a file
+
+Declare types right after the imports and before any logic (constants, functions, components):
+
+Preferred:
+
+```ts
+import React from 'react';
+import { Company } from 'apis/company';
+
+type Props = { company: Company };
+
+const MAX_COUNT = 10;
+
+const CompanyCard = ({ company }: Props) => { ... };
+```
+
+Avoid declaring types after logic has begun:
+
+```ts
+const MAX_COUNT = 10;
+
+type Props = { company: Company };
+```
 
 ## Enums
 

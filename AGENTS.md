@@ -36,7 +36,7 @@ For component naming, file naming, and `index.ts` usage conventions, see [docs/c
 
 ### TypeScript Types
 
-For type definition conventions (`type` vs `interface`, where types live, nullable fields, enums, `unknown` placeholders), see [docs/typescript-types.md](docs/typescript-types.md).
+For type definition conventions (`type` vs `interface`, where types live, placement within a file, nullable fields, enums, `unknown` placeholders), see [docs/typescript-types.md](docs/typescript-types.md).
 
 ### TypeForm 與 Question
 
@@ -45,3 +45,7 @@ For type definition conventions (`type` vs `interface`, where types live, nullab
 ### Server-Side Rendering (SSR) with `fetchData`
 
 Pages that need SSR data fetching attach a static `fetchData` method to the component. See [docs/ssr-fetch-data.md](docs/ssr-fetch-data.md).
+
+### 換頁／換條件時顯示上一筆資料
+
+列表換頁、換篩選時要保留舊內容而不是閃 Loader，見 [docs/previous-box.md](docs/previous-box.md)。
