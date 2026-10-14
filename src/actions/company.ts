@@ -118,8 +118,10 @@ export const fetchCompanyNames = ({
   }
 
   dispatch(setIndex(page, toFetching()));
-  // 帶入現有的總數 box，重抓期間才不會丟掉舊的總數
-  dispatch(setIndexCount(toFetching(getState().companyIndex.indexCountBox)));
+  // 總數不隨頁碼變，抓過就沿用，不必每次換頁都標成 fetching
+  if (!isFetched(getState().companyIndex.indexCountBox)) {
+    dispatch(setIndexCount(toFetching()));
+  }
 
   try {
     const data = await queryCompaniesApi({
@@ -338,7 +340,7 @@ export const queryCompanySalaryWorkTime = (
     return;
   }
 
-  dispatch(setSalaryWorkTime(companyName, queryKey, toFetching(box)));
+  dispatch(setSalaryWorkTime(companyName, queryKey, toFetching()));
 
   try {
     const data = await queryCompanySalaryWorkTimeApi({
