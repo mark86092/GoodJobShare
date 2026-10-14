@@ -24,6 +24,7 @@ import {
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
+import useKeepPreviousBox from 'hooks/useKeepPreviousBox';
 import usePermission from 'hooks/usePermission';
 import {
   jobTitleOverviewStatisticsBoxSelectorByName,
@@ -53,14 +54,41 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
   return useSelector(selector);
 };
 
-const useSalaryWorkTimeBoxSelector = pageName => {
-  return useCallback(
-    state => {
-      const jobTitle = jobTitleSalaryWorktimeBoxSelectorByName(pageName)(state);
-      return jobTitle;
-    },
-    [pageName],
+// 換查詢參數時，新 key 的 box 還沒資料，先沿用同職稱上一次的資料避免閃 Loader
+const useSalaryWorkTimeBoxSelector = (jobTitle, query) => {
+  const {
+    companyName,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  } = query;
+  const selector = useMemo(
+    () =>
+      jobTitleSalaryWorktimeBoxSelectorByName(jobTitle, {
+        companyName,
+        start,
+        limit,
+        dataTimeRange,
+        experienceInYearRange,
+        gender,
+        sortBy,
+      }),
+    [
+      jobTitle,
+      companyName,
+      start,
+      limit,
+      dataTimeRange,
+      experienceInYearRange,
+      gender,
+      sortBy,
+    ],
   );
+  const box = useKeepPreviousBox(useSelector(selector), jobTitle);
+  return useCallback(() => box, [box]);
 };
 
 const JobTitleSalaryWorkTimeProvider = () => {
@@ -135,7 +163,15 @@ const JobTitleSalaryWorkTimeProvider = () => {
     fetchPermission();
   }, [pageType, jobTitle, fetchPermission]);
 
-  const boxSelector = useSalaryWorkTimeBoxSelector(jobTitle);
+  const boxSelector = useSalaryWorkTimeBoxSelector(jobTitle, {
+    companyName: companyName || undefined,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender: gender || undefined,
+    sortBy: sortBy || undefined,
+  });
 
   const statisticsBox = useOverviewStatisticsBox(jobTitle);
   const salaryWorkTimeStatisticsBox = useSalaryWorkTimeStatisticsBox(jobTitle);

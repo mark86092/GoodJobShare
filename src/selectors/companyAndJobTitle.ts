@@ -157,10 +157,42 @@ export const jobTitleOverviewStatisticsBoxSelectorByName = (
 ) => (state: RootState): FetchBox<JobTitleOverviewStatistics | null> =>
   state.jobTitleIndex.overviewStatisticsByName[jobTitle] || getUnfetched();
 
-export const jobTitleSalaryWorktimeBoxSelectorByName = (jobTitle: string) => (
-  state: RootState,
-): FetchBox<JobTitleSalaryWorkTimeResult | null> =>
-  state.jobTitleIndex.timeAndSalaryByName[jobTitle] || getUnfetched();
+export type JobTitleSalaryWorkTimeQuery = {
+  companyName?: string;
+  start: number;
+  limit: number;
+  dataTimeRange?: DataTimeRange;
+  experienceInYearRange?: ExperienceInYearRange;
+  gender?: string;
+  sortBy?: string;
+};
+
+export const getJobTitleSalaryWorkTimeQueryKey = ({
+  companyName,
+  start,
+  limit,
+  dataTimeRange,
+  experienceInYearRange,
+  gender,
+  sortBy,
+}: JobTitleSalaryWorkTimeQuery): string =>
+  toQueryKey({
+    companyName,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  });
+
+export const jobTitleSalaryWorktimeBoxSelectorByName = (
+  jobTitle: string,
+  query: JobTitleSalaryWorkTimeQuery,
+) => (state: RootState): FetchBox<JobTitleSalaryWorkTimeResult | null> =>
+  (state.jobTitleIndex.timeAndSalaryByName[jobTitle] || {})[
+    getJobTitleSalaryWorkTimeQueryKey(query)
+  ] || getUnfetched();
 
 export const jobTitleSalaryWorkTimeStatisticsBoxSelectorByName = (
   jobTitle: string,
