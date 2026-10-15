@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -6,7 +6,7 @@ import {
   queryCompanyWorkExperiencesAspectStatistics,
   queryRatingStatistics,
 } from 'actions/company';
-import { ExperienceType, WorkExperience } from 'apis/experience';
+import { ExperienceType } from 'apis/experience';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
 import CompanyAndJobTitleWrapper from 'components/CompanyAndJobTitle/CompanyAndJobTitleWrapper';
 import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar';
@@ -17,15 +17,14 @@ import {
 import WorkExperiences from 'components/CompanyAndJobTitle/WorkExperiences';
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
+import useBoxWithLatestExperiences from 'hooks/useBoxWithLatestExperiences';
 import usePermission from 'hooks/usePermission';
 import usePreviousBox from 'hooks/usePreviousBox';
-import { RootState } from 'reducers';
 import { CompanyWorkExperienceResult } from 'reducers/companyIndex';
 import {
   CompanyExperiencesQuery,
   companyWorkExperiencesBoxSelectorByName as workExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-import { experienceBoxSelectorAtId } from 'selectors/experienceSelector';
 import {
   pageFromQuerySelector,
   queryFromQuerySelector,
@@ -37,10 +36,10 @@ import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
 
-const useWorkExperiencesBoxSelector = (
+const useWorkExperiencesBox = (
   pageName: string,
   query: CompanyExperiencesQuery,
-): ((state: RootState) => FetchBox<CompanyWorkExperienceResult | null>) => {
+): FetchBox<CompanyWorkExperienceResult | null> => {
   const { jobTitle, start, limit, sortBy } = query;
   const selector = useMemo(
     () =>
@@ -53,32 +52,11 @@ const useWorkExperiencesBoxSelector = (
     [pageName, jobTitle, start, limit, sortBy],
   );
   // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
-  const rawBox = usePreviousBox(useSelector(selector), pageName);
-  return useCallback(
-    (state: RootState): FetchBox<CompanyWorkExperienceResult | null> => {
-      if (rawBox.data) {
-        // Get experience data from state.experiences, which serves
-        // as the source of truth of experiences.
-        return {
-          ...rawBox,
-          data: {
-            ...rawBox.data,
-            workExperiences: rawBox.data.workExperiences.map(
-              (e: WorkExperience) => {
-                const cached = experienceBoxSelectorAtId(e.id)(state).data;
-                // experienceById is keyed across all experience types, so narrow
-                // back to WorkExperience before using the cached copy.
-                return cached && cached.type === ExperienceType.WORK
-                  ? cached
-                  : e;
-              },
-            ),
-          },
-        };
-      }
-      return rawBox;
-    },
-    [rawBox],
+  const box = usePreviousBox(useSelector(selector), pageName);
+  return useBoxWithLatestExperiences(
+    box,
+    'workExperiences',
+    ExperienceType.WORK,
   );
 };
 
@@ -121,7 +99,7 @@ const CompanyWorkExperiencesProvider: React.FC &
     fetchPermission();
   }, [pageType, companyName, fetchPermission]);
 
-  const boxSelector = useWorkExperiencesBoxSelector(companyName, {
+  const workExperiencesBox = useWorkExperiencesBox(companyName, {
     jobTitle: jobTitle || undefined,
     start,
     limit,
@@ -137,7 +115,7 @@ const CompanyWorkExperiencesProvider: React.FC &
       <WorkExperiences
         page={page}
         pageSize={PAGE_SIZE}
-        boxSelector={boxSelector}
+        workExperiencesBox={workExperiencesBox}
       />
     </CompanyAndJobTitleWrapper>
   );

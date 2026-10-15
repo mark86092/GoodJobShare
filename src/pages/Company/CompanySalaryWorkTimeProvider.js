@@ -62,7 +62,7 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
 };
 
 // 換查詢參數時，新 key 的 box 還沒資料，先沿用同公司上一次的資料避免閃 Loader
-const useSalaryWorkTimeBoxSelector = (companyName, query) => {
+const useSalaryWorkTimeBox = (companyName, query) => {
   const {
     jobTitle,
     start,
@@ -95,7 +95,7 @@ const useSalaryWorkTimeBoxSelector = (companyName, query) => {
     ],
   );
   const box = usePreviousBox(useSelector(selector), companyName);
-  return useCallback(() => box, [box]);
+  return box;
 };
 
 const useEsgSalaryDataBox = companyName => {
@@ -206,7 +206,7 @@ const CompanySalaryWorkTimeProvider = () => {
   const topNJobTitles = useTopNJobTitles(companyName);
   const esgSalaryDataBox = useEsgSalaryDataBox(companyName);
 
-  const boxSelector = useSalaryWorkTimeBoxSelector(companyName, {
+  const salaryWorkTimeBox = useSalaryWorkTimeBox(companyName, {
     jobTitle: jobTitle || undefined,
     start,
     limit,
@@ -228,7 +228,7 @@ const CompanySalaryWorkTimeProvider = () => {
         topNJobTitles={topNJobTitles.salary}
         esgSalaryDataBox={esgSalaryDataBox}
         salaryWorkTimeStatisticsBox={salaryWorkTimeStatisticsBox}
-        boxSelector={boxSelector}
+        salaryWorkTimeBox={salaryWorkTimeBox}
         statisticsBox={statisticsBox}
         onCloseReport={() => handleQueryCompanySalaryWorkTime({ force: true })}
       />

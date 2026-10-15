@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
   queryCompanyWorkExperiencesAspectExperiences,
   queryCompanyWorkExperiencesAspectStatistics,
 } from 'actions/company';
-import { ExperienceType, WorkExperience } from 'apis/experience';
+import { ExperienceType } from 'apis/experience';
 import Redirect from 'common/routing/Redirect';
 import { paramsSelector, querySelector } from 'common/routing/selectors';
 import NotFound from 'components/common/NotFound';
@@ -22,16 +22,15 @@ import {
   TabType,
 } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
+import useBoxWithLatestExperiences from 'hooks/useBoxWithLatestExperiences';
 import usePermission from 'hooks/usePermission';
 import usePreviousBox from 'hooks/usePreviousBox';
-import { RootState } from 'reducers';
 import { CompanyAspectExperienceResult } from 'reducers/companyIndex';
 import {
   CompanyAspectExperiencesQuery,
   companyWorkExperiencesAspectExperiencesBoxSelectorByName as workExperiencesAspectExperiencesBoxSelectorByName,
   companyWorkExperiencesAspectStatisticsBoxSelectorByName as workExperiencesAspectStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
-import { experienceBoxSelectorAtId } from 'selectors/experienceSelector';
 import {
   pageFromQuerySelector,
   ratingFromQuerySelector,
@@ -44,10 +43,10 @@ import useCompanyNameParam, {
   companyNameSelector,
 } from './useCompanyNameParam';
 
-const useWorkExperiencesAspectExperiencesBoxSelector = (
+const useWorkExperiencesAspectExperiencesBox = (
   pageName: string,
   query: CompanyAspectExperiencesQuery,
-): ((state: RootState) => FetchBox<CompanyAspectExperienceResult | null>) => {
+): FetchBox<CompanyAspectExperienceResult | null> => {
   const { aspect, rating, start, limit } = query;
   const selector = useMemo(
     () =>
@@ -60,28 +59,11 @@ const useWorkExperiencesAspectExperiencesBoxSelector = (
     [pageName, aspect, rating, start, limit],
   );
   // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
-  const rawBox = usePreviousBox(useSelector(selector), pageName);
-  return useCallback(
-    (state: RootState): FetchBox<CompanyAspectExperienceResult | null> => {
-      if (rawBox.data) {
-        // Get experience data from state.experiences, which serves
-        // as the source of truth of experiences.
-        const data: CompanyAspectExperienceResult = {
-          ...rawBox.data,
-          workExperiences: rawBox.data.workExperiences.map(
-            (e: WorkExperience) => {
-              const cached = experienceBoxSelectorAtId(e.id)(state).data;
-              // experienceById is keyed across all experience types, so narrow
-              // back to WorkExperience before using the cached copy.
-              return cached && cached.type === ExperienceType.WORK ? cached : e;
-            },
-          ),
-        };
-        return { ...rawBox, data };
-      }
-      return rawBox;
-    },
-    [rawBox],
+  const box = usePreviousBox(useSelector(selector), pageName);
+  return useBoxWithLatestExperiences(
+    box,
+    'workExperiences',
+    ExperienceType.WORK,
   );
 };
 
@@ -122,14 +104,18 @@ const CompanyWorkExperiencesAspectPage: React.FC<{ aspect: Aspect }> = ({
     (fetchPermission as () => Promise<void>)();
   }, [pageType, companyName, fetchPermission]);
 
-  const statisticsBoxSelector = workExperiencesAspectStatisticsBoxSelectorByName(
-    companyName,
+  const statisticsSelector = useMemo(
+    () => workExperiencesAspectStatisticsBoxSelectorByName(companyName),
+    [companyName],
   );
+  const statisticsBox = useSelector(statisticsSelector);
 
-  const experiencesBoxSelector = useWorkExperiencesAspectExperiencesBoxSelector(
-    companyName,
-    { aspect, rating, start, limit },
-  );
+  const experiencesBox = useWorkExperiencesAspectExperiencesBox(companyName, {
+    aspect,
+    rating,
+    start,
+    limit,
+  });
 
   return (
     <CompanyAndJobTitleWrapper
@@ -141,8 +127,8 @@ const CompanyWorkExperiencesAspectPage: React.FC<{ aspect: Aspect }> = ({
         aspect={aspect}
         page={page as number}
         pageSize={PAGE_SIZE}
-        statisticsBoxSelector={statisticsBoxSelector}
-        experiencesBoxSelector={experiencesBoxSelector}
+        statisticsBox={statisticsBox}
+        experiencesBox={experiencesBox}
       />
     </CompanyAndJobTitleWrapper>
   );
