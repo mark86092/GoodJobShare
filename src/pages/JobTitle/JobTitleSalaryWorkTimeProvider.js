@@ -25,6 +25,7 @@ import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar'
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
+import usePreviousBox from 'hooks/usePreviousBox';
 import {
   jobTitleOverviewStatisticsBoxSelectorByName,
   jobTitleSalaryWorktimeBoxSelectorByName,
@@ -53,12 +54,41 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
   return useSelector(selector);
 };
 
-const useSalaryWorkTimeBox = pageName => {
+// 換查詢參數時，新 key 的 box 還沒資料，先沿用同職稱上一次的資料避免閃 Loader
+const useSalaryWorkTimeBox = (jobTitle, query) => {
+  const {
+    companyName,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  } = query;
   const selector = useMemo(
-    () => jobTitleSalaryWorktimeBoxSelectorByName(pageName),
-    [pageName],
+    () =>
+      jobTitleSalaryWorktimeBoxSelectorByName(jobTitle, {
+        companyName,
+        start,
+        limit,
+        dataTimeRange,
+        experienceInYearRange,
+        gender,
+        sortBy,
+      }),
+    [
+      jobTitle,
+      companyName,
+      start,
+      limit,
+      dataTimeRange,
+      experienceInYearRange,
+      gender,
+      sortBy,
+    ],
   );
-  return useSelector(selector);
+  const box = usePreviousBox(useSelector(selector), jobTitle);
+  return box;
 };
 
 const JobTitleSalaryWorkTimeProvider = () => {
@@ -133,7 +163,15 @@ const JobTitleSalaryWorkTimeProvider = () => {
     fetchPermission();
   }, [pageType, jobTitle, fetchPermission]);
 
-  const salaryWorkTimeBox = useSalaryWorkTimeBox(jobTitle);
+  const salaryWorkTimeBox = useSalaryWorkTimeBox(jobTitle, {
+    companyName: companyName || undefined,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender: gender || undefined,
+    sortBy: sortBy || undefined,
+  });
 
   const statisticsBox = useOverviewStatisticsBox(jobTitle);
   const salaryWorkTimeStatisticsBox = useSalaryWorkTimeStatisticsBox(jobTitle);

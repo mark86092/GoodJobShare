@@ -19,8 +19,12 @@ import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import useBoxWithLatestExperiences from 'hooks/useBoxWithLatestExperiences';
 import usePermission from 'hooks/usePermission';
+import usePreviousBox from 'hooks/usePreviousBox';
 import { CompanyWorkExperienceResult } from 'reducers/companyIndex';
-import { companyWorkExperiencesBoxSelectorByName as workExperiencesBoxSelectorByName } from 'selectors/companyAndJobTitle';
+import {
+  CompanyExperiencesQuery,
+  companyWorkExperiencesBoxSelectorByName as workExperiencesBoxSelectorByName,
+} from 'selectors/companyAndJobTitle';
 import {
   pageFromQuerySelector,
   queryFromQuerySelector,
@@ -34,11 +38,21 @@ import useCompanyNameParam, {
 
 const useWorkExperiencesBox = (
   pageName: string,
+  query: CompanyExperiencesQuery,
 ): FetchBox<CompanyWorkExperienceResult | null> => {
-  const selector = useMemo(() => workExperiencesBoxSelectorByName(pageName), [
-    pageName,
-  ]);
-  const box = useSelector(selector);
+  const { jobTitle, start, limit, sortBy } = query;
+  const selector = useMemo(
+    () =>
+      workExperiencesBoxSelectorByName(pageName, {
+        jobTitle,
+        start,
+        limit,
+        sortBy,
+      }),
+    [pageName, jobTitle, start, limit, sortBy],
+  );
+  // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
+  const box = usePreviousBox(useSelector(selector), pageName);
   return useBoxWithLatestExperiences(
     box,
     'workExperiences',
@@ -85,7 +99,12 @@ const CompanyWorkExperiencesProvider: React.FC &
     fetchPermission();
   }, [pageType, companyName, fetchPermission]);
 
-  const workExperiencesBox = useWorkExperiencesBox(companyName);
+  const workExperiencesBox = useWorkExperiencesBox(companyName, {
+    jobTitle: jobTitle || undefined,
+    start,
+    limit,
+    sortBy,
+  });
 
   return (
     <CompanyAndJobTitleWrapper
