@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLocalStorage } from 'react-use';
 
-import { postUserFeedback } from 'actions/userFeedback';
+import createUserFeedback from 'apis/createUserFeedback';
 import { LS_USER_FEEDBACK_SUBMISSION_TIME_KEY } from 'constants/localStorageKey';
+import { useToken } from 'hooks/auth';
 
 import AppreciationContent from './AppreciationContent';
 import styles from './ExpandedModal.module.css';
@@ -26,7 +26,7 @@ const ExpandedModal = ({ handleToggleModalOpen }) => {
   const [userFeedback, setUserFeedback] = useState({ [key]: value });
   const isLastQuestion = questionIndex === questionList.length - 1;
   const isCompletedQuestion = questionIndex > questionList.length - 1;
-  const dispatch = useDispatch();
+  const token = useToken();
   const [, setLocalStorageValue] = useLocalStorage(
     LS_USER_FEEDBACK_SUBMISSION_TIME_KEY,
   );
@@ -47,8 +47,8 @@ const ExpandedModal = ({ handleToggleModalOpen }) => {
   const handleSubmit = useCallback(async () => {
     const lastSubmissionTime = new Date().getTime();
     setLocalStorageValue(lastSubmissionTime);
-    await dispatch(postUserFeedback({ ...userFeedback }));
-  }, [dispatch, setLocalStorageValue, userFeedback]);
+    await createUserFeedback({ ...userFeedback, token });
+  }, [setLocalStorageValue, token, userFeedback]);
 
   const handleNext = useCallback(() => {
     if (isLastQuestion) handleSubmit();
