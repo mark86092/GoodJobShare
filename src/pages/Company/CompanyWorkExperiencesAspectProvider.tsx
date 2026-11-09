@@ -24,8 +24,10 @@ import {
 import { usePage } from 'hooks/routing/page';
 import useBoxWithLatestExperiences from 'hooks/useBoxWithLatestExperiences';
 import usePermission from 'hooks/usePermission';
+import usePreviousBox from 'hooks/usePreviousBox';
 import { CompanyAspectExperienceResult } from 'reducers/companyIndex';
 import {
+  CompanyAspectExperiencesQuery,
   companyWorkExperiencesAspectExperiencesBoxSelectorByName as workExperiencesAspectExperiencesBoxSelectorByName,
   companyWorkExperiencesAspectStatisticsBoxSelectorByName as workExperiencesAspectStatisticsBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
@@ -43,12 +45,21 @@ import useCompanyNameParam, {
 
 const useWorkExperiencesAspectExperiencesBox = (
   pageName: string,
+  query: CompanyAspectExperiencesQuery,
 ): FetchBox<CompanyAspectExperienceResult | null> => {
+  const { aspect, rating, start, limit } = query;
   const selector = useMemo(
-    () => workExperiencesAspectExperiencesBoxSelectorByName(pageName),
-    [pageName],
+    () =>
+      workExperiencesAspectExperiencesBoxSelectorByName(pageName, {
+        aspect,
+        rating,
+        start,
+        limit,
+      }),
+    [pageName, aspect, rating, start, limit],
   );
-  const box = useSelector(selector);
+  // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
+  const box = usePreviousBox(useSelector(selector), pageName);
   return useBoxWithLatestExperiences(
     box,
     'workExperiences',
@@ -99,7 +110,12 @@ const CompanyWorkExperiencesAspectPage: React.FC<{ aspect: Aspect }> = ({
   );
   const statisticsBox = useSelector(statisticsSelector);
 
-  const experiencesBox = useWorkExperiencesAspectExperiencesBox(companyName);
+  const experiencesBox = useWorkExperiencesAspectExperiencesBox(companyName, {
+    aspect,
+    rating,
+    start,
+    limit,
+  });
 
   return (
     <CompanyAndJobTitleWrapper

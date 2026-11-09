@@ -63,6 +63,9 @@
     display: inline-block;
     vertical-align: middle;
     font-size: 16px;
+    /* Heading 的 line-height 是 1.4em 算出的固定長度（會被繼承），
+       放在 inline-block 裡會把行高撐高，造成有/無統編的卡片高度不同 */
+    line-height: 1;
     color: #8c8c8c;
     font-weight: 400;
   }

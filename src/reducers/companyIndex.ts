@@ -127,18 +127,19 @@ type State = {
     string,
     FetchBox<CompanyOverviewStatistics | null>
   >;
+  // companyName --> queryKey --> box
   timeAndSalaryByName: Record<
     string,
-    FetchBox<CompanySalaryWorkTimeResult | null>
+    Record<string, FetchBox<CompanySalaryWorkTimeResult | null>>
   >;
   timeAndSalaryStatisticsByName: Record<string, FetchBox<OvertimeStats | null>>;
   interviewExperiencesByName: Record<
     string,
-    FetchBox<CompanyInterviewExperienceResult | null>
+    Record<string, FetchBox<CompanyInterviewExperienceResult | null>>
   >;
   workExperiencesByName: Record<
     string,
-    FetchBox<CompanyWorkExperienceResult | null>
+    Record<string, FetchBox<CompanyWorkExperienceResult | null>>
   >;
   workExperiencesAspectStatisticsByName: Record<
     string,
@@ -146,7 +147,7 @@ type State = {
   >;
   workExperiencesAspectExperiencesByName: Record<
     string,
-    FetchBox<CompanyAspectExperienceResult | null>
+    Record<string, FetchBox<CompanyAspectExperienceResult | null>>
   >;
   isSubscribedByName: Record<string, FetchBox<CompanyIsSubscribed>>;
   topNJobTitlesByName: Record<string, FetchBox<TopNJobTitles | null>>;
@@ -240,9 +241,11 @@ const reducer = createReducer(preloadedState, {
     state,
     {
       companyName,
+      queryKey,
       box,
     }: {
       companyName: string;
+      queryKey: string;
       box: FetchBox<CompanySalaryWorkTimeResult | null>;
     },
   ) => {
@@ -250,7 +253,10 @@ const reducer = createReducer(preloadedState, {
       ...state,
       timeAndSalaryByName: {
         ...state.timeAndSalaryByName,
-        [companyName]: box,
+        [companyName]: {
+          ...state.timeAndSalaryByName[companyName],
+          [queryKey]: box,
+        },
       },
     };
   },
@@ -276,9 +282,11 @@ const reducer = createReducer(preloadedState, {
     state,
     {
       companyName,
+      queryKey,
       box,
     }: {
       companyName: string;
+      queryKey: string;
       box: FetchBox<CompanyInterviewExperienceResult | null>;
     },
   ) => {
@@ -286,7 +294,10 @@ const reducer = createReducer(preloadedState, {
       ...state,
       interviewExperiencesByName: {
         ...state.interviewExperiencesByName,
-        [companyName]: box,
+        [companyName]: {
+          ...state.interviewExperiencesByName[companyName],
+          [queryKey]: box,
+        },
       },
     };
   },
@@ -294,9 +305,11 @@ const reducer = createReducer(preloadedState, {
     state,
     {
       companyName,
+      queryKey,
       box,
     }: {
       companyName: string;
+      queryKey: string;
       box: FetchBox<CompanyWorkExperienceResult | null>;
     },
   ) => {
@@ -304,7 +317,10 @@ const reducer = createReducer(preloadedState, {
       ...state,
       workExperiencesByName: {
         ...state.workExperiencesByName,
-        [companyName]: box,
+        [companyName]: {
+          ...state.workExperiencesByName[companyName],
+          [queryKey]: box,
+        },
       },
     };
   },
@@ -330,9 +346,11 @@ const reducer = createReducer(preloadedState, {
     state,
     {
       companyName,
+      queryKey,
       box,
     }: {
       companyName: string;
+      queryKey: string;
       box: FetchBox<CompanyAspectExperienceResult | null>;
     },
   ) => {
@@ -340,7 +358,10 @@ const reducer = createReducer(preloadedState, {
       ...state,
       workExperiencesAspectExperiencesByName: {
         ...state.workExperiencesAspectExperiencesByName,
-        [companyName]: box,
+        [companyName]: {
+          ...state.workExperiencesAspectExperiencesByName[companyName],
+          [queryKey]: box,
+        },
       },
     };
   },
