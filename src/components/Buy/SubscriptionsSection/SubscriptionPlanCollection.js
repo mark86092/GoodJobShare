@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { subscriptionTypes } from 'constants/subscription';
+import { SubscriptionType } from 'constants/subscription';
 
 import SubscriptionPlan from './SubscriptionPlan';
 import styles from './SubscriptionsSection.module.css';
@@ -30,7 +30,7 @@ SubscriptionPlanCollection.propTypes = {
       description: PropTypes.string.isRequired,
       skuId: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(subscriptionTypes).isRequired,
+      type: PropTypes.oneOf(Object.values(SubscriptionType)).isRequired,
     }),
   ),
   selectedId: PropTypes.string,
