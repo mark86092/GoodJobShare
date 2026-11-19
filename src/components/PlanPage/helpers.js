@@ -1,6 +1,6 @@
 import { compose, length, min } from 'ramda';
 
-import { subscriptionType } from 'constants/subscription';
+import { SubscriptionType } from 'constants/subscription';
 
 const MAX_COLUMN = 3;
 
@@ -10,7 +10,7 @@ export const getColumns = compose(
 );
 
 export const getActionTitle = type => {
-  if (type === subscriptionType.submitData) {
+  if (type === SubscriptionType.SubmitData) {
     return '留下資料';
   }
 
