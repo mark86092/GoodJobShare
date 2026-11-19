@@ -28,6 +28,7 @@ import { useSearchTextFromQuery } from 'components/CompanyAndJobTitle/SearchBar'
 import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import usePermission from 'hooks/usePermission';
+import usePreviousBox from 'hooks/usePreviousBox';
 import {
   companyEsgSalaryDataBoxSelectorByName,
   companyOverviewStatisticsBoxSelectorByName,
@@ -60,12 +61,41 @@ const useSalaryWorkTimeStatisticsBox = pageName => {
   return useSelector(selector);
 };
 
-const useSalaryWorkTimeBox = companyName => {
+// 換查詢參數時，新 key 的 box 還沒資料，先沿用同公司上一次的資料避免閃 Loader
+const useSalaryWorkTimeBox = (companyName, query) => {
+  const {
+    jobTitle,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  } = query;
   const selector = useMemo(
-    () => companySalaryWorkTimeBoxSelectorByName(companyName),
-    [companyName],
+    () =>
+      companySalaryWorkTimeBoxSelectorByName(companyName, {
+        jobTitle,
+        start,
+        limit,
+        dataTimeRange,
+        experienceInYearRange,
+        gender,
+        sortBy,
+      }),
+    [
+      companyName,
+      jobTitle,
+      start,
+      limit,
+      dataTimeRange,
+      experienceInYearRange,
+      gender,
+      sortBy,
+    ],
   );
-  return useSelector(selector);
+  const box = usePreviousBox(useSelector(selector), companyName);
+  return box;
 };
 
 const useEsgSalaryDataBox = companyName => {
@@ -176,7 +206,15 @@ const CompanySalaryWorkTimeProvider = () => {
   const topNJobTitles = useTopNJobTitles(companyName);
   const esgSalaryDataBox = useEsgSalaryDataBox(companyName);
 
-  const salaryWorkTimeBox = useSalaryWorkTimeBox(companyName);
+  const salaryWorkTimeBox = useSalaryWorkTimeBox(companyName, {
+    jobTitle: jobTitle || undefined,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender: gender || undefined,
+    sortBy: sortBy || undefined,
+  });
 
   return (
     <CompanyAndJobTitleWrapper

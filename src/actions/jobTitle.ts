@@ -1,4 +1,3 @@
-import R from 'ramda';
 import { AnyAction } from 'redux';
 
 import queryJobTitleInterviewExperiencesApi from 'apis/queryJobTitleInterviewExperiences';
@@ -8,11 +7,7 @@ import queryJobTitlesApi, { JobTitleInIndex } from 'apis/queryJobTitles';
 import queryJobTitleSalaryWorkTimeApi from 'apis/queryJobTitleSalaryWorkTime';
 import queryJobTitleSalaryWorkTimeStatisticsApi from 'apis/queryJobTitleSalaryWorkTimeStatistics';
 import queryJobTitleWorkExperiencesApi from 'apis/queryJobTitleWorkExperiences';
-import {
-  DataTimeRange,
-  ExperienceInYearRange,
-  OvertimeStats,
-} from 'apis/salaryWorkTime';
+import { OvertimeStats } from 'apis/salaryWorkTime';
 import { Thunk } from 'reducers';
 import {
   JobTitleInterviewExperienceResult,
@@ -22,11 +17,15 @@ import {
   JobTitleWorkExperienceResult,
 } from 'reducers/jobTitleIndex';
 import {
+  getJobTitleExperiencesQueryKey,
+  getJobTitleSalaryWorkTimeQueryKey,
+  JobTitleExperiencesQuery,
   jobTitleIndexesBoxSelectorAtPage,
   jobTitleInterviewExperiencesBoxSelectorByName,
   jobTitleOverviewBoxSelectorByName,
   jobTitleOverviewStatisticsBoxSelectorByName,
   jobTitleSalaryWorktimeBoxSelectorByName,
+  JobTitleSalaryWorkTimeQuery,
   jobTitleSalaryWorkTimeStatisticsBoxSelectorByName,
   jobTitleWorkExperiencesBoxSelectorByName,
 } from 'selectors/companyAndJobTitle';
@@ -204,10 +203,12 @@ export const queryJobTitleOverviewStatistics = (
 
 const setSalaryWorkTime = (
   jobTitle: string,
+  queryKey: string,
   box: FetchBox<JobTitleSalaryWorkTimeResult | null>,
 ): AnyAction => ({
   type: SET_SALARY_WORK_TIME,
   jobTitle,
+  queryKey,
   box,
 });
 
@@ -221,37 +222,27 @@ export const queryJobTitleSalaryWorkTime = (
     experienceInYearRange,
     gender,
     sortBy,
-  }: {
-    companyName?: string;
-    jobTitle: string;
-    start: number;
-    limit: number;
-    dataTimeRange?: DataTimeRange;
-    experienceInYearRange?: ExperienceInYearRange;
-    gender?: string;
-    sortBy?: string;
-  },
+  }: { jobTitle: string } & JobTitleSalaryWorkTimeQuery,
   { force = false }: { force?: boolean } = {},
 ): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = jobTitleSalaryWorktimeBoxSelectorByName(jobTitle)(getState());
-  if (
-    !force &&
-    (isFetching(box) ||
-      (isFetched(box) &&
-        box.data &&
-        box.data.name === jobTitle &&
-        box.data.companyName === companyName &&
-        box.data.start === start &&
-        box.data.limit === limit &&
-        R.equals(box.data.dataTimeRange, dataTimeRange) &&
-        R.equals(box.data.experienceInYearRange, experienceInYearRange) &&
-        box.data.gender === gender &&
-        box.data.sortBy === sortBy))
-  ) {
+  const query = {
+    companyName,
+    start,
+    limit,
+    dataTimeRange,
+    experienceInYearRange,
+    gender,
+    sortBy,
+  };
+  const queryKey = getJobTitleSalaryWorkTimeQueryKey(query);
+  const box = jobTitleSalaryWorktimeBoxSelectorByName(jobTitle, query)(
+    getState(),
+  );
+  if (!force && (isFetching(box) || isFetched(box))) {
     return;
   }
 
-  dispatch(setSalaryWorkTime(jobTitle, toFetching(box)));
+  dispatch(setSalaryWorkTime(jobTitle, queryKey, toFetching()));
 
   try {
     const data = await queryJobTitleSalaryWorkTimeApi({
@@ -267,7 +258,7 @@ export const queryJobTitleSalaryWorkTime = (
 
     // Not found case
     if (data == null) {
-      return dispatch(setSalaryWorkTime(jobTitle, getFetched(data)));
+      return dispatch(setSalaryWorkTime(jobTitle, queryKey, getFetched(data)));
     }
 
     const salaryWorkTimeData: JobTitleSalaryWorkTimeResult = {
@@ -283,9 +274,11 @@ export const queryJobTitleSalaryWorkTime = (
       salaryWorkTimesCount: data.salaryWorkTimesResult.count,
     };
 
-    dispatch(setSalaryWorkTime(jobTitle, getFetched(salaryWorkTimeData)));
+    dispatch(
+      setSalaryWorkTime(jobTitle, queryKey, getFetched(salaryWorkTimeData)),
+    );
   } catch (error) {
-    dispatch(setSalaryWorkTime(jobTitle, getError(error)));
+    dispatch(setSalaryWorkTime(jobTitle, queryKey, getError(error)));
   }
 };
 
@@ -310,7 +303,7 @@ export const queryJobTitleSalaryWorkTimeStatistics = ({
     return;
   }
 
-  dispatch(setSalaryWorkTimeStatistics(jobTitle, toFetching(box)));
+  dispatch(setSalaryWorkTimeStatistics(jobTitle, toFetching()));
 
   try {
     const data = await queryJobTitleSalaryWorkTimeStatisticsApi({
@@ -325,10 +318,12 @@ export const queryJobTitleSalaryWorkTimeStatistics = ({
 
 const setInterviewExperiences = (
   jobTitle: string,
+  queryKey: string,
   box: FetchBox<JobTitleInterviewExperienceResult | null>,
 ): AnyAction => ({
   type: SET_INTERVIEW_EXPERIENCES,
   jobTitle,
+  queryKey,
   box,
 });
 
@@ -338,29 +333,20 @@ export const queryJobTitleInterviewExperiences = ({
   start,
   limit,
   sortBy,
-}: {
-  companyName?: string;
-  jobTitle: string;
-  start: number;
-  limit: number;
-  sortBy?: string;
-}): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = jobTitleInterviewExperiencesBoxSelectorByName(jobTitle)(
+}: { jobTitle: string } & JobTitleExperiencesQuery): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
+  const query = { companyName, start, limit, sortBy };
+  const queryKey = getJobTitleExperiencesQueryKey(query);
+  const box = jobTitleInterviewExperiencesBoxSelectorByName(jobTitle, query)(
     getState(),
   );
-  if (
-    isFetching(box) ||
-    (isFetched(box) &&
-      box.data &&
-      box.data.companyName === companyName &&
-      box.data.start === start &&
-      box.data.limit === limit &&
-      box.data.sortBy === sortBy)
-  ) {
+  if (isFetching(box) || isFetched(box)) {
     return;
   }
 
-  dispatch(setInterviewExperiences(jobTitle, toFetching(box)));
+  dispatch(setInterviewExperiences(jobTitle, queryKey, toFetching()));
 
   try {
     const data = await queryJobTitleInterviewExperiencesApi({
@@ -373,7 +359,9 @@ export const queryJobTitleInterviewExperiences = ({
 
     // Not found case
     if (data == null) {
-      return dispatch(setInterviewExperiences(jobTitle, getFetched(data)));
+      return dispatch(
+        setInterviewExperiences(jobTitle, queryKey, getFetched(data)),
+      );
     }
 
     const interviewExperiencesyData: JobTitleInterviewExperienceResult = {
@@ -388,7 +376,11 @@ export const queryJobTitleInterviewExperiences = ({
     };
 
     dispatch(
-      setInterviewExperiences(jobTitle, getFetched(interviewExperiencesyData)),
+      setInterviewExperiences(
+        jobTitle,
+        queryKey,
+        getFetched(interviewExperiencesyData),
+      ),
     );
 
     // Update state.experiences which is the source of truth for all experiences
@@ -396,16 +388,18 @@ export const queryJobTitleInterviewExperiences = ({
       dispatch(setExperience(e.id, getFetched(e)));
     });
   } catch (error) {
-    dispatch(setInterviewExperiences(jobTitle, getError(error)));
+    dispatch(setInterviewExperiences(jobTitle, queryKey, getError(error)));
   }
 };
 
 const setWorkExperiences = (
   jobTitle: string,
+  queryKey: string,
   box: FetchBox<JobTitleWorkExperienceResult | null>,
 ): AnyAction => ({
   type: SET_WORK_EXPERIENCES,
   jobTitle,
+  queryKey,
   box,
 });
 
@@ -415,28 +409,20 @@ export const queryJobTitleWorkExperiences = ({
   start,
   limit,
   sortBy,
-}: {
-  companyName?: string;
-  jobTitle: string;
-  start: number;
-  limit: number;
-  sortBy?: string;
-}): Thunk => async (dispatch, getState): Promise<unknown> => {
-  const box = jobTitleWorkExperiencesBoxSelectorByName(jobTitle)(getState());
-  if (
-    isFetching(box) ||
-    (isFetched(box) &&
-      box.data &&
-      box.data.name === jobTitle &&
-      box.data.companyName === companyName &&
-      box.data.start === start &&
-      box.data.limit === limit &&
-      box.data.sortBy === sortBy)
-  ) {
+}: { jobTitle: string } & JobTitleExperiencesQuery): Thunk => async (
+  dispatch,
+  getState,
+): Promise<unknown> => {
+  const query = { companyName, start, limit, sortBy };
+  const queryKey = getJobTitleExperiencesQueryKey(query);
+  const box = jobTitleWorkExperiencesBoxSelectorByName(jobTitle, query)(
+    getState(),
+  );
+  if (isFetching(box) || isFetched(box)) {
     return;
   }
 
-  dispatch(setWorkExperiences(jobTitle, toFetching(box)));
+  dispatch(setWorkExperiences(jobTitle, queryKey, toFetching()));
 
   try {
     const data = await queryJobTitleWorkExperiencesApi({
@@ -449,7 +435,7 @@ export const queryJobTitleWorkExperiences = ({
 
     // Not found case
     if (data == null) {
-      return dispatch(setWorkExperiences(jobTitle, getFetched(data)));
+      return dispatch(setWorkExperiences(jobTitle, queryKey, getFetched(data)));
     }
 
     const workExperiencesData: JobTitleWorkExperienceResult = {
@@ -462,13 +448,15 @@ export const queryJobTitleWorkExperiences = ({
       workExperiencesCount: data.workExperiencesResult.count,
     };
 
-    dispatch(setWorkExperiences(jobTitle, getFetched(workExperiencesData)));
+    dispatch(
+      setWorkExperiences(jobTitle, queryKey, getFetched(workExperiencesData)),
+    );
 
     // Update state.experiences which is the source of truth for all experiences
     data.workExperiencesResult.workExperiences.forEach(e => {
       dispatch(setExperience(e.id, getFetched(e)));
     });
   } catch (error) {
-    dispatch(setWorkExperiences(jobTitle, getError(error)));
+    dispatch(setWorkExperiences(jobTitle, queryKey, getError(error)));
   }
 };

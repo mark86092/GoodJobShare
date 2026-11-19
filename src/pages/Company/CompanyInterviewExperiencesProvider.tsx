@@ -19,8 +19,12 @@ import { PAGE_SIZE, PageType, TabType } from 'constants/companyJobTitle';
 import { usePage } from 'hooks/routing/page';
 import useBoxWithLatestExperiences from 'hooks/useBoxWithLatestExperiences';
 import usePermission from 'hooks/usePermission';
+import usePreviousBox from 'hooks/usePreviousBox';
 import { CompanyInterviewExperienceResult } from 'reducers/companyIndex';
-import { companyInterviewExperiencesBoxSelectorByName } from 'selectors/companyAndJobTitle';
+import {
+  CompanyExperiencesQuery,
+  companyInterviewExperiencesBoxSelectorByName,
+} from 'selectors/companyAndJobTitle';
 import {
   pageFromQuerySelector,
   queryFromQuerySelector,
@@ -35,12 +39,21 @@ import { useTopNJobTitles } from './useTopNJobTitles';
 
 const useInterviewExperiencesBox = (
   pageName: string,
+  query: CompanyExperiencesQuery,
 ): FetchBox<CompanyInterviewExperienceResult | null> => {
+  const { jobTitle, start, limit, sortBy } = query;
   const selector = useMemo(
-    () => companyInterviewExperiencesBoxSelectorByName(pageName),
-    [pageName],
+    () =>
+      companyInterviewExperiencesBoxSelectorByName(pageName, {
+        jobTitle,
+        start,
+        limit,
+        sortBy,
+      }),
+    [pageName, jobTitle, start, limit, sortBy],
   );
-  const box = useSelector(selector);
+  // 換查詢參數時，新 key 的 box 還沒資料，先沿用同頁上一次的資料避免閃 Loader
+  const box = usePreviousBox(useSelector(selector), pageName);
   return useBoxWithLatestExperiences(
     box,
     'interviewExperiences',
@@ -87,7 +100,12 @@ const CompanyInterviewExperiencesProvider: React.FC &
     fetchPermission();
   }, [pageType, companyName, fetchPermission]);
 
-  const interviewExperiencesBox = useInterviewExperiencesBox(companyName);
+  const interviewExperiencesBox = useInterviewExperiencesBox(companyName, {
+    jobTitle: jobTitle || undefined,
+    start,
+    limit,
+    sortBy,
+  });
 
   const topNJobTitles = useTopNJobTitles(companyName);
 
